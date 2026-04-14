@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Cortex Debug (J-Link)",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "jlink",
+
+      "device": "GD32F350RBT6",
+      "interface": "swd",
+
+      "executable": "${workspaceFolder}/build/your_project.elf",
+
+      "cwd": "${workspaceFolder}",
+
+      "runToEntryPoint": "main",
+      "preLaunchTask": "Build Keil Project",
+
+      "svdFile": "",
+
+      "jlinkPath": "C:/Program Files/SEGGER/JLink/JLinkGDBServerCL.exe"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Keil Project",
+      "type": "shell",
+      "command": "C:\\Keil_v5\\UV4\\UV4.exe",
+      "args": [
+        "-b",
+        "X:\\USB Controller\\USB Controller.uvprojx",
+        "-j0"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
