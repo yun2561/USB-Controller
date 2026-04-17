@@ -1,0 +1,804 @@
+/******************************************************************************
+ * Driver/bsp_system.h + .c
+ *****************************************************************************/
+#ifndef BSP_SYSTEM_H
+#define BSP_SYSTEM_H
+#include "gd32f3x0.h"
+#include "common_types.h"
+void     bsp_system_init(void);
+void     bsp_nvic_config(void);
+void     bsp_system_reset(void);
+uint32_t bsp_get_tick(void);
+void     bsp_delay_ms(uint32_t ms);
+void     bsp_tick_inc(void);
+#endif
+
+/* --- bsp_system.c --- */
+#include "bsp_system.h"
+#include "debug_rtt.h"
+static volatile uint32_t s_tick = 0;
+
+void bsp_system_init(void)
+{
+    rcu_deinit();
+    rcu_osci_on(RCU_IRC48M);
+    while (SUCCESS != rcu_osci_stab_wait(RCU_IRC48M));
+    rcu_ck_sys_config(RCU_CKSYSSRC_IRC48M);
+    rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV1);
+    rcu_apb1_clock_config(RCU_APB1_CKAHB_DIV1);
+    rcu_apb2_clock_config(RCU_APB2_CKAHB_DIV1);
+    SysTick_Config(SystemCoreClock / SYSTICK_FREQ_HZ);
+
+    rcu_periph_clock_enable(RCU_GPIOA);
+    rcu_periph_clock_enable(RCU_GPIOB);
+    rcu_periph_clock_enable(RCU_DMA);
+    rcu_periph_clock_enable(MIDI_UART_CLK);
+    rcu_periph_clock_enable(RCU_SPI1);
+    rcu_periph_clock_enable(RCU_I2C0);
+    rcu_periph_clock_enable(RCU_ADC);
+    rcu_periph_clock_enable(RCU_TIMER0);
+    rcu_periph_clock_enable(RCU_TIMER1);
+    rcu_periph_clock_enable(RCU_TIMER2);
+    rcu_periph_clock_enable(RCU_CFGCMP);  /* For SYSCFG EXTI */
+
+    bsp_nvic_config();
+    dbg_init();
+    DBG_INFO("SYS", "48MHz IRC48M OK, " PRODUCT_NAME);
+}
+
+void bsp_nvic_config(void)
+{
+    nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
+    /* Priority 0: USB */
+    nvic_irq_enable(USBFS_IRQn, 0, 0);
+    /* Priority 1: UART MIDI DMA TX (CH1) */
+    nvic_irq_enable(MIDI_TX_DMA_IRQn, 1, 0);
+    /* Priority 1: UART MIDI DMA RX (CH2) — shared IRQ line on some GD32 */
+    /* CH2 shares DMA_Channel3_4_IRQn on GD32F350 */
+    nvic_irq_enable(MIDI_RX_DMA_IRQn, 1, 0);
+    /* Priority 2: USART IDLE */
+    nvic_irq_enable(MIDI_UART_IRQn, 2, 0);
+    /* Priority 2: Jack EXTI */
+    nvic_irq_enable(EXTI4_15_IRQn, 2, 0);
+    /* Priority 3: SysTick + ADC AWD */
+    NVIC_SetPriority(SysTick_IRQn, 3);
+    nvic_irq_enable(ADC_CMP_IRQn, 3, 0);
+    /* Priority 4: SPI LCD DMA (CH4) + WS2812 DMA (CH5) */
+    nvic_irq_enable(DMA_Channel4_5_6_IRQn, 4, 0);
+}
+
+void     bsp_system_reset(void) { NVIC_SystemReset(); }
+uint32_t bsp_get_tick(void)     { return s_tick; }
+void     bsp_delay_ms(uint32_t ms) { uint32_t s = s_tick; while ((s_tick - s) < ms); }
+void     bsp_tick_inc(void)     { s_tick++; }
+
+/******************************************************************************
+ * Driver/bsp_uart_midi.h + .c  (DMA CH1=TX, CH2=RX, RING_SIZE=256)
+ *****************************************************************************/
+#ifndef BSP_UART_MIDI_H
+#define BSP_UART_MIDI_H
+#include "common_types.h"
+void     bsp_uart_init(void);
+void     bsp_uart_send_dma(const uint8_t *d, uint16_t len);
+uint8_t  bsp_uart_tx_busy(void);
+uint16_t bsp_uart_rx_avail(void);
+uint8_t  bsp_uart_rx_read(void);
+#endif
+
+/* --- bsp_uart_midi.c --- */
+#include "bsp_uart_midi.h"
+#include "gd32f3x0.h"
+#include "debug_rtt.h"
+#include "error_handler.h"
+#include <string.h>
+
+#define RX_MASK (RING_SIZE - 1)
+
+static uint8_t s_rxb[RING_SIZE];
+static volatile uint16_t s_rxh = 0;
+static uint16_t s_rxt = 0;
+static uint8_t s_txb[RING_SIZE];
+static volatile uint8_t s_txbusy = 0;
+
+void bsp_uart_init(void)
+{
+    /* GPIO */
+    gpio_af_set(MIDI_TX_PORT, MIDI_TX_AF, MIDI_TX_PIN);
+    gpio_af_set(MIDI_RX_PORT, MIDI_RX_AF, MIDI_RX_PIN);
+    gpio_mode_set(MIDI_TX_PORT, GPIO_MODE_AF, GPIO_PUPD_PULLUP, MIDI_TX_PIN | MIDI_RX_PIN);
+    gpio_output_options_set(MIDI_TX_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, MIDI_TX_PIN);
+
+    /* USART */
+    usart_deinit(MIDI_UART);
+    usart_baudrate_set(MIDI_UART, MIDI_UART_BAUD);
+    usart_word_length_set(MIDI_UART, USART_WL_8BIT);
+    usart_stop_bit_set(MIDI_UART, USART_STB_1BIT);
+    usart_parity_config(MIDI_UART, USART_PM_NONE);
+    usart_transmit_config(MIDI_UART, USART_TRANSMIT_ENABLE);
+    usart_receive_config(MIDI_UART, USART_RECEIVE_ENABLE);
+    usart_interrupt_enable(MIDI_UART, USART_INT_IDLE);
+
+    /* DMA RX: MIDI_RX_DMA_CH (CH2), circular */
+    dma_deinit(MIDI_RX_DMA_CH);
+    dma_parameter_struct rx;
+    dma_struct_para_init(&rx);
+    rx.periph_addr  = (uint32_t)&USART_RDATA(MIDI_UART);
+    rx.memory_addr  = (uint32_t)s_rxb;
+    rx.direction    = DMA_PERIPHERAL_TO_MEMORY;
+    rx.number       = RING_SIZE;
+    rx.periph_inc   = DMA_PERIPH_INCREASE_DISABLE;
+    rx.memory_inc   = DMA_MEMORY_INCREASE_ENABLE;
+    rx.periph_width = DMA_PERIPHERAL_WIDTH_8BIT;
+    rx.memory_width = DMA_MEMORY_WIDTH_8BIT;
+    rx.priority     = DMA_PRIORITY_HIGH;
+    dma_init(MIDI_RX_DMA_CH, &rx);
+    dma_circulation_enable(MIDI_RX_DMA_CH);
+    dma_channel_enable(MIDI_RX_DMA_CH);
+    usart_dma_receive_config(MIDI_UART, USART_DENR_ENABLE);
+
+    /* DMA TX: MIDI_TX_DMA_CH (CH1), normal mode */
+    dma_deinit(MIDI_TX_DMA_CH);
+    dma_interrupt_enable(MIDI_TX_DMA_CH, DMA_INT_FTF);
+    usart_dma_transmit_config(MIDI_UART, USART_DENT_ENABLE);
+
+    usart_enable(MIDI_UART);
+    DBG_INFO("UART", "MIDI %u baud, TX=DMA_CH1 RX=DMA_CH2", MIDI_UART_BAUD);
+}
+
+void bsp_uart_send_dma(const uint8_t *d, uint16_t len)
+{
+    if (!len || len > RING_SIZE) return;
+    while (s_txbusy);
+    memcpy(s_txb, d, len);
+    s_txbusy = 1;
+
+    dma_channel_disable(MIDI_TX_DMA_CH);
+    dma_memory_address_config(MIDI_TX_DMA_CH, (uint32_t)s_txb);
+    dma_transfer_number_config(MIDI_TX_DMA_CH, len);
+    dma_channel_enable(MIDI_TX_DMA_CH);
+}
+
+uint8_t bsp_uart_tx_busy(void) { return s_txbusy; }
+
+uint16_t bsp_uart_rx_avail(void)
+{
+    s_rxh = RING_SIZE - dma_transfer_number_get(MIDI_RX_DMA_CH);
+    return (s_rxh - s_rxt) & RX_MASK;
+}
+
+uint8_t bsp_uart_rx_read(void)
+{
+    uint8_t b = s_rxb[s_rxt];
+    s_rxt = (s_rxt + 1) & RX_MASK;
+    return b;
+}
+
+/* IRQ: USART IDLE */
+void USART0_IRQHandler(void)
+{
+    if (usart_interrupt_flag_get(MIDI_UART, USART_INT_FLAG_IDLE)) {
+        (void)USART_STAT(MIDI_UART);
+        (void)USART_RDATA(MIDI_UART);
+        s_rxh = RING_SIZE - dma_transfer_number_get(MIDI_RX_DMA_CH);
+    }
+}
+
+/* IRQ: DMA CH1/CH2 (TX complete) */
+void DMA_Channel1_2_IRQHandler(void)
+{
+    if (dma_interrupt_flag_get(MIDI_TX_DMA_CH, DMA_INT_FLAG_FTF)) {
+        dma_interrupt_flag_clear(MIDI_TX_DMA_CH, DMA_INT_FLAG_FTF);
+        dma_channel_disable(MIDI_TX_DMA_CH);
+        s_txbusy = 0;
+    }
+}
+
+/******************************************************************************
+ * Driver/bsp_lcd_spi.h + .c + bsp_lcd_ctrl.h + .c
+ * (Unchanged from previous — SPI1 DMA CH4)
+ *****************************************************************************/
+#ifndef BSP_LCD_SPI_H
+#define BSP_LCD_SPI_H
+#include "common_types.h"
+void    bsp_lcd_spi_init(void);
+void    bsp_lcd_cmd(uint8_t c);
+void    bsp_lcd_data(const uint8_t *d, uint32_t len);
+void    bsp_lcd_data_dma(const uint8_t *d, uint32_t len);
+uint8_t bsp_lcd_busy(void);
+void    bsp_lcd_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
+void    bsp_lcd_backlight(uint8_t br);
+void    lcd_dma_handler(void);
+#endif
+
+#ifndef BSP_LCD_CTRL_H
+#define BSP_LCD_CTRL_H
+#include "common_types.h"
+typedef enum { LCD_ST7789, LCD_SSD1306 } lcd_type_t;
+void bsp_lcd_ctrl_init(lcd_type_t t);
+void bsp_lcd_rotation(uint8_t r);
+#endif
+
+/* --- bsp_lcd_spi.c + bsp_lcd_ctrl.c --- */
+#include "bsp_lcd_spi.h"
+#include "bsp_lcd_ctrl.h"
+#include "bsp_system.h"
+#include "gd32f3x0.h"
+#include "debug_rtt.h"
+#include <string.h>
+
+#define LCD_DC  GPIO_PIN_12
+#define LCD_RST GPIO_PIN_11
+#define LCD_CS  GPIO_PIN_10
+
+static volatile uint8_t s_dma = 0;
+static void cs(uint8_t l) { gpio_bit_write(GPIOB, LCD_CS, l ? SET : RESET); }
+static void dc(uint8_t l) { gpio_bit_write(GPIOB, LCD_DC, l ? SET : RESET); }
+
+void bsp_lcd_spi_init(void)
+{
+    gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, LCD_DC | LCD_RST | LCD_CS);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, LCD_DC | LCD_RST | LCD_CS);
+    gpio_af_set(GPIOB, GPIO_AF_0, GPIO_PIN_13 | GPIO_PIN_15);
+    gpio_mode_set(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO_PIN_13 | GPIO_PIN_15);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_15);
+
+    spi_i2s_deinit(SPI1);
+    spi_parameter_struct c; spi_struct_para_init(&c);
+    c.device_mode = SPI_MASTER; c.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+    c.frame_size = SPI_FRAMESIZE_8BIT;
+    c.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
+    c.nss = SPI_NSS_SOFT; c.prescale = SPI_PSC_2; c.endian = SPI_ENDIAN_MSB;
+    spi_init(SPI1, &c); spi_enable(SPI1);
+
+    dma_deinit(DMA_CH4); dma_interrupt_enable(DMA_CH4, DMA_INT_FTF);
+    cs(1);
+    gpio_bit_reset(GPIOB, LCD_RST); bsp_delay_ms(10);
+    gpio_bit_set(GPIOB, LCD_RST);   bsp_delay_ms(120);
+    DBG_INFO("LCD", "SPI1 init OK");
+}
+
+void bsp_lcd_cmd(uint8_t c)
+{
+    cs(0); dc(0);
+    while (!spi_i2s_flag_get(SPI1, SPI_FLAG_TBE));
+    spi_i2s_data_transmit(SPI1, c);
+    while (!spi_i2s_flag_get(SPI1, SPI_FLAG_RBNE));
+    (void)spi_i2s_data_receive(SPI1);
+    cs(1);
+}
+
+void bsp_lcd_data(const uint8_t *d, uint32_t l)
+{
+    cs(0); dc(1);
+    for (uint32_t i = 0; i < l; i++) {
+        while (!spi_i2s_flag_get(SPI1, SPI_FLAG_TBE));
+        spi_i2s_data_transmit(SPI1, d[i]);
+        while (!spi_i2s_flag_get(SPI1, SPI_FLAG_RBNE));
+        (void)spi_i2s_data_receive(SPI1);
+    }
+    cs(1);
+}
+
+void bsp_lcd_data_dma(const uint8_t *d, uint32_t l)
+{
+    while (s_dma); s_dma = 1; cs(0); dc(1);
+    dma_channel_disable(DMA_CH4);
+    dma_parameter_struct tx; dma_struct_para_init(&tx);
+    tx.periph_addr = (uint32_t)&SPI_DATA(SPI1); tx.memory_addr = (uint32_t)d;
+    tx.direction = DMA_MEMORY_TO_PERIPHERAL; tx.number = l;
+    tx.periph_inc = DMA_PERIPH_INCREASE_DISABLE; tx.memory_inc = DMA_MEMORY_INCREASE_ENABLE;
+    tx.periph_width = DMA_PERIPHERAL_WIDTH_8BIT; tx.memory_width = DMA_MEMORY_WIDTH_8BIT;
+    tx.priority = DMA_PRIORITY_LOW;
+    dma_init(DMA_CH4, &tx);
+    spi_dma_enable(SPI1, SPI_DMA_TRANSMIT);
+    dma_channel_enable(DMA_CH4);
+}
+
+uint8_t bsp_lcd_busy(void) { return s_dma; }
+
+void bsp_lcd_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
+{
+    uint8_t d[4];
+    bsp_lcd_cmd(0x2A); d[0]=x0>>8; d[1]=x0; d[2]=x1>>8; d[3]=x1; bsp_lcd_data(d, 4);
+    bsp_lcd_cmd(0x2B); d[0]=y0>>8; d[1]=y0; d[2]=y1>>8; d[3]=y1; bsp_lcd_data(d, 4);
+    bsp_lcd_cmd(0x2C);
+}
+
+void bsp_lcd_backlight(uint8_t br)
+{
+    timer_channel_output_pulse_value_config(TIMER2, TIMER_CH_0, br);
+}
+
+void lcd_dma_handler(void)
+{
+    if (dma_interrupt_flag_get(DMA_CH4, DMA_INT_FLAG_FTF)) {
+        dma_interrupt_flag_clear(DMA_CH4, DMA_INT_FLAG_FTF);
+        dma_channel_disable(DMA_CH4);
+        spi_dma_disable(SPI1, SPI_DMA_TRANSMIT);
+        while (spi_i2s_flag_get(SPI1, SPI_FLAG_TRANS));
+        cs(1); s_dma = 0;
+    }
+}
+
+void bsp_lcd_ctrl_init(lcd_type_t t)
+{
+    if (t == LCD_ST7789) {
+        bsp_lcd_cmd(0x01); bsp_delay_ms(150);
+        bsp_lcd_cmd(0x11); bsp_delay_ms(500);
+        bsp_lcd_cmd(0x3A); uint8_t d = 0x55; bsp_lcd_data(&d, 1);
+        bsp_lcd_cmd(0x36); d = 0x00; bsp_lcd_data(&d, 1);
+        bsp_lcd_cmd(0x21); bsp_lcd_cmd(0x29); bsp_delay_ms(100);
+    } else { /* SSD1306 */
+        const uint8_t cm[] = {
+            0xAE,0xA8,0x3F,0xD3,0x00,0x40,0xA1,0xC8,
+            0xDA,0x12,0x81,0x7F,0xA4,0xA6,0xD5,0x80,0x8D,0x14,0xAF
+        };
+        for (uint16_t i = 0; i < sizeof(cm); i++) bsp_lcd_cmd(cm[i]);
+    }
+}
+
+void bsp_lcd_rotation(uint8_t r)
+{
+    uint8_t m;
+    switch (r) { case 90: m=0x60; break; case 180: m=0xC0; break; case 270: m=0xA0; break; default: m=0; }
+    bsp_lcd_cmd(0x36); bsp_lcd_data(&m, 1);
+}
+
+/******************************************************************************
+ * Driver/bsp_key_matrix.h + .c
+ *****************************************************************************/
+#ifndef BSP_KEY_MATRIX_H
+#define BSP_KEY_MATRIX_H
+#include "common_types.h"
+#define KEY_ROWS 4
+#define KEY_COLS 4
+#define KEY_TOTAL (KEY_ROWS * KEY_COLS)
+void bsp_key_init(void);
+void bsp_key_scan(uint8_t *raw);
+#endif
+
+#include "bsp_key_matrix.h"
+#include "gd32f3x0.h"
+static const uint32_t rp[] = { GPIO_PIN_0, GPIO_PIN_1, GPIO_PIN_2, GPIO_PIN_3 };
+static const uint32_t cp[] = { GPIO_PIN_4, GPIO_PIN_5, GPIO_PIN_0, GPIO_PIN_1 };
+static uint32_t cport[] = { (uint32_t)GPIOA, (uint32_t)GPIOA, (uint32_t)GPIOB, (uint32_t)GPIOB };
+
+void bsp_key_init(void)
+{
+    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, 0x0F);
+    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, 0x0F);
+    for (int i = 0; i < 4; i++) gpio_bit_set(GPIOA, rp[i]);
+    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_4 | GPIO_PIN_5);
+    gpio_mode_set(GPIOB, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_0 | GPIO_PIN_1);
+}
+
+void bsp_key_scan(uint8_t *raw)
+{
+    for (int r = 0; r < 4; r++) {
+        gpio_bit_reset(GPIOA, rp[r]);
+        for (volatile int d = 0; d < 10; d++);
+        for (int c = 0; c < 4; c++)
+            raw[r*4+c] = (gpio_input_bit_get(cport[c], cp[c]) == RESET) ? 1 : 0;
+        gpio_bit_set(GPIOA, rp[r]);
+    }
+}
+
+/******************************************************************************
+ * Driver/bsp_adc.h + .c  (DMA CH0 — unchanged)
+ *****************************************************************************/
+#ifndef BSP_ADC_H
+#define BSP_ADC_H
+#include "common_types.h"
+#define ADC_KNOBS 8
+void bsp_adc_init(void);
+volatile uint16_t *bsp_adc_raw(void);
+#endif
+
+#include "bsp_adc.h"
+#include "gd32f3x0.h"
+static volatile uint16_t s_adc[ADC_KNOBS];
+
+void bsp_adc_init(void)
+{
+    rcu_adc_clock_config(RCU_ADCCK_APB2_DIV6);
+    adc_deinit();
+    adc_special_function_config(ADC_CONTINUOUS_MODE, ENABLE);
+    adc_special_function_config(ADC_SCAN_MODE, ENABLE);
+    adc_data_alignment_config(ADC_DATAALIGN_RIGHT);
+    adc_resolution_config(ADC_RESOLUTION_12B);
+    adc_channel_length_config(ADC_REGULAR_CHANNEL, ADC_KNOBS);
+    for (int i = 0; i < ADC_KNOBS; i++)
+        adc_regular_channel_config(i, i, ADC_SAMPLETIME_55POINT5);
+
+    dma_deinit(DMA_CH0);
+    dma_parameter_struct d; dma_struct_para_init(&d);
+    d.periph_addr = (uint32_t)&ADC_RDATA; d.memory_addr = (uint32_t)s_adc;
+    d.direction = DMA_PERIPHERAL_TO_MEMORY; d.number = ADC_KNOBS;
+    d.periph_inc = DMA_PERIPH_INCREASE_DISABLE; d.memory_inc = DMA_MEMORY_INCREASE_ENABLE;
+    d.periph_width = DMA_PERIPHERAL_WIDTH_16BIT; d.memory_width = DMA_MEMORY_WIDTH_16BIT;
+    d.priority = DMA_PRIORITY_MEDIUM;
+    dma_init(DMA_CH0, &d); dma_circulation_enable(DMA_CH0); dma_channel_enable(DMA_CH0);
+    adc_dma_mode_enable(); adc_enable(); adc_calibration_enable();
+    adc_software_trigger_enable(ADC_REGULAR_CHANNEL);
+}
+
+volatile uint16_t *bsp_adc_raw(void) { return s_adc; }
+
+/******************************************************************************
+ * Driver/bsp_encoder.h + .c
+ *****************************************************************************/
+#ifndef BSP_ENCODER_H
+#define BSP_ENCODER_H
+#include "common_types.h"
+#define ENC_COUNT 2
+void    bsp_enc_init(void);
+int16_t bsp_enc_delta(uint8_t idx);
+#endif
+
+#include "bsp_encoder.h"
+#include "gd32f3x0.h"
+
+void bsp_enc_init(void)
+{
+    timer_deinit(TIMER1);
+    timer_parameter_struct t; timer_struct_para_init(&t);
+    t.prescaler = 0; t.period = 0xFFFF;
+    timer_init(TIMER1, &t);
+    timer_quadrature_decoder_mode_config(TIMER1, TIMER_ENCODER_MODE2,
+        TIMER_IC_POLARITY_RISING, TIMER_IC_POLARITY_RISING);
+    timer_counter_value_config(TIMER1, 0);
+    timer_enable(TIMER1);
+}
+
+int16_t bsp_enc_delta(uint8_t i)
+{
+    if (i >= ENC_COUNT) return 0;
+    uint32_t tm = i ? TIMER2 : TIMER1;
+    int16_t c = (int16_t)timer_counter_read(tm);
+    timer_counter_value_config(tm, 0);
+    return c;
+}
+
+/******************************************************************************
+ * Driver/bsp_ht16k33.h + .c  (I2C0 shared, 2×8 button LED)
+ *****************************************************************************/
+#ifndef BSP_HT16K33_H
+#define BSP_HT16K33_H
+#include "common_types.h"
+#define HT_ADDR    0xE0
+#define HT_RAM_SZ  16
+typedef enum { HT_OK = 0, HT_ERR_I2C, HT_ERR_TMO } ht_status_t;
+typedef enum { HT_BLK_OFF = 0, HT_BLK_2HZ, HT_BLK_1HZ, HT_BLK_05HZ } ht_blink_t;
+ht_status_t bsp_ht_init(void);
+ht_status_t bsp_ht_brightness(uint8_t lv);
+ht_status_t bsp_ht_blink(ht_blink_t r);
+ht_status_t bsp_ht_write_ram(const uint8_t *ram);
+ht_status_t bsp_ht_display(uint8_t on);
+#endif
+
+#include "bsp_ht16k33.h"
+#include "gd32f3x0.h"
+#include "bsp_system.h"
+#include "debug_rtt.h"
+#include "error_handler.h"
+#include <string.h>
+
+static ht_status_t i2c_tx(const uint8_t *d, uint8_t l)
+{
+    uint32_t to;
+    i2c_start_on_bus(I2C0); to = 10000;
+    while (!i2c_flag_get(I2C0, I2C_FLAG_SBSEND) && --to); if (!to) return HT_ERR_TMO;
+    i2c_master_addressing(I2C0, HT_ADDR, I2C_TRANSMITTER); to = 10000;
+    while (!i2c_flag_get(I2C0, I2C_FLAG_ADDSEND) && --to);
+    if (!to) { i2c_stop_on_bus(I2C0); return HT_ERR_I2C; }
+    i2c_flag_clear(I2C0, I2C_FLAG_ADDSEND);
+    for (uint8_t i = 0; i < l; i++) {
+        i2c_data_transmit(I2C0, d[i]); to = 10000;
+        while (!i2c_flag_get(I2C0, I2C_FLAG_TBE) && --to);
+        if (!to) { i2c_stop_on_bus(I2C0); return HT_ERR_TMO; }
+    }
+    i2c_stop_on_bus(I2C0); return HT_OK;
+}
+static ht_status_t ht_cmd(uint8_t c) { return i2c_tx(&c, 1); }
+
+ht_status_t bsp_ht_init(void)
+{
+    ht_status_t s = ht_cmd(0x21); /* OSC ON */
+    if (s) { err_raise(ERR_SRC_LED, ERR_LED_I2C, 0); return s; }
+    bsp_delay_ms(1);
+    ht_cmd(0x81); /* Display ON, blink OFF */
+    bsp_ht_brightness(15);
+    uint8_t clr[HT_RAM_SZ + 1]; clr[0] = 0; memset(clr + 1, 0, HT_RAM_SZ);
+    i2c_tx(clr, sizeof(clr));
+    DBG_INFO("HT16K", "2x8 LED init OK (0x%02X)", HT_ADDR);
+    return HT_OK;
+}
+
+ht_status_t bsp_ht_brightness(uint8_t lv) { return ht_cmd(0xE0 | (lv > 15 ? 15 : lv)); }
+
+ht_status_t bsp_ht_blink(ht_blink_t r)
+{
+    uint8_t c;
+    switch (r) {
+    case HT_BLK_2HZ: c = 0x83; break; case HT_BLK_1HZ: c = 0x85; break;
+    case HT_BLK_05HZ: c = 0x87; break; default: c = 0x81;
+    }
+    return ht_cmd(c);
+}
+
+ht_status_t bsp_ht_write_ram(const uint8_t *ram)
+{
+    uint8_t buf[HT_RAM_SZ + 1]; buf[0] = 0; memcpy(buf + 1, ram, HT_RAM_SZ);
+    return i2c_tx(buf, sizeof(buf));
+}
+
+ht_status_t bsp_ht_display(uint8_t on) { return ht_cmd(on ? 0x81 : 0x80); }
+
+/******************************************************************************
+ * Driver/bsp_ws2812.h + .c  (TIM0 PWM + DMA CH5)
+ *****************************************************************************/
+#ifndef BSP_WS2812_H
+#define BSP_WS2812_H
+#include "common_types.h"
+#include "color_utils.h"
+#define WS_MAX_LEDS 32
+void    bsp_ws_init(void);
+void    bsp_ws_update(const led_rgb_t *leds, uint16_t cnt);
+uint8_t bsp_ws_busy(void);
+void    ws_dma_handler(void);
+#endif
+
+#include "bsp_ws2812.h"
+#include "gd32f3x0.h"
+#include "debug_rtt.h"
+#define WSP 60
+#define WT0 19
+#define WT1 38
+#define WRST 50
+static uint16_t s_wb[WS_MAX_LEDS * 24 + WRST];
+static volatile uint8_t s_wbusy = 0;
+
+void bsp_ws_init(void)
+{
+    gpio_af_set(GPIOB, GPIO_AF_2, GPIO_PIN_8);
+    gpio_mode_set(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO_PIN_8);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_8);
+    timer_deinit(TIMER0);
+    timer_parameter_struct t; timer_struct_para_init(&t);
+    t.prescaler = 0; t.period = WSP - 1;
+    timer_init(TIMER0, &t);
+    timer_channel_output_mode_config(TIMER0, TIMER_CH_0, TIMER_OC_MODE_PWM0);
+    timer_channel_output_shadow_config(TIMER0, TIMER_CH_0, TIMER_OC_SHADOW_ENABLE);
+    timer_primary_output_config(TIMER0, ENABLE);
+    dma_deinit(DMA_CH5); dma_interrupt_enable(DMA_CH5, DMA_INT_FTF);
+    timer_dma_enable(TIMER0, TIMER_DMA_CH0D);
+    DBG_INFO("WS2812", "Strip max %u LEDs, PB8", WS_MAX_LEDS);
+}
+
+void bsp_ws_update(const led_rgb_t *leds, uint16_t cnt)
+{
+    if (s_wbusy || cnt > WS_MAX_LEDS || !cnt) return;
+    uint16_t idx = 0;
+    for (uint16_t i = 0; i < cnt; i++) {
+        uint8_t c[3] = { leds[i].g, leds[i].r, leds[i].b };
+        for (int ci = 0; ci < 3; ci++)
+            for (int b = 7; b >= 0; b--)
+                s_wb[idx++] = (c[ci] & (1 << b)) ? WT1 : WT0;
+    }
+    for (uint16_t i = 0; i < WRST; i++) s_wb[idx++] = 0;
+    s_wbusy = 1;
+    dma_channel_disable(DMA_CH5);
+    dma_parameter_struct d; dma_struct_para_init(&d);
+    d.periph_addr = (uint32_t)&TIMER_CH0CV(TIMER0); d.memory_addr = (uint32_t)s_wb;
+    d.direction = DMA_MEMORY_TO_PERIPHERAL; d.number = idx;
+    d.periph_inc = DMA_PERIPH_INCREASE_DISABLE; d.memory_inc = DMA_MEMORY_INCREASE_ENABLE;
+    d.periph_width = DMA_PERIPHERAL_WIDTH_16BIT; d.memory_width = DMA_MEMORY_WIDTH_16BIT;
+    d.priority = DMA_PRIORITY_MEDIUM;
+    dma_init(DMA_CH5, &d); dma_channel_enable(DMA_CH5);
+    timer_counter_value_config(TIMER0, 0); timer_enable(TIMER0);
+}
+
+uint8_t bsp_ws_busy(void) { return s_wbusy; }
+
+void ws_dma_handler(void)
+{
+    if (dma_interrupt_flag_get(DMA_CH5, DMA_INT_FLAG_FTF)) {
+        dma_interrupt_flag_clear(DMA_CH5, DMA_INT_FLAG_FTF);
+        dma_channel_disable(DMA_CH5); timer_disable(TIMER0); s_wbusy = 0;
+    }
+}
+
+/******************************************************************************
+ * Driver/bsp_jack_detect.h + .c
+ *****************************************************************************/
+#ifndef BSP_JACK_H
+#define BSP_JACK_H
+#include "common_types.h"
+void    bsp_jack_init(void);
+uint8_t bsp_jack_inserted(void);
+uint8_t bsp_jack_click_raw(void);
+typedef void (*jack_cb_t)(uint8_t);
+void    bsp_jack_set_cb(jack_cb_t cb);
+void    jack_exti_handler(void);
+void    jack_awd_handler(void);
+#endif
+
+#include "bsp_jack_detect.h"
+#include "gd32f3x0.h"
+static jack_cb_t s_jcb = NULL;
+static volatile uint8_t s_jclk = 0;
+
+void bsp_jack_init(void)
+{
+    gpio_mode_set(GPIOB, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_2);
+    syscfg_exti_line_config(EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN2);
+    exti_init(EXTI_2, EXTI_INTERRUPT, EXTI_TRIG_BOTH);
+    exti_interrupt_flag_clear(EXTI_2);
+    adc_watchdog_single_channel_enable(ADC_CHANNEL_15);
+    adc_watchdog_threshold_config(620, 4095);
+    adc_interrupt_enable(ADC_INT_WDE);
+}
+
+uint8_t bsp_jack_inserted(void) { return (gpio_input_bit_get(GPIOB, GPIO_PIN_2) == RESET) ? 1 : 0; }
+uint8_t bsp_jack_click_raw(void) { uint8_t v = s_jclk; s_jclk = 0; return v; }
+void bsp_jack_set_cb(jack_cb_t cb) { s_jcb = cb; }
+void jack_exti_handler(void) {
+    if (exti_interrupt_flag_get(EXTI_2) != RESET) {
+        exti_interrupt_flag_clear(EXTI_2);
+        if (s_jcb) s_jcb(bsp_jack_inserted());
+    }
+}
+void jack_awd_handler(void) {
+    if (adc_interrupt_flag_get(ADC_INT_FLAG_WDE)) {
+        adc_interrupt_flag_clear(ADC_INT_FLAG_WDE); s_jclk = 1;
+    }
+}
+
+/******************************************************************************
+ * Driver/bsp_audio_adc.h + .c
+ *****************************************************************************/
+#ifndef BSP_AUDIO_ADC_H
+#define BSP_AUDIO_ADC_H
+#include "common_types.h"
+#define AUDIO_FS    16000U
+#define AUDIO_BUFSZ 256U
+void bsp_audio_init(void);
+void bsp_audio_start(void);
+void bsp_audio_stop(void);
+typedef void (*audio_blk_cb_t)(const uint16_t *, uint16_t);
+void bsp_audio_set_cb(audio_blk_cb_t cb);
+#endif
+
+#include "bsp_audio_adc.h"
+#include "gd32f3x0.h"
+static audio_blk_cb_t s_acb = NULL;
+void bsp_audio_init(void) {
+    timer_deinit(TIMER2);
+    timer_parameter_struct t; timer_struct_para_init(&t);
+    t.prescaler = 0; t.period = (SystemCoreClock / AUDIO_FS) - 1;
+    timer_init(TIMER2, &t);
+    timer_master_output_trigger_source_config(TIMER2, TIMER_TRI_OUT_SRC_UPDATE);
+}
+void bsp_audio_start(void) { timer_enable(TIMER2); }
+void bsp_audio_stop(void)  { timer_disable(TIMER2); }
+void bsp_audio_set_cb(audio_blk_cb_t cb) { s_acb = cb; }
+
+/******************************************************************************
+ * Driver/bsp_eeprom_i2c.h + .c  (I2C0, AT24C64 0xA0)
+ *****************************************************************************/
+#ifndef BSP_EE_H
+#define BSP_EE_H
+#include "common_types.h"
+#define EE_ADDR  0xA0
+#define EE_PGSZ  32U
+#define EE_SIZE  8192U
+typedef enum { EE_OK = 0, EE_BUSY, EE_TMO, EE_ERR } ee_hw_status_t;
+void           bsp_ee_init(void);
+ee_hw_status_t bsp_ee_read(uint16_t a, uint8_t *d, uint16_t l);
+ee_hw_status_t bsp_ee_write_page(uint16_t a, const uint8_t *d, uint16_t l);
+ee_hw_status_t bsp_ee_wait(uint32_t tmo);
+#endif
+
+#include "bsp_eeprom_i2c.h"
+#include "bsp_system.h"
+#include "gd32f3x0.h"
+
+void bsp_ee_init(void)
+{
+    gpio_af_set(GPIOB, GPIO_AF_1, GPIO_PIN_6 | GPIO_PIN_7);
+    gpio_mode_set(GPIOB, GPIO_MODE_AF, GPIO_PUPD_PULLUP, GPIO_PIN_6 | GPIO_PIN_7);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_OD, GPIO_OSPEED_50MHZ, GPIO_PIN_6 | GPIO_PIN_7);
+    i2c_deinit(I2C0); i2c_clock_config(I2C0, 400000, I2C_DTCY_2);
+    i2c_enable(I2C0); i2c_ack_config(I2C0, I2C_ACK_ENABLE);
+}
+
+ee_hw_status_t bsp_ee_read(uint16_t a, uint8_t *d, uint16_t l)
+{
+    uint32_t to;
+    i2c_start_on_bus(I2C0); to=10000; while(!i2c_flag_get(I2C0,I2C_FLAG_SBSEND)&&--to); if(!to)return EE_TMO;
+    i2c_master_addressing(I2C0,EE_ADDR,I2C_TRANSMITTER); to=10000;
+    while(!i2c_flag_get(I2C0,I2C_FLAG_ADDSEND)&&--to); if(!to)return EE_TMO;
+    i2c_flag_clear(I2C0,I2C_FLAG_ADDSEND);
+    i2c_data_transmit(I2C0,a>>8); while(!i2c_flag_get(I2C0,I2C_FLAG_TBE));
+    i2c_data_transmit(I2C0,a&0xFF); while(!i2c_flag_get(I2C0,I2C_FLAG_TBE));
+    i2c_start_on_bus(I2C0); to=10000; while(!i2c_flag_get(I2C0,I2C_FLAG_SBSEND)&&--to);
+    i2c_master_addressing(I2C0,EE_ADDR,I2C_RECEIVER); to=10000;
+    while(!i2c_flag_get(I2C0,I2C_FLAG_ADDSEND)&&--to); i2c_flag_clear(I2C0,I2C_FLAG_ADDSEND);
+    for(uint16_t i=0;i<l;i++){
+        if(i==l-1){i2c_ack_config(I2C0,I2C_ACK_DISABLE);i2c_stop_on_bus(I2C0);}
+        to=10000; while(!i2c_flag_get(I2C0,I2C_FLAG_RBNE)&&--to);
+        d[i]=i2c_data_receive(I2C0);
+    }
+    i2c_ack_config(I2C0,I2C_ACK_ENABLE); return EE_OK;
+}
+
+ee_hw_status_t bsp_ee_write_page(uint16_t a, const uint8_t *d, uint16_t l)
+{
+    if(l>EE_PGSZ) return EE_ERR;
+    if(bsp_ee_wait(10)!=EE_OK) return EE_BUSY;
+    uint32_t to;
+    i2c_start_on_bus(I2C0); to=10000; while(!i2c_flag_get(I2C0,I2C_FLAG_SBSEND)&&--to);
+    i2c_master_addressing(I2C0,EE_ADDR,I2C_TRANSMITTER); to=10000;
+    while(!i2c_flag_get(I2C0,I2C_FLAG_ADDSEND)&&--to); i2c_flag_clear(I2C0,I2C_FLAG_ADDSEND);
+    i2c_data_transmit(I2C0,a>>8); while(!i2c_flag_get(I2C0,I2C_FLAG_TBE));
+    i2c_data_transmit(I2C0,a&0xFF); while(!i2c_flag_get(I2C0,I2C_FLAG_TBE));
+    for(uint16_t i=0;i<l;i++){
+        i2c_data_transmit(I2C0,d[i]); to=10000;
+        while(!i2c_flag_get(I2C0,I2C_FLAG_TBE)&&--to);
+    }
+    i2c_stop_on_bus(I2C0); return EE_OK;
+}
+
+ee_hw_status_t bsp_ee_wait(uint32_t tmo)
+{
+    uint32_t s=bsp_get_tick();
+    while((bsp_get_tick()-s)<tmo){
+        i2c_start_on_bus(I2C0); uint32_t t=1000;
+        while(!i2c_flag_get(I2C0,I2C_FLAG_SBSEND)&&--t); if(!t)continue;
+        i2c_master_addressing(I2C0,EE_ADDR,I2C_TRANSMITTER); t=1000;
+        while(!i2c_flag_get(I2C0,I2C_FLAG_ADDSEND)&&--t);
+        if(t){i2c_flag_clear(I2C0,I2C_FLAG_ADDSEND);i2c_stop_on_bus(I2C0);return EE_OK;}
+        i2c_stop_on_bus(I2C0);
+    }
+    return EE_TMO;
+}
+
+/******************************************************************************
+ * Driver/bsp_fmc.h + .c
+ *****************************************************************************/
+#ifndef BSP_FMC_H
+#define BSP_FMC_H
+#include "common_types.h"
+typedef enum { FMC_OK = 0, FMC_BUSY, FMC_ERR_PG, FMC_ERR_WRP } fmc_st_t;
+fmc_st_t bsp_fmc_erase(uint32_t addr);
+fmc_st_t bsp_fmc_prog(uint32_t addr, const uint32_t *d, uint32_t words);
+uint8_t  bsp_fmc_verify(uint32_t addr, const uint32_t *d, uint32_t words);
+#endif
+
+#include "bsp_fmc.h"
+#include "gd32f3x0.h"
+
+fmc_st_t bsp_fmc_erase(uint32_t a)
+{
+    if (a < APP_ADDR || a > CONFIG_ADDR - 1) return FMC_ERR_WRP;
+    fmc_unlock(); fmc_flag_clear(FMC_FLAG_END | FMC_FLAG_WPERR | FMC_FLAG_PGERR);
+    fmc_state_enum s = fmc_page_erase(a); fmc_lock();
+    return s == FMC_READY ? FMC_OK : FMC_ERR_PG;
+}
+
+fmc_st_t bsp_fmc_prog(uint32_t a, const uint32_t *d, uint32_t w)
+{
+    if (a < APP_ADDR || (a + w * 4) > CONFIG_ADDR) return FMC_ERR_WRP;
+    fmc_unlock();
+    for (uint32_t i = 0; i < w; i++) {
+        if (fmc_word_program(a + i * 4, d[i]) != FMC_READY) { fmc_lock(); return FMC_ERR_PG; }
+    }
+    fmc_lock(); return FMC_OK;
+}
+
+uint8_t bsp_fmc_verify(uint32_t a, const uint32_t *d, uint32_t w)
+{
+    for (uint32_t i = 0; i < w; i++)
+        if (*(volatile uint32_t *)(a + i * 4) != d[i]) return 0;
+    return 1;
+}

@@ -33,18 +33,12 @@ OF SUCH DAMAGE.
 */
 
 #include "gd32f3x0_it.h"
-#include "drv_usbd_int.h"
-#include "drv_usb_hw.h"
-#include "uart_midi.h"
-#include "systick.h"
-#include "led.h"
 
 
-volatile static uint32_t delay;
 
-extern void usb_timer_irq(void);
-extern usb_core_driver midi_usb;
-extern volatile uint32_t g_tick;
+
+
+
 
 
 /*!
@@ -160,9 +154,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
     /* ---- SysTick (1ms) ---- */
-    g_tick++;
-    usb_timer_irq();
-    delay_decrement();
+    
     
 }
 
@@ -172,32 +164,13 @@ void SysTick_Handler(void)
     \param[out] none
     \retval     none
 */
-void USBFS_IRQHandler(void)
-{
-    
-    /* ---- USBFS global interrupt ---- */
-    usbd_isr(&midi_usb);
-}
 
-/*!
-    \brief      this function handles USART0 exception
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void USART0_IRQHandler(void)
-{
-    /* ---- UART-MIDI RX ---- */
-    uart_midi_rx_irq();
-}
 
-/* ---- UART-MIDI TX DMA complete ---- */
-void DMA_Channel1_2_IRQHandler(void)
-{
-    uart_midi_dma_irq();
-}
+
+
+
 void TIMER2_IRQHandler(void)
 {
     
-    usb_timer_irq();
+    
 }

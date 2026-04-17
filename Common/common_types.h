@@ -1,10 +1,11 @@
 #ifndef COMMON_TYPES_H
 #define COMMON_TYPES_H
 
+#include "gd32f3x0.h"
 #include <stdint.h>
-#include <stdbool.h>
-//#include <string.h>
-//#include <stdlib.h>
+
+#include <string.h>
+#include <stdlib.h>
 
 /* ---- Flash Memory Map ---- */
 #define FLASH_BASE_ADDR         0x08000000U
@@ -19,13 +20,37 @@
 #define DFU_MAGIC_NORMAL        0x00000000U
 
 /* ---- MIDI ---- */
-#define MIDI_UART_BAUDRATE      31250U
-#define MIDI_USB_EP_SIZE        64U
-#define MIDI_CH_COUNT           16U
-#define MIDI_NOTE_COUNT         128U
+#define MIDI_UART               USART0
+#define MIDI_UART_CLK           RCU_USART0
+#define MIDI_UART_IRQn          USART0_IRQn
+#define MIDI_UART_BAUD          31250
+#define MIDI_TX_PORT            GPIOA
+#define MIDI_TX_PIN             GPIO_PIN_9
+#define MIDI_TX_AF              GPIO_AF_1
+#define MIDI_RX_PORT            GPIOA
+#define MIDI_RX_PIN             GPIO_PIN_10
+#define MIDI_RX_AF              GPIO_AF_1
+#define MIDI_TX_DMA_CH          DMA_CH1         /* USART0_TX */
+#define MIDI_TX_DMA_IRQn        DMA_Channel1_2_IRQn
+#define MIDI_RX_DMA_CH          DMA_CH2         /* USART0_TX */
+#define MIDI_RX_DMA_IRQn        DMA_Channel3_4_IRQn
+
+/* ---- Ring buffer (power of 2) ---- */
+#define RING_SIZE               256
+
+
 
 /* ---- System ---- */
 #define SYSTICK_FREQ_HZ         1000U
+
+/* ---- USB IDs ---- */
+#define USBD_VID                0x1209      /* pid.codes open-source VID */
+#define USBD_PID                0x0001
+
+/* ---- USB Endpoints (USBFS Device) ---- */
+#define MIDI_IN_EP              0x81        /* Bulk IN  EP1 */
+#define MIDI_OUT_EP             0x01        /* Bulk OUT EP1 */
+#define MIDI_MAX_PACKET         64
 
 /* ---- Product Info ---- */
 #define PRODUCT_NAME            "Smart Widget"

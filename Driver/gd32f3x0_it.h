@@ -35,7 +35,7 @@ OF SUCH DAMAGE.
 #ifndef GD32F3X0_IT_H
 #define GD32F3X0_IT_H
 
-#include "usbd_core.h"
+
 
 /* function declarations */
 /* this function handles NMI exception */

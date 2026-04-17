@@ -1,0 +1,423 @@
+/******************************************************************************
+ * App/led_controller.h + .c  (Unified: HT16K33 buttons + WS2812 strip)
+ *****************************************************************************/
+#ifndef LED_CTRL_H
+#define LED_CTRL_H
+#include "common_types.h"
+#include "color_utils.h"
+/* Button indicators (HT16K33) */
+void lc_btn_on(uint8_t b);
+void lc_btn_off(uint8_t b);
+void lc_btn_blink(uint8_t b,uint8_t fast);
+void lc_btn_pulse(uint8_t b,uint16_t ms);
+void lc_btn_all_on(void);
+void lc_btn_all_off(void);
+void lc_btn_bright(uint8_t lv);
+/* Strip (WS2812) */
+void lc_strip_solid(uint8_t i,led_rgb_t c);
+void lc_strip_pulse(uint8_t i,led_rgb_t c,uint16_t ms);
+void lc_strip_breathe(uint8_t i,led_rgb_t c,uint16_t per);
+void lc_strip_all_off(void);
+void lc_strip_rainbow(uint16_t sp);
+void lc_strip_vu(float lv,float pk);
+void lc_strip_bright(uint8_t br);
+/* Combined */
+void lc_note_on(uint8_t btn,uint8_t note,uint8_t vel);
+void lc_note_off(uint8_t btn);
+void lc_midi_act(uint8_t port);
+void lc_clip(void);
+void lc_dfu_prog(uint8_t pct);
+void lc_apply_scheme(uint8_t scheme);
+/* Lifecycle */
+void lc_init(void);
+void lc_update(uint32_t now);
+#endif
+
+#include "led_controller.h"
+#include "btn_led_engine.h"
+#include "strip_led_engine.h"
+#include "midi_utils.h"
+#include "debug_rtt.h"
+
+void lc_init(void){btn_led_init();strip_init();DBG_INFO("LC","Dual LED init");}
+void lc_btn_on(uint8_t b){btn_led_set(b,1);}
+void lc_btn_off(uint8_t b){btn_led_set(b,0);}
+void lc_btn_blink(uint8_t b,uint8_t f){btn_led_mode(b,f?BL_BLINK_F:BL_BLINK_S);}
+void lc_btn_pulse(uint8_t b,uint16_t ms){btn_led_pulse(b,ms);}
+void lc_btn_all_on(void){btn_led_all(1);}
+void lc_btn_all_off(void){btn_led_all(0);}
+void lc_btn_bright(uint8_t lv){btn_led_bright(lv);}
+void lc_strip_solid(uint8_t i,led_rgb_t c){strip_set(i,c,SL_SOLID,0);}
+void lc_strip_pulse(uint8_t i,led_rgb_t c,uint16_t ms){strip_pulse(i,c,ms);}
+void lc_strip_breathe(uint8_t i,led_rgb_t c,uint16_t p){strip_set(i,c,SL_BREATHE,p);}
+void lc_strip_all_off(void){strip_all_off();}
+void lc_strip_rainbow(uint16_t sp){strip_rainbow(sp);}
+void lc_strip_vu(float lv,float pk){strip_vu(lv,pk);}
+void lc_strip_bright(uint8_t b){strip_master_br(b);}
+
+void lc_note_on(uint8_t btn,uint8_t note,uint8_t vel){
+    btn_led_set(btn,1);
+    if(btn<STRIP_LEDS)strip_set(btn,note_to_color(note,vel*2),SL_SOLID,0);
+}
+void lc_note_off(uint8_t btn){
+    btn_led_set(btn,0);
+    if(btn<STRIP_LEDS)strip_pulse(btn,note_to_color(60,80),200);
+}
+void lc_midi_act(uint8_t port){
+    led_rgb_t c=port?LED_GREEN:LED_BLUE;strip_pulse(0,c,80);
+}
+void lc_clip(void){strip_pulse(STRIP_LEDS-1,LED_RED,300);}
+void lc_dfu_prog(uint8_t pct){
+    uint8_t f=(uint8_t)((uint16_t)pct*16/100);
+    btn_led_mask(0,f>=8?0xFF:(uint8_t)((1<<f)-1));
+    btn_led_mask(1,f>8?(uint8_t)((1<<(f-8))-1):0);
+    for(int i=0;i<STRIP_LEDS;i++)strip_set(i,(led_rgb_t){0,0,128},SL_BREATHE,1500);
+}
+void lc_apply_scheme(uint8_t s){
+    btn_led_all(0);strip_all_off();
+    switch(s){case 0:btn_led_bright(3);btn_led_all(1);
+        for(int i=0;i<STRIP_LEDS;i++)strip_set(i,LED_WHITE,SL_BREATHE,3000);break;
+    case 1:btn_led_bright(12);strip_rainbow(3000);break;
+    case 2:btn_led_bright(8);btn_led_mask(0,0xFF);break;
+    default:btn_led_bright(15);}
+}
+void lc_update(uint32_t now){btn_led_update(now);strip_update(now);}
+
+/******************************************************************************
+ * App/ui_manager.h + .c
+ *****************************************************************************/
+#ifndef UI_MGR_H
+#define UI_MGR_H
+#include "common_types.h"
+typedef enum{PG_HOME=0,PG_MONITOR,PG_CONFIG,PG_MIXER,PG_DFU,PG_COUNT}page_id_t;
+typedef struct{
+    void(*enter)(void);void(*exit)(void);
+    void(*draw)(uint8_t s,uint16_t*buf,uint16_t y);
+    void(*midi)(uint8_t port,uint8_t st,uint8_t d1,uint8_t d2);
+    void(*enc)(uint8_t e,int8_t d);
+    void(*key)(uint8_t k,uint8_t ev);
+    void(*jack)(uint8_t ev);
+}ui_page_t;
+void ui_init(void);
+void ui_reg_page(page_id_t id,const ui_page_t*p);
+void ui_switch(page_id_t pg);
+page_id_t ui_current(void);
+void ui_draw(uint8_t s,uint16_t*buf,uint16_t y);
+void ui_dispatch_enc(uint8_t e,int8_t d);
+void ui_dispatch_key(uint8_t k,uint8_t ev);
+void ui_dispatch_midi(uint8_t port,uint8_t st,uint8_t d1,uint8_t d2);
+void ui_dispatch_jack(uint8_t ev);
+#endif
+
+#include "ui_manager.h"
+#include "gui_engine.h"
+static const ui_page_t*s_pg[PG_COUNT];static page_id_t s_cur=PG_HOME;
+void ui_init(void){memset(s_pg,0,sizeof(s_pg));s_cur=PG_HOME;}
+void ui_reg_page(page_id_t id,const ui_page_t*p){if(id<PG_COUNT)s_pg[id]=p;}
+void ui_switch(page_id_t pg){if(pg>=PG_COUNT)return;
+    if(s_pg[s_cur]&&s_pg[s_cur]->exit)s_pg[s_cur]->exit();
+    s_cur=pg;if(s_pg[s_cur]&&s_pg[s_cur]->enter)s_pg[s_cur]->enter();gui_invalidate_all();}
+page_id_t ui_current(void){return s_cur;}
+void ui_draw(uint8_t s,uint16_t*buf,uint16_t y){if(s_pg[s_cur]&&s_pg[s_cur]->draw)s_pg[s_cur]->draw(s,buf,y);}
+void ui_dispatch_enc(uint8_t e,int8_t d){if(s_pg[s_cur]&&s_pg[s_cur]->enc)s_pg[s_cur]->enc(e,d);}
+void ui_dispatch_key(uint8_t k,uint8_t ev){if(s_pg[s_cur]&&s_pg[s_cur]->key)s_pg[s_cur]->key(k,ev);}
+void ui_dispatch_midi(uint8_t p,uint8_t st,uint8_t d1,uint8_t d2){if(s_pg[s_cur]&&s_pg[s_cur]->midi)s_pg[s_cur]->midi(p,st,d1,d2);}
+void ui_dispatch_jack(uint8_t ev){if(s_pg[s_cur]&&s_pg[s_cur]->jack)s_pg[s_cur]->jack(ev);}
+
+/******************************************************************************
+ * App/midi_api.h + .c  (Convenience send wrappers)
+ *****************************************************************************/
+#ifndef MIDI_API_H
+#define MIDI_API_H
+#include "midi_parser.h"
+#include "midi_router.h"
+void midi_send_note_on(port_id_t p,uint8_t ch,uint8_t n,uint8_t v);
+void midi_send_note_off(port_id_t p,uint8_t ch,uint8_t n);
+void midi_send_cc(port_id_t p,uint8_t ch,uint8_t cc,uint8_t v);
+void midi_send_pc(port_id_t p,uint8_t ch,uint8_t pg);
+void midi_send_start(port_id_t p);
+void midi_send_stop(port_id_t p);
+void midi_send_all_off(port_id_t p,uint8_t ch);
+#endif
+
+#include "midi_api.h"
+static void tx(port_id_t p,const midi_msg_t*m){
+    uint8_t buf[3];uint8_t l=midi_encode_msg(m,buf,3);
+    /* Route handles the send via port's send callback */
+    router_process(PORT_INT,m); /* Or directly to port */
+}
+void midi_send_note_on(port_id_t p,uint8_t ch,uint8_t n,uint8_t v){
+    midi_msg_t m={0x90|ch,ch,{n,v},3};tx(p,&m);}
+void midi_send_note_off(port_id_t p,uint8_t ch,uint8_t n){
+    midi_msg_t m={0x80|ch,ch,{n,0},3};tx(p,&m);}
+void midi_send_cc(port_id_t p,uint8_t ch,uint8_t cc,uint8_t v){
+    midi_msg_t m={0xB0|ch,ch,{cc,v},3};tx(p,&m);}
+void midi_send_pc(port_id_t p,uint8_t ch,uint8_t pg){
+    midi_msg_t m={0xC0|ch,ch,{pg,0},2};tx(p,&m);}
+void midi_send_start(port_id_t p){midi_msg_t m={0xFA,0,{0,0},1};tx(p,&m);}
+void midi_send_stop(port_id_t p){midi_msg_t m={0xFC,0,{0,0},1};tx(p,&m);}
+void midi_send_all_off(port_id_t p,uint8_t ch){midi_send_cc(p,ch,123,0);}
+
+/******************************************************************************
+ * Bootloader/boot_main.c
+ *****************************************************************************/
+#ifdef BUILD_BOOTLOADER
+#include "gd32f3x0.h"
+#include "common_types.h"
+static void jump_app(void){
+    uint32_t sp=*(volatile uint32_t*)APP_ADDR;
+    uint32_t pc=*(volatile uint32_t*)(APP_ADDR+4);
+    if((sp&0x2FFE0000)!=0x20000000)return;
+    SCB->VTOR=APP_ADDR;__set_MSP(sp);((void(*)(void))pc)();
+}
+int main(void){
+    SystemInit();
+    if(*(volatile uint32_t*)DFU_STAGING_ADDR==DFU_MAGIC_UPGRADE){
+        fmc_unlock();fmc_page_erase(DFU_STAGING_ADDR);fmc_lock();
+        while(1){__NOP();} /* DFU wait */
+    }
+    uint32_t sp=*(volatile uint32_t*)APP_ADDR;
+    if((sp&0x2FFE0000)==0x20000000)jump_app();
+    while(1){__NOP();}
+}
+#endif
+
+/******************************************************************************
+ * main.c — Application Entry Point
+ *****************************************************************************/
+#include "bsp_system.h"
+#include "bsp_uart_midi.h"
+#include "bsp_lcd_spi.h"
+#include "bsp_lcd_ctrl.h"
+#include "bsp_key_matrix.h"
+#include "bsp_adc.h"
+#include "bsp_encoder.h"
+#include "bsp_ht16k33.h"
+#include "bsp_ws2812.h"
+#include "bsp_jack_detect.h"
+#include "bsp_audio_adc.h"
+#include "bsp_eeprom_i2c.h"
+#include "bsp_fmc.h"
+
+#include "ring_buffer.h"
+#include "soft_timer.h"
+#include "crc_engine.h"
+#include "midi_parser.h"
+#include "usb_midi_codec.h"
+#include "midi_router.h"
+#include "sysex_assembler.h"
+#include "key_engine.h"
+#include "knob_engine.h"
+#include "encoder_engine.h"
+#include "audio_engine.h"
+#include "jack_click_detect.h"
+#include "btn_led_engine.h"
+#include "strip_led_engine.h"
+#include "dfu_engine.h"
+#include "eeprom_abstraction.h"
+#include "preset_store.h"
+#include "gui_engine.h"
+#include "ui_manager.h"
+#include "led_controller.h"
+#include "midi_api.h"
+#include "event_queue.h"
+#include "error_handler.h"
+#include "debug_rtt.h"
+
+/* ---- Global instances ---- */
+static rb_t g_usb_tx,g_usb_rx,g_uart_tx,g_uart_rx;
+static midi_port_t g_usb_port,g_uart_port;
+static key_ctx_t g_keys[KEY_TOTAL];
+static knob_ctx_t g_knobs[ADC_KNOBS];
+static enc_ctx_t g_encs[ENC_COUNT];
+static jack_ctx_t g_jack;
+static sysex_ctx_t g_sysex;
+static dfu_ctx_t g_dfu;
+static preset_t g_preset;
+
+/* ---- Port wrappers ---- */
+static void usb_send(const uint8_t*d,uint16_t l){rb_push_blk(&g_usb_tx,d,l);}
+static uint16_t usb_poll(uint8_t*b,uint16_t m){return rb_pop_blk(&g_usb_rx,b,m);}
+static void uart_send(const uint8_t*d,uint16_t l){bsp_uart_send_dma(d,l);}
+static uint16_t uart_poll(uint8_t*b,uint16_t m){
+    uint16_t n=0;while(n<m&&bsp_uart_rx_avail())b[n++]=bsp_uart_rx_read();return n;
+}
+
+/* ---- Callbacks → Event Queue ---- */
+static void on_midi_rx(port_id_t p,const midi_msg_t*m){
+    evt_post(EVT_MIDI_RX,p,m->status,(uint16_t)m->data[0]|(uint16_t)m->data[1]<<8);
+    ui_dispatch_midi(p,m->status,m->data[0],m->data[1]);
+    lc_midi_act(p);
+}
+static void on_key(uint8_t k,key_evt_t e){
+    evt_post(e==K_PRESS?EVT_KEY_PRESS:e==K_RELEASE?EVT_KEY_RELEASE:
+             e==K_LONG?EVT_KEY_LONG:EVT_KEY_REPEAT,k,0,0);
+    ui_dispatch_key(k,e);
+    if(e==K_PRESS){lc_note_on(k,g_preset.key_map[k],g_preset.key_vel?g_preset.key_vel:100);
+        midi_send_note_on(PORT_USB,g_preset.key_ch,g_preset.key_map[k],g_preset.key_vel?g_preset.key_vel:100);}
+    else if(e==K_RELEASE){lc_note_off(k);
+        midi_send_note_off(PORT_USB,g_preset.key_ch,g_preset.key_map[k]);}
+}
+static void on_knob(uint8_t k,uint8_t v){
+    evt_post(EVT_KNOB_CHANGE,k,v,0);
+    midi_send_cc(PORT_USB,g_preset.knob_ch,g_preset.knob_cc[k],v);
+}
+static void on_enc(uint8_t e,int8_t d){
+    evt_post(d>0?EVT_ENC_CW:EVT_ENC_CCW,e,(uint8_t)(d>0?d:-d),0);
+    ui_dispatch_enc(e,d);
+    if(g_preset.enc_mode==1)midi_send_cc(PORT_USB,0,g_preset.enc_cc[e],(uint8_t)(64+d));
+}
+static void on_audio(const audio_level_t*l){
+    lc_strip_vu(l->rms_db,l->hold_db);
+    if(l->clip)lc_clip();
+}
+static void on_jack(jack_evt_t e){
+    evt_post(e==JE_INSERT?EVT_JACK_INSERT:e==JE_REMOVE?EVT_JACK_REMOVE:
+             e==JE_CLICK?EVT_JACK_CLICK:e==JE_DOUBLE?EVT_JACK_DOUBLE:
+             e==JE_LONG?EVT_JACK_LONG:EVT_NONE,0,0,0);
+    ui_dispatch_jack(e);
+    switch(e){
+    case JE_INSERT:bsp_audio_start();ui_switch(PG_MONITOR);break;
+    case JE_REMOVE:bsp_audio_stop();ui_switch(PG_HOME);break;
+    case JE_CLICK:midi_send_start(PORT_USB);break;
+    case JE_DOUBLE:midi_send_pc(PORT_USB,0,g_preset.slot+1);break;
+    case JE_LONG:midi_send_all_off(PORT_USB,0);break;
+    default:break;
+    }
+}
+static void on_sysex(const uint8_t*d,uint16_t l){
+    if(l>=5&&d[4]>=DFU_CMD_START&&d[4]<=DFU_CMD_BOOT)
+        dfu_proc_sysex(&g_dfu,d,l);
+}
+static void on_dfu_prog(uint8_t pct){lc_dfu_prog(pct);gui_invalidate_all();}
+static void on_dfu_done(uint8_t ok){(void)ok;gui_invalidate_all();}
+
+/* ---- Strip render callback ---- */
+static void render_strip(uint8_t s,uint16_t*buf,uint16_t y){ui_draw(s,buf,y);}
+
+/* ---- Input polling ---- */
+static void poll_input(void){
+    uint32_t now=bsp_get_tick();
+    uint8_t raw[KEY_TOTAL];bsp_key_scan(raw);
+    for(int i=0;i<KEY_TOTAL;i++)key_eng_proc(&g_keys[i],raw[i],now);
+    volatile uint16_t*adc=bsp_adc_raw();
+    for(int i=0;i<ADC_KNOBS;i++)knob_eng_proc(&g_knobs[i],adc[i]);
+    for(int i=0;i<ENC_COUNT;i++){int16_t d=bsp_enc_delta(i);if(d)enc_eng_proc(&g_encs[i],d,now);}
+}
+
+/* ---- Main ---- */
+int main(void)
+{
+    /* Phase 1: System */
+    bsp_system_init();
+    err_init();
+    evt_init();
+
+    /* Phase 2: Drivers */
+    bsp_ee_init();       /* I2C0 — must be before HT16K33 (shared bus) */
+    bsp_uart_init();
+    /* bsp_usb_midi_init(); */  /* USB init — add when USB driver ready */
+    bsp_key_init();
+    bsp_adc_init();
+    bsp_enc_init();
+    bsp_lcd_spi_init();
+    bsp_lcd_ctrl_init(LCD_ST7789);
+    bsp_jack_init();
+    bsp_audio_init();
+
+    /* Phase 3: Middleware */
+    rb_init(&g_usb_tx);rb_init(&g_usb_rx);
+    rb_init(&g_uart_tx);rb_init(&g_uart_rx);
+    st_init();
+    router_init();
+    sx_init(&g_sysex);
+    dfu_init(&g_dfu);
+    ea_init();
+    audio_eng_init();
+    gui_init();
+
+    /* Phase 4: Register ports */
+    g_usb_port=(midi_port_t){PORT_USB,usb_send,usb_poll,&g_usb_tx,&g_usb_rx};
+    g_uart_port=(midi_port_t){PORT_UART,uart_send,uart_poll,&g_uart_tx,&g_uart_rx};
+    router_reg_port(PORT_USB,&g_usb_port);
+    router_reg_port(PORT_UART,&g_uart_port);
+
+    /* Phase 5: Application */
+    preset_init();
+    preset_load(preset_active(),&g_preset);
+    preset_apply(&g_preset);
+    key_eng_init(g_keys,KEY_TOTAL);
+    knob_eng_init(g_knobs,ADC_KNOBS);
+    enc_eng_init(g_encs,ENC_COUNT);
+    jack_init(&g_jack);
+    lc_init();           /* Both HT16K33 + WS2812 */
+    lc_apply_scheme(g_preset.led_scheme);
+    ui_init();
+    gui_set_render_cb(render_strip);
+    ui_switch(PG_HOME);
+
+    /* Phase 6: Callbacks */
+    router_set_rx_cb(on_midi_rx);
+    key_eng_set_cb(on_key);
+    knob_eng_set_cb(on_knob);
+    enc_eng_set_cb(on_enc);
+    audio_eng_set_cb(on_audio);
+    jack_set_cb(on_jack);
+    sx_set_cb(on_sysex);
+    dfu_set_cbs(on_dfu_prog,on_dfu_done);
+
+    /* Phase 7: Timers */
+    st_start(TM_INPUT,1,1);
+    st_start(TM_LCD,33,1);
+    st_start(TM_LED,20,1);
+    st_start(TM_EEPROM,1000,1);
+    st_start(TM_JACK,5,1);
+
+    DBG_INFO("MAIN","=== System Ready ===");
+
+    /* ---- Main Loop ---- */
+    while(1){
+        /* Highest: MIDI */
+        router_poll_all();
+
+        /* High: Input (1ms) */
+        if(st_expired(TM_INPUT)) poll_input();
+
+        /* Medium: Jack click (5ms) */
+        if(st_expired(TM_JACK))
+            jack_click(&g_jack,bsp_jack_click_raw(),bsp_get_tick());
+
+        /* Low: LCD (30fps) */
+        if(st_expired(TM_LCD)) gui_flush();
+
+        /* Low: LED (50fps) */
+        if(st_expired(TM_LED)) lc_update(bsp_get_tick());
+
+        /* Lowest: EEPROM (1s) */
+        if(st_expired(TM_EEPROM)){if(ea_dirty())ea_flush();}
+    }
+}
+
+/* ---- IRQ Handlers ---- */
+void SysTick_Handler(void){bsp_tick_inc();st_tick();}
+
+void DMA_Channel4_5_6_IRQHandler(void)
+{
+    lcd_dma_handler();   /* DMA CH4: SPI LCD */
+    ws_dma_handler();    /* DMA CH5: WS2812 */
+}
+
+/* NOTE: UART DMA IRQs (CH1 TX, CH2 RX) are in bsp_uart_midi.c:
+ *   DMA_Channel1_2_IRQHandler — TX complete
+ *   USART0_IRQHandler         — IDLE detect
+ */
+
+void EXTI4_15_IRQHandler(void) { jack_exti_handler(); }
+void ADC_CMP_IRQHandler(void)  { jack_awd_handler(); }
+
+/* HardFault */
+void HardFault_Handler(void){
+    DBG_ERR("SYS","!!! HardFault !!!");
+    err_raise(ERR_SRC_SYS,ERR_HARDFAULT,0);
+    __disable_irq();while(1){__NOP();}
+}

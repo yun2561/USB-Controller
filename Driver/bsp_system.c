@@ -11,22 +11,22 @@ void bsp_system_init(void)
     /* ---- Clock: 48 MHz from IRC48M (USB-compatible) ---- */
     rcu_deinit();
     /* 打开IRC8M */
-    rcu_osci_on(RCU_IRC8M);
-    while (SUCCESS != rcu_osci_stab_wait(RCU_IRC8M));
+    //rcu_osci_on(RCU_IRC8M);
+    //while (SUCCESS != rcu_osci_stab_wait(RCU_IRC8M));
 
     /* 配PLL：8M /2 *12 = 48MHz */
-    rcu_pll_config(RCU_PLLSRC_IRC8M_DIV2, RCU_PLL_MUL12);
+    //rcu_pll_config(RCU_PLLSRC_IRC8M_DIV2, RCU_PLL_MUL12);
 
-    rcu_osci_on(RCU_PLL_CK);
-    while (SUCCESS != rcu_osci_stab_wait(RCU_PLL_CK));
+    //rcu_osci_on(RCU_PLL_CK);
+    //while (SUCCESS != rcu_osci_stab_wait(RCU_PLL_CK));
 
     /* 切换系统时钟到PLL */
-    rcu_system_clock_source_config(RCU_CKSYSSRC_PLL);
+    //rcu_system_clock_source_config(RCU_CKSYSSRC_PLL);
 
     /* AHB = 48 MHz, APB1 = 48 MHz, APB2 = 48 MHz */
-    rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV1);
-    rcu_apb1_clock_config(RCU_APB1_CKAHB_DIV1);
-    rcu_apb2_clock_config(RCU_APB2_CKAHB_DIV1);
+    //rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV1);
+    //rcu_apb1_clock_config(RCU_APB1_CKAHB_DIV1);
+    //rcu_apb2_clock_config(RCU_APB2_CKAHB_DIV1);
     
     SysTick_Config(SystemCoreClock / SYSTICK_FREQ_HZ);
 

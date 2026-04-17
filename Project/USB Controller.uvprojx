@@ -335,10 +335,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--diag_suppress=3108</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F350</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Fwlib\GD32F3x0_standard_peripheral\Include;..\Fwlib\GD32F3x0_usbfs_library\driver\Include;..\Fwlib\GD32F3x0_usbfs_library\device\core\Include;..\Fwlib\GD32F3x0_usbfs_library\device\class\audio\Include;..\Fwlib\GD32F3x0_usbfs_library\device\class\dfu\Include;..\Common;..\Driver;..\Bootloader;..\Middleware;..\Utilties;..\Fwlib\GD32F3x0_standard_peripheral\Source;..\Fwlib\CMSIS\GD\GD32F3x0\Include;..\Fwlib\CMSIS</IncludePath>
+              <IncludePath>..\Driver;..\Utilties;..\Common;..\Middleware;..\Bootloader;..\Fwlib\CMSIS\GD\GD32F3x0\Include;..\Fwlib\CMSIS;..\Fwlib\GD32F3x0_standard_peripheral\Include;..\Fwlib\GD32F3x0_usbfs_library\device\core\Include;..\Fwlib\GD32F3x0_usbfs_library\device\core\Source;..\Fwlib\GD32F3x0_usbfs_library\driver\Include;..\Fwlib\GD32F3x0_usbfs_library\driver\Source;..\Fwlib\GD32F3x0_usbfs_library\ustd\common;..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc;..\Fwlib\GD32F3x0_usbfs_library\host\core\Include;..\Fwlib\GD32F3x0_usbfs_library\host\core\Source</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -446,6 +446,51 @@
               <FileName>bsp_uart_midi.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Driver\bsp_uart_midi.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_fmc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Driver\bsp_fmc.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_fmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\bsp_fmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usb_midi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Driver\bsp_usb_midi.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usb_midi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\bsp_usb_midi.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_midi_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\usb_midi_desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_midi_class.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Driver\usb_midi_class.h</FilePath>
+            </File>
+            <File>
+              <FileName>usb_midi_class.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\usb_midi_class.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Driver\usb_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usb_hw.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\drv_usb_hw.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -607,6 +652,66 @@
               <FileType>1</FileType>
               <FilePath>..\Middleware\crc_engine.c</FilePath>
             </File>
+            <File>
+              <FileName>ring_buffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Middleware\ring_buffer.h</FilePath>
+            </File>
+            <File>
+              <FileName>ring_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middleware\ring_buffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>midi_parser.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Middleware\midi_parser.h</FilePath>
+            </File>
+            <File>
+              <FileName>midi_parser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middleware\midi_parser.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_midi_codec.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Middleware\usb_midi_codec.h</FilePath>
+            </File>
+            <File>
+              <FileName>usb_midi_codec.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middleware\usb_midi_codec.c</FilePath>
+            </File>
+            <File>
+              <FileName>midi_router.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Middleware\midi_router.h</FilePath>
+            </File>
+            <File>
+              <FileName>midi_router.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middleware\midi_router.c</FilePath>
+            </File>
+            <File>
+              <FileName>sysex_assembler.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Middleware\sysex_assembler.h</FilePath>
+            </File>
+            <File>
+              <FileName>sysex_assembler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middleware\sysex_assembler.c</FilePath>
+            </File>
+            <File>
+              <FileName>dfu_engine.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Middleware\dfu_engine.h</FilePath>
+            </File>
+            <File>
+              <FileName>dfu_engine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middleware\dfu_engine.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -629,6 +734,51 @@
               <FileName>system_gd32f3x0.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Fwlib\CMSIS\GD\GD32F3x0\Source\system_gd32f3x0.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_Drivers</GroupName>
+          <Files>
+            <File>
+              <FileName>drv_usbd_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Fwlib\GD32F3x0_usbfs_library\driver\Source\drv_usbd_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usb_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Fwlib\GD32F3x0_usbfs_library\driver\Source\drv_usb_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usb_hw.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Fwlib\GD32F3x0_usbfs_library\driver\Include\drv_usb_hw.h</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usb_dev.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Fwlib\GD32F3x0_usbfs_library\driver\Source\drv_usb_dev.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_Device</GroupName>
+          <Files>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Fwlib\GD32F3x0_usbfs_library\device\core\Source\usbd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_enum.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Fwlib\GD32F3x0_usbfs_library\device\core\Source\usbd_enum.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_transc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Fwlib\GD32F3x0_usbfs_library\device\core\Source\usbd_transc.c</FilePath>
             </File>
           </Files>
         </Group>

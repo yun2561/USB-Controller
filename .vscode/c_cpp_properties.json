@@ -1,17 +1,22 @@
 {
   "configurations": [
     {
-      "name": "GD32",
+      "name": "ARMCC",
       "includePath": [
         "${workspaceFolder}/**",
 
-        "P:/USB Controller/Fwlib/CMSIS",
-        "P:/USB Controller/Fwlib/CMSIS/GD/GD32F3x0/Include",
+        "P:/USB-Controller/Fwlib/CMSIS",
+        "P:/USB-Controller/Fwlib/CMSIS/GD/GD32F3x0/Include",
+        "P:/USB-Controller/Fwlib/GD32F3x0_standard_peripheral/Include",
+        "P:/USB-Controller/Fwlib/GD32F3x0_usbfs_library/ustd",
+        "P:/USB-Controller/Fwlib/GD32F3x0_usbfs_library/device/class/audio/Include",
+        "P:/USB-Controller/Fwlib/GD32F3x0_usbfs_library/device/core/Include",
+        "P:/USB-Controller/Fwlib/GD32F3x0_usbfs_library/driver/Include",
 
-        "P:/USB Controller/Fwlib/GD32F3x0_standard_peripheral/Include",
-
-        "P:/USB Controller/Driver",
-        "P:/USB Controller/Common"
+        "P:/USB-Controller/Driver",
+        "P:/USB-Controller/Common",
+        "C:/Keil_v5/ARM/ARMCC/include",
+        "C:/Keil_v5/ARM/ARMCC/lib"
       ],
 
       "defines": [
@@ -23,7 +28,7 @@
       "cStandard": "c99",
       "cppStandard": "c++11",
 
-      "intelliSenseMode": "windows-gcc-x64",
+      "intelliSenseMode": "windows-msvc-x64",
       "compilerPath": "C:/Keil_v5/ARM/ARMCC/bin/armcc.exe"
     }
   ],

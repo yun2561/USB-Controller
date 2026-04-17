@@ -1,0 +1,800 @@
+/******************************************************************************
+ * Middleware/ring_buffer.h + .c
+ *****************************************************************************/
+#ifndef RING_BUFFER_H
+#define RING_BUFFER_H
+#include "common_types.h"
+#define RB_SIZE RING_SIZE       /* From common_types.h = 256 */
+#define RB_MASK (RB_SIZE - 1)
+typedef struct{volatile uint16_t h,t;uint8_t buf[RB_SIZE];}rb_t;
+void rb_init(rb_t*r);
+uint8_t rb_push(rb_t*r,uint8_t b);
+uint8_t rb_pop(rb_t*r,uint8_t*b);
+uint16_t rb_push_blk(rb_t*r,const uint8_t*d,uint16_t l);
+uint16_t rb_pop_blk(rb_t*r,uint8_t*d,uint16_t m);
+uint16_t rb_avail(const rb_t*r);
+void rb_flush(rb_t*r);
+#endif
+
+#include "ring_buffer.h"
+void rb_init(rb_t*r){r->h=0;r->t=0;}
+uint8_t rb_push(rb_t*r,uint8_t b){uint16_t n=(r->h+1)&RB_MASK;if(n==r->t)return 0;r->buf[r->h]=b;r->h=n;return 1;}
+uint8_t rb_pop(rb_t*r,uint8_t*b){if(r->h==r->t)return 0;*b=r->buf[r->t];r->t=(r->t+1)&RB_MASK;return 1;}
+uint16_t rb_push_blk(rb_t*r,const uint8_t*d,uint16_t l){uint16_t n=0;for(uint16_t i=0;i<l;i++){if(!rb_push(r,d[i]))break;n++;}return n;}
+uint16_t rb_pop_blk(rb_t*r,uint8_t*d,uint16_t m){uint16_t n=0;while(n<m){if(!rb_pop(r,&d[n]))break;n++;}return n;}
+uint16_t rb_avail(const rb_t*r){return(r->h-r->t)&RB_MASK;}
+void rb_flush(rb_t*r){r->t=r->h;}
+
+/******************************************************************************
+ * Middleware/soft_timer.h + .c
+ *****************************************************************************/
+#ifndef SOFT_TIMER_H
+#define SOFT_TIMER_H
+#include "common_types.h"
+#define ST_MAX 16
+typedef enum{
+    TM_INPUT=0,TM_AUDIO,TM_LCD,TM_LED,TM_EEPROM,TM_JACK,TM_MIDI_WDG,TM_COUNT
+}st_id_t;
+void st_init(void);
+void st_start(st_id_t id,uint32_t ms,uint8_t rep);
+void st_stop(st_id_t id);
+uint8_t st_expired(st_id_t id);
+void st_tick(void);
+#endif
+
+#include "soft_timer.h"
+typedef struct{uint32_t per,cnt;uint8_t act,rep;volatile uint8_t exp;}st_entry_t;
+static st_entry_t s_tm[ST_MAX];
+void st_init(void){memset(s_tm,0,sizeof(s_tm));}
+void st_start(st_id_t id,uint32_t ms,uint8_t r){if(id>=ST_MAX)return;s_tm[id]=(st_entry_t){ms,ms,1,r,0};}
+void st_stop(st_id_t id){if(id<ST_MAX){s_tm[id].act=0;s_tm[id].exp=0;}}
+uint8_t st_expired(st_id_t id){if(id>=ST_MAX)return 0;if(s_tm[id].exp){s_tm[id].exp=0;return 1;}return 0;}
+void st_tick(void){for(int i=0;i<ST_MAX;i++){if(!s_tm[i].act)continue;
+    if(s_tm[i].cnt)s_tm[i].cnt--;
+    if(!s_tm[i].cnt){s_tm[i].exp=1;if(s_tm[i].rep)s_tm[i].cnt=s_tm[i].per;else s_tm[i].act=0;}}}
+
+/******************************************************************************
+ * Middleware/crc_engine.h + .c
+ *****************************************************************************/
+#ifndef CRC_ENGINE_H
+#define CRC_ENGINE_H
+#include "common_types.h"
+uint16_t crc16(const uint8_t*d,uint32_t l,uint16_t init);
+uint32_t crc32(const uint8_t*d,uint32_t l,uint32_t init);
+#endif
+
+#include "crc_engine.h"
+uint16_t crc16(const uint8_t*d,uint32_t l,uint16_t c){
+    for(uint32_t i=0;i<l;i++){c^=(uint16_t)d[i]<<8;for(int j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021):(c<<1);}return c;
+}
+uint32_t crc32(const uint8_t*d,uint32_t l,uint32_t c){
+    c^=0xFFFFFFFF;for(uint32_t i=0;i<l;i++){c^=d[i];for(int j=0;j<8;j++)c=(c&1)?((c>>1)^0xEDB88320):(c>>1);}return c^0xFFFFFFFF;
+}
+
+/******************************************************************************
+ * Middleware/midi_parser.h + .c
+ *****************************************************************************/
+#ifndef MIDI_PARSER_H
+#define MIDI_PARSER_H
+#include "common_types.h"
+typedef struct{uint8_t status,channel,data[2],length;}midi_msg_t;
+typedef enum{PS_IDLE,PS_STATUS,PS_D1,PS_D2,PS_SYSEX}ps_state_t;
+typedef struct{ps_state_t state;uint8_t running;midi_msg_t msg;}midi_parser_t;
+void midi_parser_init(midi_parser_t*p);
+uint8_t midi_parse(midi_parser_t*p,uint8_t byte,midi_msg_t*out);
+uint8_t midi_encode_msg(const midi_msg_t*m,uint8_t*buf,uint8_t max);
+uint8_t midi_data_len(uint8_t st);
+#endif
+
+#include "midi_parser.h"
+uint8_t midi_data_len(uint8_t s){
+    if(s>=0x80&&s<=0xBF)return 2;if(s>=0xC0&&s<=0xDF)return 1;
+    if(s>=0xE0&&s<=0xEF)return 2;
+    switch(s){case 0xF1:case 0xF3:return 1;case 0xF2:return 2;default:return 0;}
+}
+void midi_parser_init(midi_parser_t*p){memset(p,0,sizeof(*p));}
+uint8_t midi_parse(midi_parser_t*p,uint8_t b,midi_msg_t*o){
+    if(b>=0xF8){o->status=b;o->channel=0;o->data[0]=o->data[1]=0;o->length=1;return 1;}
+    if(b==0xF0){p->state=PS_SYSEX;p->msg.status=0xF0;return 0;}
+    if(b==0xF7){p->state=PS_IDLE;return 0;}
+    if(b&0x80){p->msg.status=b;p->msg.channel=b&0xF;p->running=b;
+        uint8_t e=midi_data_len(b);if(!e){*o=p->msg;o->length=1;p->state=PS_IDLE;return 1;}
+        p->state=PS_D1;return 0;}
+    switch(p->state){
+    case PS_IDLE:if(p->running){p->msg.status=p->running;p->msg.channel=p->running&0xF;
+        p->msg.data[0]=b;if(midi_data_len(p->running)<=1){*o=p->msg;o->length=2;return 1;}
+        p->state=PS_D2;}return 0;
+    case PS_D1:p->msg.data[0]=b;if(midi_data_len(p->msg.status)<=1){*o=p->msg;o->length=2;p->state=PS_IDLE;return 1;}
+        p->state=PS_D2;return 0;
+    case PS_D2:p->msg.data[1]=b;*o=p->msg;o->length=3;p->state=PS_IDLE;return 1;
+    default:p->state=PS_IDLE;return 0;}
+}
+uint8_t midi_encode_msg(const midi_msg_t*m,uint8_t*buf,uint8_t mx){
+    if(mx<1)return 0;buf[0]=m->status;uint8_t d=midi_data_len(m->status);
+    if(d>=1&&mx>=2)buf[1]=m->data[0];if(d>=2&&mx>=3)buf[2]=m->data[1];return 1+d;
+}
+
+/******************************************************************************
+ * Middleware/usb_midi_codec.h + .c
+ *****************************************************************************/
+#ifndef USB_MIDI_CODEC_H
+#define USB_MIDI_CODEC_H
+#include "midi_parser.h"
+typedef struct{uint8_t cin_cable,midi[3];}usb_midi_pkt_t;
+uint8_t usb_midi_enc(const midi_msg_t*m,uint8_t cable,usb_midi_pkt_t*p);
+uint8_t usb_midi_dec(const usb_midi_pkt_t*p,midi_msg_t*m);
+uint16_t usb_midi_enc_sysex(const uint8_t*sx,uint16_t len,uint8_t cable,usb_midi_pkt_t*pk,uint16_t mx);
+#endif
+
+#include "usb_midi_codec.h"
+uint8_t usb_midi_enc(const midi_msg_t*m,uint8_t cb,usb_midi_pkt_t*p){
+    uint8_t cin=(m->status<0xF0)?(m->status>>4):(m->status==0xF6?5:0xF);
+    p->cin_cable=((cb&0xF)<<4)|(cin&0xF);p->midi[0]=m->status;p->midi[1]=m->data[0];p->midi[2]=m->data[1];return 1;
+}
+uint8_t usb_midi_dec(const usb_midi_pkt_t*p,midi_msg_t*m){
+    uint8_t cin=p->cin_cable&0xF;m->status=p->midi[0];m->data[0]=p->midi[1];m->data[1]=p->midi[2];
+    m->channel=(m->status<0xF0)?m->status&0xF:0;
+    switch(cin){case 5:case 0xF:m->length=1;break;case 0xC:case 0xD:case 2:m->length=2;break;default:m->length=3;}
+    return 1;
+}
+uint16_t usb_midi_enc_sysex(const uint8_t*sx,uint16_t len,uint8_t cb,usb_midi_pkt_t*pk,uint16_t mx){
+    uint16_t pi=0,i=0;uint8_t cn=(cb&0xF)<<4;
+    while(i<len&&pi<mx){uint16_t rem=len-i;
+        if(rem>=3){pk[pi].cin_cable=cn|((rem==3&&sx[i+2]==0xF7)?7:4);
+            pk[pi].midi[0]=sx[i];pk[pi].midi[1]=sx[i+1];pk[pi].midi[2]=sx[i+2];i+=3;}
+        else if(rem==2){pk[pi].cin_cable=cn|6;pk[pi].midi[0]=sx[i];pk[pi].midi[1]=sx[i+1];pk[pi].midi[2]=0;i+=2;}
+        else{pk[pi].cin_cable=cn|5;pk[pi].midi[0]=sx[i];pk[pi].midi[1]=0;pk[pi].midi[2]=0;i++;}
+        pi++;}return pi;
+}
+
+/******************************************************************************
+ * Middleware/midi_router.h + .c
+ *****************************************************************************/
+#ifndef MIDI_ROUTER_H
+#define MIDI_ROUTER_H
+#include "midi_parser.h"
+#include "ring_buffer.h"
+typedef enum{PORT_USB=0,PORT_UART,PORT_INT,PORT_COUNT}port_id_t;
+typedef struct{port_id_t id;void(*send)(const uint8_t*,uint16_t);uint16_t(*poll)(uint8_t*,uint16_t);rb_t*tx,*rx;}midi_port_t;
+#define MASK_NOTE 1
+#define MASK_CC 2
+#define MASK_PC 4
+#define MASK_PB 8
+#define MASK_SX 16
+#define MASK_RT 32
+#define MASK_ALL 0xFF
+typedef struct{uint8_t en;uint16_t ch_mask;uint8_t msg_mask;}route_rule_t;
+void router_init(void);
+void router_reg_port(port_id_t id,midi_port_t*p);
+void router_set_rule(port_id_t s,port_id_t d,route_rule_t*r);
+void router_process(port_id_t src,const midi_msg_t*m);
+void router_poll_all(void);
+typedef void(*midi_rx_cb_t)(port_id_t,const midi_msg_t*);
+void router_set_rx_cb(midi_rx_cb_t cb);
+#endif
+
+#include "midi_router.h"
+#include "debug_rtt.h"
+static midi_port_t*s_ports[PORT_COUNT];
+static route_rule_t s_rules[PORT_COUNT][PORT_COUNT];
+static midi_rx_cb_t s_rxcb=NULL;
+static midi_parser_t s_ps[PORT_COUNT];
+
+void router_init(void){
+    memset(s_ports,0,sizeof(s_ports));memset(s_rules,0,sizeof(s_rules));
+    s_rules[PORT_USB][PORT_UART]=(route_rule_t){1,0xFFFF,MASK_ALL};
+    s_rules[PORT_UART][PORT_USB]=(route_rule_t){1,0xFFFF,MASK_ALL};
+    for(int i=0;i<PORT_COUNT;i++)midi_parser_init(&s_ps[i]);
+}
+void router_reg_port(port_id_t id,midi_port_t*p){if(id<PORT_COUNT)s_ports[id]=p;}
+void router_set_rule(port_id_t s,port_id_t d,route_rule_t*r){if(s<PORT_COUNT&&d<PORT_COUNT)s_rules[s][d]=*r;}
+void router_set_rx_cb(midi_rx_cb_t cb){s_rxcb=cb;}
+
+static uint8_t match(const midi_msg_t*m,const route_rule_t*r){
+    if(!r->en)return 0;
+    if(m->status<0xF0){if(!(r->ch_mask&(1<<m->channel)))return 0;}
+    uint8_t tb=0,s=m->status&0xF0;
+    if(s==0x80||s==0x90)tb=MASK_NOTE;else if(s==0xB0)tb=MASK_CC;else if(s==0xC0)tb=MASK_PC;
+    else if(s==0xE0)tb=MASK_PB;else if(m->status==0xF0)tb=MASK_SX;else if(m->status>=0xF8)tb=MASK_RT;
+    return(r->msg_mask&tb)?1:0;
+}
+void router_process(port_id_t src,const midi_msg_t*m){
+    if(s_rxcb)s_rxcb(src,m);
+    for(int d=0;d<PORT_COUNT;d++){if(d==(int)src||!s_ports[d])continue;
+        if(match(m,&s_rules[src][d])){uint8_t buf[3];uint8_t l=midi_encode_msg(m,buf,3);
+            if(l&&s_ports[d]->send)s_ports[d]->send(buf,l);}}
+}
+void router_poll_all(void){
+    uint8_t buf[64];
+    for(int i=0;i<PORT_COUNT;i++){if(!s_ports[i]||!s_ports[i]->poll)continue;
+        uint16_t l=s_ports[i]->poll(buf,sizeof(buf));
+        for(uint16_t j=0;j<l;j++){midi_msg_t m;if(midi_parse(&s_ps[i],buf[j],&m))router_process((port_id_t)i,&m);}}
+}
+
+/******************************************************************************
+ * Middleware/sysex_assembler.h + .c
+ *****************************************************************************/
+#ifndef SYSEX_ASM_H
+#define SYSEX_ASM_H
+#include "common_types.h"
+#define SX_MAX 512U
+#define SX_TMO 300U
+typedef enum{SX_IDLE,SX_RX,SX_DONE,SX_OVF,SX_TMO_ERR}sx_state_t;
+typedef struct{sx_state_t st;uint8_t buf[SX_MAX];uint16_t len;uint32_t ts;}sysex_ctx_t;
+void sx_init(sysex_ctx_t*c);
+void sx_feed(sysex_ctx_t*c,uint8_t b,uint32_t now);
+uint8_t sx_done(sysex_ctx_t*c);
+void sx_reset(sysex_ctx_t*c);
+typedef void(*sx_cb_t)(const uint8_t*,uint16_t);
+void sx_set_cb(sx_cb_t cb);
+#endif
+
+#include "sysex_assembler.h"
+static sx_cb_t s_sxcb=NULL;
+void sx_init(sysex_ctx_t*c){memset(c,0,sizeof(*c));}
+void sx_set_cb(sx_cb_t cb){s_sxcb=cb;}
+void sx_feed(sysex_ctx_t*c,uint8_t b,uint32_t now){
+    switch(c->st){
+    case SX_IDLE:if(b==0xF0){c->st=SX_RX;c->len=0;c->buf[c->len++]=b;c->ts=now;}break;
+    case SX_RX:if((now-c->ts)>SX_TMO){c->st=SX_TMO_ERR;return;}
+        if(b==0xF7){if(c->len<SX_MAX)c->buf[c->len++]=b;c->st=SX_DONE;if(s_sxcb)s_sxcb(c->buf,c->len);}
+        else if(b&0x80){if(b<0xF8)c->st=SX_IDLE;}
+        else{if(c->len<SX_MAX){c->buf[c->len++]=b;c->ts=now;}else c->st=SX_OVF;}break;
+    default:break;}
+}
+uint8_t sx_done(sysex_ctx_t*c){return c->st==SX_DONE?1:0;}
+void sx_reset(sysex_ctx_t*c){c->st=SX_IDLE;c->len=0;}
+
+/******************************************************************************
+ * Middleware/key_engine.h + .c
+ *****************************************************************************/
+#ifndef KEY_ENGINE_H
+#define KEY_ENGINE_H
+#include "common_types.h"
+typedef enum{K_NONE=0,K_PRESS,K_RELEASE,K_LONG,K_REPEAT}key_evt_t;
+typedef enum{KS_IDLE=0,KS_DEB,KS_HELD,KS_LONG,KS_REP}key_st_t;
+#define K_DEB_MS 5
+#define K_LONG_MS 800
+#define K_REP_DLY 400
+#define K_REP_MS 120
+typedef struct{key_st_t st;uint32_t t;uint8_t idx;}key_ctx_t;
+void key_eng_init(key_ctx_t*k,uint8_t n);
+key_evt_t key_eng_proc(key_ctx_t*k,uint8_t raw,uint32_t now);
+typedef void(*key_cb_t)(uint8_t,key_evt_t);
+void key_eng_set_cb(key_cb_t cb);
+#endif
+
+#include "key_engine.h"
+static key_cb_t s_kcb=NULL;
+void key_eng_init(key_ctx_t*k,uint8_t n){for(uint8_t i=0;i<n;i++){k[i].st=KS_IDLE;k[i].t=0;k[i].idx=i;}}
+void key_eng_set_cb(key_cb_t cb){s_kcb=cb;}
+key_evt_t key_eng_proc(key_ctx_t*k,uint8_t raw,uint32_t now){
+    key_evt_t e=K_NONE;uint32_t el=now-k->t;
+    switch(k->st){
+    case KS_IDLE:if(raw){k->st=KS_DEB;k->t=now;}break;
+    case KS_DEB:if(!raw)k->st=KS_IDLE;else if(el>=K_DEB_MS){k->st=KS_HELD;k->t=now;e=K_PRESS;}break;
+    case KS_HELD:if(!raw){k->st=KS_IDLE;e=K_RELEASE;}else if(el>=K_LONG_MS){k->st=KS_LONG;k->t=now;e=K_LONG;}break;
+    case KS_LONG:if(!raw){k->st=KS_IDLE;e=K_RELEASE;}else if(el>=K_REP_DLY){k->st=KS_REP;k->t=now;e=K_REPEAT;}break;
+    case KS_REP:if(!raw){k->st=KS_IDLE;e=K_RELEASE;}else if(el>=K_REP_MS){k->t=now;e=K_REPEAT;}break;
+    }
+    if(e!=K_NONE&&s_kcb)s_kcb(k->idx,e);return e;
+}
+
+/******************************************************************************
+ * Middleware/knob_engine.h + .c
+ *****************************************************************************/
+#ifndef KNOB_ENGINE_H
+#define KNOB_ENGINE_H
+#include "common_types.h"
+#define KNOB_DZ 16
+typedef struct{uint16_t raw,filt,last;uint8_t dz,idx;}knob_ctx_t;
+void knob_eng_init(knob_ctx_t*k,uint8_t n);
+uint8_t knob_eng_proc(knob_ctx_t*k,uint16_t raw);
+uint8_t knob_midi_val(const knob_ctx_t*k);
+typedef void(*knob_cb_t)(uint8_t,uint8_t);
+void knob_eng_set_cb(knob_cb_t cb);
+#endif
+
+#include "knob_engine.h"
+#include "math_utils.h"
+static knob_cb_t s_knob_cb=NULL;
+void knob_eng_init(knob_ctx_t*k,uint8_t n){for(uint8_t i=0;i<n;i++){memset(&k[i],0,sizeof(knob_ctx_t));k[i].dz=KNOB_DZ;k[i].idx=i;}}
+void knob_eng_set_cb(knob_cb_t cb){s_knob_cb=cb;}
+uint8_t knob_eng_proc(knob_ctx_t*k,uint16_t raw){
+    k->raw=raw;k->filt=ema_filter(raw,k->filt,64);
+    int16_t d=(int16_t)k->filt-(int16_t)k->last;if(d<0)d=-d;
+    if((uint16_t)d>k->dz){k->last=k->filt;uint8_t v=knob_midi_val(k);
+        if(s_knob_cb)s_knob_cb(k->idx,v);return 1;}return 0;
+}
+uint8_t knob_midi_val(const knob_ctx_t*k){uint32_t v=(uint32_t)k->filt*127/4095;return v>127?127:(uint8_t)v;}
+
+/******************************************************************************
+ * Middleware/encoder_engine.h + .c
+ *****************************************************************************/
+#ifndef ENC_ENGINE_H
+#define ENC_ENGINE_H
+#include "common_types.h"
+typedef struct{int16_t ld;uint32_t lt;uint8_t idx;}enc_ctx_t;
+void enc_eng_init(enc_ctx_t*e,uint8_t n);
+int8_t enc_eng_proc(enc_ctx_t*e,int16_t delta,uint32_t now);
+typedef void(*enc_cb_t)(uint8_t,int8_t);
+void enc_eng_set_cb(enc_cb_t cb);
+#endif
+
+#include "encoder_engine.h"
+#include <math.h>
+static enc_cb_t s_ecb=NULL;
+void enc_eng_init(enc_ctx_t*e,uint8_t n){for(uint8_t i=0;i<n;i++){e[i].ld=0;e[i].lt=0;e[i].idx=i;}}
+void enc_eng_set_cb(enc_cb_t cb){s_ecb=cb;}
+int8_t enc_eng_proc(enc_ctx_t*e,int16_t d,uint32_t now){
+    if(!d)return 0;uint32_t el=now-e->lt;if(!el)el=1;
+    float sp=fabsf((float)d)/(float)el;
+    int8_t a=sp>3.0f?4:sp>1.0f?2:1;int8_t r=d>0?a:-a;
+    e->ld=d;e->lt=now;if(s_ecb)s_ecb(e->idx,r);return r;
+}
+
+/******************************************************************************
+ * Middleware/audio_engine.h + .c
+ *****************************************************************************/
+#ifndef AUDIO_ENG_H
+#define AUDIO_ENG_H
+#include "common_types.h"
+#define AUD_DC 2048
+#define AUD_CLIP_TH 2000
+typedef struct{float rms_db,peak_db,hold_db;uint8_t clip;}audio_level_t;
+void audio_eng_init(void);
+void audio_eng_block(const uint16_t*s,uint16_t l);
+void audio_eng_get(audio_level_t*o);
+typedef void(*audio_cb_t)(const audio_level_t*);
+void audio_eng_set_cb(audio_cb_t cb);
+#endif
+
+#include "audio_engine.h"
+#include <math.h>
+static audio_level_t s_lv;static audio_cb_t s_alcb=NULL;
+void audio_eng_init(void){s_lv=(audio_level_t){-96,-96,-96,0};}
+void audio_eng_set_cb(audio_cb_t cb){s_alcb=cb;}
+void audio_eng_block(const uint16_t*s,uint16_t l){
+    if(!l)return;int32_t ssq=0;int16_t pk=0;
+    for(uint16_t i=0;i<l;i++){int16_t v=(int16_t)s[i]-AUD_DC;ssq+=(int32_t)v*v;int16_t a=v<0?-v:v;if(a>pk)pk=a;}
+    float rsq=(float)ssq/l,ref=(float)AUD_DC*(float)AUD_DC;if(rsq<1)rsq=1;
+    s_lv.rms_db=10.0f*log10f(rsq/ref);
+    float pf=(float)pk/(float)AUD_DC;if(pf<0.0001f)pf=0.0001f;s_lv.peak_db=20.0f*log10f(pf);
+    if(s_lv.peak_db>s_lv.hold_db)s_lv.hold_db=s_lv.peak_db;else{s_lv.hold_db-=1.0f;if(s_lv.hold_db<-96)s_lv.hold_db=-96;}
+    s_lv.clip=pk>AUD_CLIP_TH?1:0;
+    if(s_alcb)s_alcb(&s_lv);
+}
+void audio_eng_get(audio_level_t*o){*o=s_lv;}
+
+/******************************************************************************
+ * Middleware/jack_click_detect.h + .c
+ *****************************************************************************/
+#ifndef JACK_CLICK_H
+#define JACK_CLICK_H
+#include "common_types.h"
+typedef enum{JS_UNPLUG,JS_IDLE,JS_DOWN,JS_WAIT,JS_LONGP}jack_st_t;
+typedef enum{JE_NONE=0,JE_INSERT,JE_REMOVE,JE_CLICK,JE_DOUBLE,JE_TRIPLE,JE_LONG,JE_LONG_REL}jack_evt_t;
+#define J_DEB 50
+#define J_DBL 300
+#define J_LNG 800
+typedef struct{jack_st_t st;uint32_t ts;uint8_t cnt,plug;}jack_ctx_t;
+void jack_init(jack_ctx_t*c);
+jack_evt_t jack_insert(jack_ctx_t*c,uint8_t plug,uint32_t now);
+jack_evt_t jack_click(jack_ctx_t*c,uint8_t raw,uint32_t now);
+typedef void(*jack_evt_cb_t)(jack_evt_t);
+void jack_set_cb(jack_evt_cb_t cb);
+#endif
+
+#include "jack_click_detect.h"
+static jack_evt_cb_t s_jecb=NULL;
+void jack_init(jack_ctx_t*c){memset(c,0,sizeof(*c));}
+void jack_set_cb(jack_evt_cb_t cb){s_jecb=cb;}
+static void jem(jack_evt_t e){if(s_jecb&&e)s_jecb(e);}
+jack_evt_t jack_insert(jack_ctx_t*c,uint8_t p,uint32_t now){
+    (void)now;if(p&&!c->plug){c->plug=1;c->st=JS_IDLE;jem(JE_INSERT);return JE_INSERT;}
+    if(!p&&c->plug){c->plug=0;c->st=JS_UNPLUG;jem(JE_REMOVE);return JE_REMOVE;}return JE_NONE;
+}
+jack_evt_t jack_click(jack_ctx_t*c,uint8_t raw,uint32_t now){
+    if(!c->plug)return JE_NONE;uint32_t el=now-c->ts;jack_evt_t e=JE_NONE;
+    switch(c->st){
+    case JS_IDLE:if(raw){c->st=JS_DOWN;c->ts=now;c->cnt=1;}break;
+    case JS_DOWN:if(!raw){if(el>J_LNG){c->st=JS_IDLE;e=JE_LONG_REL;}
+        else{c->st=JS_WAIT;c->ts=now;}}
+        else if(el>J_LNG){c->st=JS_LONGP;e=JE_LONG;}break;
+    case JS_WAIT:if(raw){c->cnt++;c->st=JS_DOWN;c->ts=now;}
+        else if(el>J_DBL){c->st=JS_IDLE;
+            switch(c->cnt){case 1:e=JE_CLICK;break;case 2:e=JE_DOUBLE;break;default:e=JE_TRIPLE;}}break;
+    case JS_LONGP:if(!raw){c->st=JS_IDLE;e=JE_LONG_REL;}break;
+    default:break;}jem(e);return e;
+}
+
+/******************************************************************************
+ * Middleware/btn_led_engine.h + .c  (HT16K33 2×8 button indicators)
+ *****************************************************************************/
+#ifndef BTN_LED_H
+#define BTN_LED_H
+#include "common_types.h"
+#define BTN_LEDS 16
+typedef enum{BL_OFF=0,BL_ON,BL_BLINK_F,BL_BLINK_S,BL_PULSE}btn_led_mode_t;
+void btn_led_init(void);
+void btn_led_set(uint8_t b,uint8_t on);
+void btn_led_toggle(uint8_t b);
+void btn_led_mode(uint8_t b,btn_led_mode_t m);
+void btn_led_pulse(uint8_t b,uint16_t ms);
+void btn_led_all(uint8_t on);
+void btn_led_mask(uint8_t row,uint8_t mask);
+void btn_led_bright(uint8_t lv);
+void btn_led_update(uint32_t now);
+void btn_led_flush(void);
+#endif
+
+#include "btn_led_engine.h"
+#include "bsp_ht16k33.h"
+#include "debug_rtt.h"
+static uint8_t s_ram[HT_RAM_SZ];static uint8_t s_dirty=0;
+typedef struct{btn_led_mode_t m;uint16_t dur;uint32_t t0;}bl_st_t;
+static bl_st_t s_bl[BTN_LEDS];
+static void bpos(uint8_t b,uint8_t*bi,uint8_t*bit){*bi=(b<8)?0:2;*bit=b&7;}
+void btn_led_init(void){memset(s_ram,0,sizeof(s_ram));memset(s_bl,0,sizeof(s_bl));s_dirty=0;
+    bsp_ht_init();s_ram[0]=0xFF;s_ram[2]=0xFF;bsp_ht_write_ram(s_ram);
+    bsp_delay_ms(300);s_ram[0]=0;s_ram[2]=0;bsp_ht_write_ram(s_ram);
+    DBG_INFO("BTN","2x8 init");}
+void btn_led_set(uint8_t b,uint8_t on){if(b>=BTN_LEDS)return;uint8_t bi,bit;bpos(b,&bi,&bit);
+    uint8_t o=s_ram[bi];if(on)s_ram[bi]|=(1<<bit);else s_ram[bi]&=~(1<<bit);
+    if(s_ram[bi]!=o)s_dirty=1;s_bl[b].m=on?BL_ON:BL_OFF;}
+void btn_led_toggle(uint8_t b){if(b>=BTN_LEDS)return;uint8_t bi,bit;bpos(b,&bi,&bit);
+    s_ram[bi]^=(1<<bit);s_dirty=1;}
+void btn_led_mode(uint8_t b,btn_led_mode_t m){if(b>=BTN_LEDS)return;s_bl[b].m=m;s_bl[b].t0=0;
+    if(m==BL_ON)btn_led_set(b,1);else if(m==BL_OFF)btn_led_set(b,0);}
+void btn_led_pulse(uint8_t b,uint16_t ms){if(b>=BTN_LEDS)return;s_bl[b].m=BL_PULSE;s_bl[b].dur=ms;s_bl[b].t0=0;
+    uint8_t bi,bit;bpos(b,&bi,&bit);s_ram[bi]|=(1<<bit);s_dirty=1;}
+void btn_led_all(uint8_t on){s_ram[0]=on?0xFF:0;s_ram[2]=on?0xFF:0;s_dirty=1;
+    for(int i=0;i<BTN_LEDS;i++)s_bl[i].m=on?BL_ON:BL_OFF;}
+void btn_led_mask(uint8_t row,uint8_t mask){uint8_t i=row?2:0;if(s_ram[i]!=mask){s_ram[i]=mask;s_dirty=1;}}
+void btn_led_bright(uint8_t lv){bsp_ht_brightness(lv);}
+void btn_led_update(uint32_t now){
+    for(uint8_t i=0;i<BTN_LEDS;i++){bl_st_t*b=&s_bl[i];
+        if(b->m==BL_OFF||b->m==BL_ON)continue;if(!b->t0)b->t0=now;
+        uint32_t el=now-b->t0;uint8_t bi,bit;bpos(i,&bi,&bit);uint8_t o=s_ram[bi];
+        switch(b->m){
+        case BL_BLINK_F:{uint8_t on=((el/125)&1)?0:1;if(on)s_ram[bi]|=(1<<bit);else s_ram[bi]&=~(1<<bit);}break;
+        case BL_BLINK_S:{uint8_t on=((el/250)&1)?0:1;if(on)s_ram[bi]|=(1<<bit);else s_ram[bi]&=~(1<<bit);}break;
+        case BL_PULSE:if(el>=b->dur){s_ram[bi]&=~(1<<bit);b->m=BL_OFF;}break;
+        default:break;}
+        if(s_ram[bi]!=o)s_dirty=1;}
+    if(s_dirty)btn_led_flush();
+}
+void btn_led_flush(void){bsp_ht_write_ram(s_ram);s_dirty=0;}
+
+/******************************************************************************
+ * Middleware/strip_led_engine.h + .c  (WS2812 RGB strip)
+ *****************************************************************************/
+#ifndef STRIP_LED_H
+#define STRIP_LED_H
+#include "common_types.h"
+#include "color_utils.h"
+#ifndef STRIP_LEDS
+#define STRIP_LEDS 16
+#endif
+typedef enum{SL_OFF=0,SL_SOLID,SL_BLINK,SL_BREATHE,SL_PULSE,SL_RAINBOW,SL_VU}strip_mode_t;
+void strip_init(void);
+void strip_set(uint8_t i,led_rgb_t c,strip_mode_t m,uint16_t per);
+void strip_pulse(uint8_t i,led_rgb_t c,uint16_t ms);
+void strip_all_off(void);
+void strip_all_solid(led_rgb_t c);
+void strip_rainbow(uint16_t speed);
+void strip_vu(float lv,float pk);
+void strip_master_br(uint8_t br);
+void strip_update(uint32_t now);
+#endif
+
+#include "strip_led_engine.h"
+#include "bsp_ws2812.h"
+#include "math_utils.h"
+#include <math.h>
+typedef struct{led_rgb_t c;strip_mode_t m;uint16_t per,dur;uint32_t t0;uint8_t br;}sl_st_t;
+static sl_st_t s_sl[STRIP_LEDS];static led_rgb_t s_out[STRIP_LEDS];
+static uint8_t s_mbr=255;
+static strip_mode_t s_gm=SL_OFF;static uint16_t s_rp=2000;static uint32_t s_rt=0;
+static float s_vlv=-60,s_vpk=-60;
+
+void strip_init(void){memset(s_sl,0,sizeof(s_sl));memset(s_out,0,sizeof(s_out));
+    s_mbr=255;s_gm=SL_OFF;bsp_ws_init();bsp_ws_update(s_out,STRIP_LEDS);}
+void strip_set(uint8_t i,led_rgb_t c,strip_mode_t m,uint16_t p){
+    if(i>=STRIP_LEDS)return;s_sl[i]=(sl_st_t){c,m,p,0,0,255};s_gm=SL_OFF;}
+void strip_pulse(uint8_t i,led_rgb_t c,uint16_t ms){
+    if(i>=STRIP_LEDS)return;s_sl[i]=(sl_st_t){c,SL_PULSE,0,ms,0,255};}
+void strip_all_off(void){for(int i=0;i<STRIP_LEDS;i++)s_sl[i].m=SL_OFF;s_gm=SL_OFF;}
+void strip_all_solid(led_rgb_t c){for(int i=0;i<STRIP_LEDS;i++)s_sl[i]=(sl_st_t){c,SL_SOLID,0,0,0,255};s_gm=SL_OFF;}
+void strip_rainbow(uint16_t sp){s_gm=SL_RAINBOW;s_rp=sp;s_rt=0;}
+void strip_vu(float lv,float pk){s_gm=SL_VU;s_vlv=lv;s_vpk=pk;}
+void strip_master_br(uint8_t b){s_mbr=b;}
+
+static void upd_indiv(uint32_t now){
+    for(int i=0;i<STRIP_LEDS;i++){sl_st_t*l=&s_sl[i];
+        if(!l->t0&&l->m!=SL_OFF)l->t0=now;uint32_t el=now-l->t0;
+        switch(l->m){
+        case SL_OFF:s_out[i]=LED_OFF;break;
+        case SL_SOLID:s_out[i]=led_dim(l->c,l->br);break;
+        case SL_BLINK:{uint8_t on=l->per?((el/(l->per/2))&1)==0:1;
+            s_out[i]=on?led_dim(l->c,l->br):LED_OFF;}break;
+        case SL_BREATHE:{if(!l->per){s_out[i]=l->c;break;}
+            float t=(float)(el%l->per)/(float)l->per;
+            float br=(1.0f-cosf(t*6.2832f))*0.5f;
+            s_out[i]=led_dim(l->c,(uint8_t)(br*l->br));}break;
+        case SL_PULSE:if(el<l->dur){float f=1.0f-(float)el/(float)l->dur;
+            s_out[i]=led_dim(l->c,(uint8_t)(f*l->br));}else{s_out[i]=LED_OFF;l->m=SL_OFF;}break;
+        default:break;}
+        s_out[i]=led_dim(s_out[i],s_mbr);}
+}
+static void upd_rainbow(uint32_t now){
+    if(!s_rt)s_rt=now;uint32_t el=now-s_rt;uint16_t bh=(uint16_t)((el*360UL/s_rp)%360);
+    for(int i=0;i<STRIP_LEDS;i++){uint16_t h=(bh+(uint16_t)(i*360/STRIP_LEDS))%360;
+        s_out[i]=led_dim(hsv_to_rgb(h,255,255),s_mbr);}
+}
+static void upd_vu(void){
+    float n=(s_vlv+60)/60;if(n<0)n=0;if(n>1)n=1;uint8_t fill=(uint8_t)(n*STRIP_LEDS);
+    float pn=(s_vpk+60)/60;if(pn<0)pn=0;if(pn>1)pn=1;uint8_t pp=(uint8_t)(pn*(STRIP_LEDS-1));
+    for(int i=0;i<STRIP_LEDS;i++){
+        if(i<fill){float p=(float)i/STRIP_LEDS;led_rgb_t c;
+            if(p<0.6f)c=LED_GREEN;else if(p<0.85f)c=(led_rgb_t){255,255,0};else c=LED_RED;
+            s_out[i]=led_dim(c,s_mbr);}
+        else if(i==pp)s_out[i]=led_dim(LED_WHITE,s_mbr);
+        else s_out[i]=LED_OFF;}
+}
+void strip_update(uint32_t now){
+    switch(s_gm){case SL_RAINBOW:upd_rainbow(now);break;case SL_VU:upd_vu();break;
+    default:upd_indiv(now);}
+    if(!bsp_ws_busy())bsp_ws_update(s_out,STRIP_LEDS);
+}
+
+/******************************************************************************
+ * Middleware/dfu_engine.h + .c
+ *****************************************************************************/
+#ifndef DFU_ENG_H
+#define DFU_ENG_H
+#include "common_types.h"
+typedef enum{DFU_IDLE=0,DFU_RX,DFU_VERIFY,DFU_PROG,DFU_DONE,DFU_ERR}dfu_st_t;
+#define DFU_CMD_START 0x01
+#define DFU_CMD_DATA 0x02
+#define DFU_CMD_VRFY 0x03
+#define DFU_CMD_BOOT 0x04
+#define DFU_BLK_SZ 128
+typedef struct{dfu_st_t st;uint32_t total,rcvd,ecrc,rcrc;uint16_t nblk;
+    uint8_t pbuf[FMC_PAGE_SIZE];uint16_t poff;uint32_t faddr;}dfu_ctx_t;
+void dfu_init(dfu_ctx_t*c);
+void dfu_proc_sysex(dfu_ctx_t*c,const uint8_t*d,uint16_t l);
+uint8_t dfu_progress(const dfu_ctx_t*c);
+typedef void(*dfu_prog_cb_t)(uint8_t);
+typedef void(*dfu_done_cb_t)(uint8_t);
+void dfu_set_cbs(dfu_prog_cb_t p,dfu_done_cb_t d);
+#endif
+
+#include "dfu_engine.h"
+#include "bsp_fmc.h"
+#include "crc_engine.h"
+#include "bsp_system.h"
+#include "debug_rtt.h"
+static dfu_prog_cb_t s_dpcb=NULL;static dfu_done_cb_t s_ddcb=NULL;
+void dfu_init(dfu_ctx_t*c){memset(c,0,sizeof(*c));c->faddr=APP_ADDR;}
+void dfu_set_cbs(dfu_prog_cb_t p,dfu_done_cb_t d){s_dpcb=p;s_ddcb=d;}
+uint8_t dfu_progress(const dfu_ctx_t*c){return c->total?(uint8_t)(c->rcvd*100/c->total):0;}
+static void flush_pg(dfu_ctx_t*c){
+    bsp_fmc_erase(c->faddr);bsp_fmc_prog(c->faddr,(const uint32_t*)c->pbuf,c->poff/4);
+    c->faddr+=FMC_PAGE_SIZE;c->poff=0;memset(c->pbuf,0xFF,FMC_PAGE_SIZE);
+}
+void dfu_proc_sysex(dfu_ctx_t*c,const uint8_t*d,uint16_t l){
+    if(l<7)return;uint8_t cmd=d[4];
+    switch(cmd){
+    case DFU_CMD_START:if(l<13)return;
+        c->total=((uint32_t)d[5]<<24)|((uint32_t)d[6]<<16)|((uint32_t)d[7]<<8)|d[8];
+        c->ecrc=((uint32_t)d[9]<<24)|((uint32_t)d[10]<<16)|((uint32_t)d[11]<<8)|d[12];
+        if(c->total>(CONFIG_ADDR-APP_ADDR)){c->st=DFU_ERR;return;}
+        c->st=DFU_RX;c->rcvd=0;c->rcrc=0;c->nblk=0;c->poff=0;c->faddr=APP_ADDR;
+        memset(c->pbuf,0xFF,FMC_PAGE_SIZE);
+        DBG_INFO("DFU","Start sz=%lu",c->total);break;
+    case DFU_CMD_DATA:if(c->st!=DFU_RX||l<8)return;
+        {uint16_t bn=((uint16_t)d[5]<<8)|d[6];if(bn!=c->nblk){c->st=DFU_ERR;return;}
+        uint16_t dl=l-8;const uint8_t*dat=&d[7];
+        for(uint16_t i=0;i<dl;i++){c->pbuf[c->poff++]=dat[i];c->rcvd++;
+            c->rcrc=crc32(&dat[i],1,c->rcrc);
+            if(c->poff>=FMC_PAGE_SIZE)flush_pg(c);}
+        c->nblk++;if(s_dpcb)s_dpcb(dfu_progress(c));}break;
+    case DFU_CMD_VRFY:if(c->st!=DFU_RX)return;
+        if(c->poff){while(c->poff%4)c->pbuf[c->poff++]=0xFF;flush_pg(c);}
+        if(c->rcrc==c->ecrc){c->st=DFU_DONE;DBG_INFO("DFU","CRC OK");if(s_ddcb)s_ddcb(1);}
+        else{c->st=DFU_ERR;DBG_ERR("DFU","CRC fail");if(s_ddcb)s_ddcb(0);}break;
+    case DFU_CMD_BOOT:{uint32_t f=DFU_MAGIC_NORMAL;bsp_fmc_erase(DFU_STAGING_ADDR);
+        bsp_fmc_prog(DFU_STAGING_ADDR,&f,1);bsp_system_reset();}break;
+    }
+}
+
+/******************************************************************************
+ * Middleware/eeprom_abstraction.h + .c
+ *****************************************************************************/
+#ifndef EE_ABS_H
+#define EE_ABS_H
+#include "common_types.h"
+#define EEA_GLOBAL 0x0000
+#define EEA_PRESET 0x0020
+#define EEA_FACTORY 0x0C00
+#define EE_PRESET_SZ 128
+#define EE_SLOTS 16
+#define EE_WEAR 4
+typedef struct{uint8_t data[28];uint16_t crc;uint8_t seq,valid;}ee_rec_t;
+typedef enum{EA_OK=0,EA_CRC,EA_BUSY,EA_FULL,EA_ERR}ea_st_t;
+void ea_init(void);
+ea_st_t ea_read(uint16_t addr,uint8_t*d,uint16_t l);
+ea_st_t ea_write(uint16_t addr,const uint8_t*d,uint16_t l);
+ea_st_t ea_flush(void);
+ea_st_t ea_factory_reset(void);
+uint8_t ea_dirty(void);
+#endif
+
+#include "eeprom_abstraction.h"
+#include "bsp_eeprom_i2c.h"
+#include "crc_engine.h"
+#define CACHE_N 64
+static ee_rec_t s_cache[CACHE_N];static uint8_t s_cn=0;static uint32_t s_dm=0;
+void ea_init(void){s_cn=0;s_dm=0;
+    for(uint16_t a=0;a<EE_SIZE&&s_cn<CACHE_N;a+=EE_PGSZ){
+        ee_rec_t r;if(bsp_ee_read(a,(uint8_t*)&r,sizeof(r))!=EE_OK)continue;
+        if(r.valid==0xAA&&crc16(r.data,28,0xFFFF)==r.crc)s_cache[s_cn++]=r;}
+}
+ea_st_t ea_read(uint16_t a,uint8_t*d,uint16_t l){
+    uint16_t ri=a/28;uint16_t off=a%28;if(ri>=s_cn||off+l>28)return EA_ERR;
+    memcpy(d,&s_cache[ri].data[off],l);return EA_OK;
+}
+ea_st_t ea_write(uint16_t a,const uint8_t*d,uint16_t l){
+    uint16_t ri=a/28;uint16_t off=a%28;if(ri>=CACHE_N||off+l>28)return EA_FULL;
+    memcpy(&s_cache[ri].data[off],d,l);
+    s_cache[ri].crc=crc16(s_cache[ri].data,28,0xFFFF);s_cache[ri].seq++;s_cache[ri].valid=0xAA;
+    s_dm|=(1U<<ri);if(ri>=s_cn)s_cn=ri+1;return EA_OK;
+}
+ea_st_t ea_flush(void){
+    for(uint8_t i=0;i<s_cn&&i<32;i++){if(!(s_dm&(1U<<i)))continue;
+        uint16_t pa=i*EE_PGSZ*EE_WEAR+(s_cache[i].seq%EE_WEAR)*EE_PGSZ;
+        if(pa+EE_PGSZ>EE_SIZE)continue;
+        if(bsp_ee_write_page(pa,(const uint8_t*)&s_cache[i],sizeof(ee_rec_t))==EE_OK)s_dm&=~(1U<<i);
+        else return EA_BUSY;}return EA_OK;
+}
+ea_st_t ea_factory_reset(void){
+    for(uint16_t i=0;i<CACHE_N;i++){ee_rec_t r;
+        uint16_t fa=EEA_FACTORY+i*EE_PGSZ;if(fa+EE_PGSZ>EE_SIZE)break;
+        if(bsp_ee_read(fa,(uint8_t*)&r,sizeof(r))==EE_OK&&r.valid==0xAA){
+            s_cache[i]=r;s_dm|=(1U<<i);if(i>=s_cn)s_cn=i+1;}}
+    return ea_flush();
+}
+uint8_t ea_dirty(void){return s_dm?1:0;}
+
+/******************************************************************************
+ * Middleware/preset_store.h + .c
+ *****************************************************************************/
+#ifndef PRESET_H
+#define PRESET_H
+#include "common_types.h"
+#include "midi_router.h"
+typedef struct{
+    uint8_t ver,slot;char name[16];
+    uint8_t key_map[16],key_ch,key_vel;
+    uint8_t knob_cc[8],knob_ch;
+    uint8_t enc_cc[2],enc_mode;
+    route_rule_t routes[PORT_COUNT][PORT_COUNT];
+    uint8_t jack_single,jack_double,jack_long;
+    uint8_t led_scheme;
+    uint16_t crc;
+}preset_t;
+void preset_init(void);
+ea_st_t preset_load(uint8_t slot,preset_t*p);
+ea_st_t preset_save(uint8_t slot,const preset_t*p);
+uint8_t preset_active(void);
+void preset_set_active(uint8_t s);
+void preset_apply(const preset_t*p);
+#endif
+
+#include "preset_store.h"
+#include "eeprom_abstraction.h"
+#include "crc_engine.h"
+static uint8_t s_act=0;
+void preset_init(void){ea_read(EEA_GLOBAL,&s_act,1);if(s_act>=EE_SLOTS)s_act=0;}
+ea_st_t preset_load(uint8_t s,preset_t*p){if(s>=EE_SLOTS)return EA_ERR;
+    uint16_t a=EEA_PRESET+s*EE_PRESET_SZ;ea_st_t st=ea_read(a,(uint8_t*)p,sizeof(preset_t));
+    if(st)return st;uint16_t c=crc16((const uint8_t*)p,sizeof(preset_t)-2,0xFFFF);
+    return c==p->crc?EA_OK:EA_CRC;}
+ea_st_t preset_save(uint8_t s,const preset_t*p){if(s>=EE_SLOTS)return EA_ERR;
+    preset_t cp=*p;cp.slot=s;cp.crc=crc16((const uint8_t*)&cp,sizeof(preset_t)-2,0xFFFF);
+    return ea_write(EEA_PRESET+s*EE_PRESET_SZ,(const uint8_t*)&cp,sizeof(preset_t));}
+uint8_t preset_active(void){return s_act;}
+void preset_set_active(uint8_t s){if(s>=EE_SLOTS)return;s_act=s;ea_write(EEA_GLOBAL,&s_act,1);}
+void preset_apply(const preset_t*p){
+    for(int s=0;s<PORT_COUNT;s++)for(int d=0;d<PORT_COUNT;d++)
+        router_set_rule((port_id_t)s,(port_id_t)d,(route_rule_t*)&p->routes[s][d]);}
+
+/******************************************************************************
+ * Middleware/gui_engine.h + .c  (stripped for brevity — key APIs)
+ *****************************************************************************/
+#ifndef GUI_H
+#define GUI_H
+#include "common_types.h"
+#define LCD_W 240
+#define LCD_H 240
+#define LCD_STRIP 16
+#define COL_BLACK 0x0000
+#define COL_WHITE 0xFFFF
+#define COL_RED 0xF800
+#define COL_GREEN 0x07E0
+#define COL_BLUE 0x001F
+#define COL_YELLOW 0xFFE0
+#define COL_GRAY 0x8410
+#define COL_DARK 0x2104
+typedef struct{uint16_t x,y,w,h;}rect_t;
+void gui_init(void);
+void gui_invalidate(uint16_t x,uint16_t y,uint16_t w,uint16_t h);
+void gui_invalidate_all(void);
+void gui_flush(void);
+void gui_fill(uint16_t x,uint16_t y,uint16_t w,uint16_t h,uint16_t c);
+typedef void(*strip_render_cb_t)(uint8_t strip,uint16_t*buf,uint16_t y);
+void gui_set_render_cb(strip_render_cb_t cb);
+extern uint16_t g_strip[LCD_W*LCD_STRIP];
+#endif
+
+#include "gui_engine.h"
+#include "bsp_lcd_spi.h"
+uint16_t g_strip[LCD_W*LCD_STRIP];
+#define MAX_DIRTY 8
+static rect_t s_dr[MAX_DIRTY];static uint8_t s_dn=0;static uint8_t s_full=1;
+static strip_render_cb_t s_rcb=NULL;
+void gui_init(void){s_dn=0;s_full=1;memset(g_strip,0,sizeof(g_strip));}
+void gui_invalidate(uint16_t x,uint16_t y,uint16_t w,uint16_t h){
+    if(s_dn<MAX_DIRTY)s_dr[s_dn++]=(rect_t){x,y,w,h};else s_full=1;}
+void gui_invalidate_all(void){s_full=1;}
+void gui_set_render_cb(strip_render_cb_t cb){s_rcb=cb;}
+void gui_fill(uint16_t x,uint16_t y,uint16_t w,uint16_t h,uint16_t c){
+    for(uint16_t r=y;r<y+h&&r<LCD_STRIP;r++)for(uint16_t col=x;col<x+w&&col<LCD_W;col++)
+        g_strip[r*LCD_W+col]=c;}
+void gui_flush(void){
+    uint8_t sc=LCD_H/LCD_STRIP;
+    if(s_full){for(uint8_t s=0;s<sc;s++){memset(g_strip,0,sizeof(g_strip));
+            if(s_rcb)s_rcb(s,g_strip,s*LCD_STRIP);
+            bsp_lcd_window(0,s*LCD_STRIP,LCD_W-1,(s+1)*LCD_STRIP-1);
+            bsp_lcd_data_dma((const uint8_t*)g_strip,LCD_W*LCD_STRIP*2);
+            while(bsp_lcd_busy());}
+        s_full=0;s_dn=0;
+    }else if(s_dn){uint16_t sm=0;
+        for(uint8_t i=0;i<s_dn;i++){uint8_t ss=s_dr[i].y/LCD_STRIP,se=(s_dr[i].y+s_dr[i].h-1)/LCD_STRIP;
+            for(uint8_t s=ss;s<=se&&s<sc;s++)sm|=(1<<s);}
+        for(uint8_t s=0;s<sc;s++){if(!(sm&(1<<s)))continue;
+            memset(g_strip,0,sizeof(g_strip));if(s_rcb)s_rcb(s,g_strip,s*LCD_STRIP);
+            bsp_lcd_window(0,s*LCD_STRIP,LCD_W-1,(s+1)*LCD_STRIP-1);
+            bsp_lcd_data_dma((const uint8_t*)g_strip,LCD_W*LCD_STRIP*2);
+            while(bsp_lcd_busy());}
+        s_dn=0;}
+}
+
+/******************************************************************************
+ * Middleware/font.h + widget.h (declarations only — impl similar to previous)
+ *****************************************************************************/
+#ifndef FONT_H
+#define FONT_H
+#include "common_types.h"
+typedef struct{uint8_t w,h,first,last;const uint8_t*data;}font_t;
+extern const font_t font_6x8;
+extern const font_t font_8x16;
+void font_str(uint16_t*buf,uint16_t bw,uint16_t bh,uint16_t x,uint16_t y,
+              const char*s,const font_t*f,uint16_t fg,uint16_t bg);
+uint16_t font_width(const char*s,const font_t*f);
+#endif
+
+#ifndef WIDGET_H
+#define WIDGET_H
+#include "gui_engine.h"
+#include "font.h"
+void wg_label(uint16_t*b,uint16_t bw,uint16_t bh,uint16_t x,uint16_t y,
+              const char*t,const font_t*f,uint16_t fg,uint16_t bg);
+void wg_progress(uint16_t*b,uint16_t bw,uint16_t bh,uint16_t x,uint16_t y,
+                 uint16_t w,uint16_t h,uint8_t pct,uint16_t fg,uint16_t bg);
+void wg_vu(uint16_t*b,uint16_t bw,uint16_t bh,uint16_t x,uint16_t y,
+           uint16_t w,uint16_t h,float lv,float pk);
+void wg_hbar(uint16_t*b,uint16_t bw,uint16_t bh,uint16_t x,uint16_t y,
+             uint16_t w,uint16_t h,uint8_t val,uint8_t mx,uint16_t c);
+#endif

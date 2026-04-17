@@ -1,0 +1,2147 @@
+Component: ARM Compiler 5.06 update 6 (build 750) Tool: armlink [4d35ed]
+
+==============================================================================
+
+Section Cross References
+
+    startup_gd32f3x0.o(STACK) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup_gd32f3x0.o(HEAP) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup_gd32f3x0.o(RESET) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup_gd32f3x0.o(RESET) refers to startup_gd32f3x0.o(STACK) for __initial_sp
+    startup_gd32f3x0.o(RESET) refers to startup_gd32f3x0.o(.text) for Reset_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.NMI_Handler) for NMI_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.HardFault_Handler) for HardFault_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.MemManage_Handler) for MemManage_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.BusFault_Handler) for BusFault_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.UsageFault_Handler) for UsageFault_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.SVC_Handler) for SVC_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.DebugMon_Handler) for DebugMon_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.PendSV_Handler) for PendSV_Handler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.SysTick_Handler) for SysTick_Handler
+    startup_gd32f3x0.o(RESET) refers to bsp_uart_midi.o(i.DMA_Channel1_2_IRQHandler) for DMA_Channel1_2_IRQHandler
+    startup_gd32f3x0.o(RESET) refers to gd32f3x0_it.o(i.TIMER2_IRQHandler) for TIMER2_IRQHandler
+    startup_gd32f3x0.o(RESET) refers to bsp_usb_midi.o(i.USBFS_IRQHandler) for USBFS_IRQHandler
+    startup_gd32f3x0.o(.text) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup_gd32f3x0.o(.text) refers to system_gd32f3x0.o(i.SystemInit) for SystemInit
+    startup_gd32f3x0.o(.text) refers to __main.o(!!!main) for __main
+    startup_gd32f3x0.o(.text) refers to startup_gd32f3x0.o(HEAP) for Heap_Mem
+    startup_gd32f3x0.o(.text) refers to startup_gd32f3x0.o(STACK) for Stack_Mem
+    bsp_system.o(i.bsp_delay_ms) refers to bsp_system.o(.data) for s_tick
+    bsp_system.o(i.bsp_get_tick) refers to bsp_system.o(.data) for s_tick
+    bsp_system.o(i.bsp_nvic_config) refers to gd32f3x0_misc.o(i.nvic_priority_group_set) for nvic_priority_group_set
+    bsp_system.o(i.bsp_nvic_config) refers to gd32f3x0_misc.o(i.nvic_irq_enable) for nvic_irq_enable
+    bsp_system.o(i.bsp_system_init) refers to gd32f3x0_rcu.o(i.rcu_deinit) for rcu_deinit
+    bsp_system.o(i.bsp_system_init) refers to gd32f3x0_rcu.o(i.rcu_periph_clock_enable) for rcu_periph_clock_enable
+    bsp_system.o(i.bsp_system_init) refers to bsp_system.o(i.bsp_nvic_config) for bsp_nvic_config
+    bsp_system.o(i.bsp_system_init) refers to system_gd32f3x0.o(.data) for SystemCoreClock
+    bsp_system.o(i.bsp_systick_increment) refers to bsp_system.o(.data) for s_tick
+    bsp_uart_midi.o(i.DMA_Channel1_2_IRQHandler) refers to gd32f3x0_dma.o(i.dma_interrupt_flag_get) for dma_interrupt_flag_get
+    bsp_uart_midi.o(i.DMA_Channel1_2_IRQHandler) refers to gd32f3x0_dma.o(i.dma_interrupt_flag_clear) for dma_interrupt_flag_clear
+    bsp_uart_midi.o(i.DMA_Channel1_2_IRQHandler) refers to gd32f3x0_dma.o(i.dma_channel_disable) for dma_channel_disable
+    bsp_uart_midi.o(i.DMA_Channel1_2_IRQHandler) refers to bsp_uart_midi.o(.data) for s_tx_busy
+    bsp_uart_midi.o(i.USART0_IRQHander) refers to gd32f3x0_usart.o(i.usart_interrupt_flag_get) for usart_interrupt_flag_get
+    bsp_uart_midi.o(i.USART0_IRQHander) refers to gd32f3x0_dma.o(i.dma_transfer_number_get) for dma_transfer_number_get
+    bsp_uart_midi.o(i.USART0_IRQHander) refers to bsp_uart_midi.o(.data) for s_rx_head
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_gpio.o(i.gpio_af_set) for gpio_af_set
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_gpio.o(i.gpio_mode_set) for gpio_mode_set
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_gpio.o(i.gpio_output_options_set) for gpio_output_options_set
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_deinit) for usart_deinit
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_baudrate_set) for usart_baudrate_set
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_word_length_set) for usart_word_length_set
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_stop_bit_set) for usart_stop_bit_set
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_parity_config) for usart_parity_config
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_transmit_config) for usart_transmit_config
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_receive_config) for usart_receive_config
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_interrupt_enable) for usart_interrupt_enable
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_dma.o(i.dma_deinit) for dma_deinit
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_dma.o(i.dma_struct_para_init) for dma_struct_para_init
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_dma.o(i.dma_init) for dma_init
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_dma.o(i.dma_circulation_enable) for dma_circulation_enable
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_dma.o(i.dma_channel_enable) for dma_channel_enable
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_dma_receive_config) for usart_dma_receive_config
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_dma.o(i.dma_interrupt_enable) for dma_interrupt_enable
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_dma_transmit_config) for usart_dma_transmit_config
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to gd32f3x0_usart.o(i.usart_enable) for usart_enable
+    bsp_uart_midi.o(i.bsp_uart_midi_init) refers to bsp_uart_midi.o(.bss) for s_rx_buf
+    bsp_uart_midi.o(i.bsp_uart_midi_rx_available) refers to gd32f3x0_dma.o(i.dma_transfer_number_get) for dma_transfer_number_get
+    bsp_uart_midi.o(i.bsp_uart_midi_rx_available) refers to bsp_uart_midi.o(.data) for s_rx_head
+    bsp_uart_midi.o(i.bsp_uart_midi_rx_read) refers to bsp_uart_midi.o(.bss) for s_rx_buf
+    bsp_uart_midi.o(i.bsp_uart_midi_rx_read) refers to bsp_uart_midi.o(.data) for s_rx_tail
+    bsp_uart_midi.o(i.bsp_uart_midi_send_dma) refers to rt_memcpy_v6.o(.text) for __aeabi_memcpy
+    bsp_uart_midi.o(i.bsp_uart_midi_send_dma) refers to gd32f3x0_dma.o(i.dma_channel_disable) for dma_channel_disable
+    bsp_uart_midi.o(i.bsp_uart_midi_send_dma) refers to gd32f3x0_dma.o(i.dma_memory_address_config) for dma_memory_address_config
+    bsp_uart_midi.o(i.bsp_uart_midi_send_dma) refers to gd32f3x0_dma.o(i.dma_transfer_number_config) for dma_transfer_number_config
+    bsp_uart_midi.o(i.bsp_uart_midi_send_dma) refers to gd32f3x0_dma.o(i.dma_channel_enable) for dma_channel_enable
+    bsp_uart_midi.o(i.bsp_uart_midi_send_dma) refers to bsp_uart_midi.o(.data) for s_tx_busy
+    bsp_uart_midi.o(i.bsp_uart_midi_send_dma) refers to bsp_uart_midi.o(.bss) for s_tx_buf
+    bsp_uart_midi.o(i.bsp_uart_midi_tx_busy) refers to bsp_uart_midi.o(.data) for s_tx_busy
+    bsp_fmc.o(i.bsp_fmc_erase) refers to gd32f3x0_fmc.o(i.fmc_unlock) for fmc_unlock
+    bsp_fmc.o(i.bsp_fmc_erase) refers to gd32f3x0_fmc.o(i.fmc_flag_clear) for fmc_flag_clear
+    bsp_fmc.o(i.bsp_fmc_erase) refers to gd32f3x0_fmc.o(i.fmc_page_erase) for fmc_page_erase
+    bsp_fmc.o(i.bsp_fmc_erase) refers to gd32f3x0_fmc.o(i.fmc_lock) for fmc_lock
+    bsp_fmc.o(i.bsp_fmc_prog) refers to gd32f3x0_fmc.o(i.fmc_unlock) for fmc_unlock
+    bsp_fmc.o(i.bsp_fmc_prog) refers to gd32f3x0_fmc.o(i.fmc_word_program) for fmc_word_program
+    bsp_fmc.o(i.bsp_fmc_prog) refers to gd32f3x0_fmc.o(i.fmc_lock) for fmc_lock
+    bsp_usb_midi.o(i.USBFS_IRQHandler) refers to drv_usbd_int.o(i.usbd_isr) for usbd_isr
+    bsp_usb_midi.o(i.USBFS_IRQHandler) refers to bsp_usb_midi.o(.bss) for g_udev
+    bsp_usb_midi.o(i.bsp_usb_deinit) refers to usbd_core.o(i.usbd_disconnect) for usbd_disconnect
+    bsp_usb_midi.o(i.bsp_usb_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_clock_disable) for rcu_periph_clock_disable
+    bsp_usb_midi.o(i.bsp_usb_deinit) refers to bsp_usb_midi.o(.bss) for g_udev
+    bsp_usb_midi.o(i.bsp_usb_init) refers to bsp_usb_midi.o(i.usb_gpio_init) for usb_gpio_init
+    bsp_usb_midi.o(i.bsp_usb_init) refers to bsp_usb_midi.o(i.usb_clock_init) for usb_clock_init
+    bsp_usb_midi.o(i.bsp_usb_init) refers to bsp_usb_midi.o(i.usb_irq_init) for usb_irq_init
+    bsp_usb_midi.o(i.bsp_usb_init) refers to usbd_core.o(i.usbd_init) for usbd_init
+    bsp_usb_midi.o(i.bsp_usb_init) refers to usbd_core.o(i.usbd_connect) for usbd_connect
+    bsp_usb_midi.o(i.bsp_usb_init) refers to usb_midi_class.o(.data) for usb_midi_cb
+    bsp_usb_midi.o(i.bsp_usb_init) refers to bsp_usb_midi.o(.data) for midi_desc
+    bsp_usb_midi.o(i.bsp_usb_init) refers to bsp_usb_midi.o(.bss) for g_udev
+    bsp_usb_midi.o(i.bsp_usb_is_configured) refers to bsp_usb_midi.o(.bss) for g_udev
+    bsp_usb_midi.o(i.bsp_usb_send) refers to usb_midi_class.o(i.usb_midi_send) for usb_midi_send
+    bsp_usb_midi.o(i.bsp_usb_send) refers to bsp_usb_midi.o(.bss) for g_udev
+    bsp_usb_midi.o(i.bsp_usb_set_rx_callback) refers to usb_midi_class.o(i.usb_midi_set_rx_cb) for usb_midi_set_rx_cb
+    bsp_usb_midi.o(i.bsp_usb_tx_ready) refers to usb_midi_class.o(i.usb_midi_tx_ready) for usb_midi_tx_ready
+    bsp_usb_midi.o(i.bsp_usb_tx_ready) refers to bsp_usb_midi.o(.bss) for g_udev
+    bsp_usb_midi.o(i.usb_clock_init) refers to gd32f3x0_rcu.o(i.rcu_periph_clock_enable) for rcu_periph_clock_enable
+    bsp_usb_midi.o(i.usb_gpio_init) refers to gd32f3x0_rcu.o(i.rcu_periph_clock_enable) for rcu_periph_clock_enable
+    bsp_usb_midi.o(i.usb_gpio_init) refers to gd32f3x0_gpio.o(i.gpio_mode_set) for gpio_mode_set
+    bsp_usb_midi.o(i.usb_gpio_init) refers to gd32f3x0_gpio.o(i.gpio_output_options_set) for gpio_output_options_set
+    bsp_usb_midi.o(i.usb_gpio_init) refers to gd32f3x0_gpio.o(i.gpio_af_set) for gpio_af_set
+    bsp_usb_midi.o(i.usb_irq_init) refers to gd32f3x0_misc.o(i.nvic_irq_enable) for nvic_irq_enable
+    bsp_usb_midi.o(.data) refers to usb_midi_desc.o(.constdata) for usb_midi_dev_desc
+    usb_midi_desc.o(.constdata) refers to usb_midi_desc.o(.data) for s_langid
+    usb_midi_class.o(i.midi_deinit) refers to usbd_core.o(i.usbd_ep_clear) for usbd_ep_clear
+    usb_midi_class.o(i.midi_deinit) refers to usb_midi_class.o(.bss) for s_midi_data
+    usb_midi_class.o(i.midi_in) refers to usb_midi_class.o(.bss) for s_midi_data
+    usb_midi_class.o(i.midi_init) refers to rt_memclr_w.o(.text) for __aeabi_memclr4
+    usb_midi_class.o(i.midi_init) refers to usbd_core.o(i.usbd_ep_setup) for usbd_ep_setup
+    usb_midi_class.o(i.midi_init) refers to usbd_core.o(i.usbd_ep_recev) for usbd_ep_recev
+    usb_midi_class.o(i.midi_init) refers to usb_midi_class.o(.bss) for s_midi_data
+    usb_midi_class.o(i.midi_init) refers to usb_midi_class.o(.constdata) for ep_out
+    usb_midi_class.o(i.midi_out) refers to usbd_core.o(i.usbd_ep_recev) for usbd_ep_recev
+    usb_midi_class.o(i.midi_out) refers to usb_midi_class.o(.bss) for s_midi_data
+    usb_midi_class.o(i.midi_req) refers to usbd_core.o(i.usbd_ep_send) for usbd_ep_send
+    usb_midi_class.o(i.usb_midi_send) refers to rt_memcpy_v6.o(.text) for __aeabi_memcpy
+    usb_midi_class.o(i.usb_midi_send) refers to usbd_core.o(i.usbd_ep_send) for usbd_ep_send
+    usb_midi_class.o(i.usb_midi_send) refers to usb_midi_class.o(.bss) for s_midi_data
+    usb_midi_class.o(i.usb_midi_set_rx_cb) refers to usb_midi_class.o(.bss) for s_midi_data
+    usb_midi_class.o(i.usb_midi_tx_ready) refers to usb_midi_class.o(.bss) for s_midi_data
+    usb_midi_class.o(.data) refers to usb_midi_class.o(i.midi_init) for midi_init
+    usb_midi_class.o(.data) refers to usb_midi_class.o(i.midi_deinit) for midi_deinit
+    usb_midi_class.o(.data) refers to usb_midi_class.o(i.midi_req) for midi_req
+    usb_midi_class.o(.data) refers to usb_midi_class.o(i.midi_in) for midi_in
+    usb_midi_class.o(.data) refers to usb_midi_class.o(i.midi_out) for midi_out
+    drv_usb_hw.o(i.hw_delay) refers to drv_usb_hw.o(i.hw_time_set) for hw_time_set
+    drv_usb_hw.o(i.hw_delay) refers to gd32f3x0_timer.o(i.timer_disable) for timer_disable
+    drv_usb_hw.o(i.hw_delay) refers to drv_usb_hw.o(.data) for delay_time
+    drv_usb_hw.o(i.hw_time_set) refers to gd32f3x0_timer.o(i.timer_disable) for timer_disable
+    drv_usb_hw.o(i.hw_time_set) refers to gd32f3x0_timer.o(i.timer_interrupt_disable) for timer_interrupt_disable
+    drv_usb_hw.o(i.hw_time_set) refers to gd32f3x0_timer.o(i.timer_init) for timer_init
+    drv_usb_hw.o(i.hw_time_set) refers to gd32f3x0_timer.o(i.timer_interrupt_flag_clear) for timer_interrupt_flag_clear
+    drv_usb_hw.o(i.hw_time_set) refers to gd32f3x0_timer.o(i.timer_auto_reload_shadow_enable) for timer_auto_reload_shadow_enable
+    drv_usb_hw.o(i.hw_time_set) refers to gd32f3x0_timer.o(i.timer_interrupt_enable) for timer_interrupt_enable
+    drv_usb_hw.o(i.hw_time_set) refers to gd32f3x0_timer.o(i.timer_enable) for timer_enable
+    drv_usb_hw.o(i.hw_time_set) refers to drv_usb_hw.o(.data) for timer_prescaler
+    drv_usb_hw.o(i.usb_intr_config) refers to gd32f3x0_misc.o(i.nvic_priority_group_set) for nvic_priority_group_set
+    drv_usb_hw.o(i.usb_intr_config) refers to gd32f3x0_misc.o(i.nvic_irq_enable) for nvic_irq_enable
+    drv_usb_hw.o(i.usb_mdelay) refers to drv_usb_hw.o(i.hw_delay) for hw_delay
+    drv_usb_hw.o(i.usb_rcu_config) refers to gd32f3x0_rcu.o(i.rcu_clock_freq_get) for rcu_clock_freq_get
+    drv_usb_hw.o(i.usb_rcu_config) refers to gd32f3x0_rcu.o(i.rcu_osci_on) for rcu_osci_on
+    drv_usb_hw.o(i.usb_rcu_config) refers to gd32f3x0_rcu.o(i.rcu_osci_stab_wait) for rcu_osci_stab_wait
+    drv_usb_hw.o(i.usb_rcu_config) refers to gd32f3x0_rcu.o(i.rcu_ck48m_clock_config) for rcu_ck48m_clock_config
+    drv_usb_hw.o(i.usb_rcu_config) refers to gd32f3x0_rcu.o(i.rcu_usbfs_clock_config) for rcu_usbfs_clock_config
+    drv_usb_hw.o(i.usb_rcu_config) refers to gd32f3x0_rcu.o(i.rcu_periph_clock_enable) for rcu_periph_clock_enable
+    drv_usb_hw.o(i.usb_rcu_config) refers to drv_usb_hw.o(.data) for usbfs_prescaler
+    drv_usb_hw.o(i.usb_timer_init) refers to gd32f3x0_misc.o(i.nvic_priority_group_set) for nvic_priority_group_set
+    drv_usb_hw.o(i.usb_timer_init) refers to gd32f3x0_misc.o(i.nvic_irq_enable) for nvic_irq_enable
+    drv_usb_hw.o(i.usb_timer_init) refers to gd32f3x0_rcu.o(i.rcu_periph_clock_enable) for rcu_periph_clock_enable
+    drv_usb_hw.o(i.usb_timer_irq) refers to gd32f3x0_timer.o(i.timer_interrupt_flag_get) for timer_interrupt_flag_get
+    drv_usb_hw.o(i.usb_timer_irq) refers to gd32f3x0_timer.o(i.timer_interrupt_flag_clear) for timer_interrupt_flag_clear
+    drv_usb_hw.o(i.usb_timer_irq) refers to gd32f3x0_timer.o(i.timer_disable) for timer_disable
+    drv_usb_hw.o(i.usb_timer_irq) refers to drv_usb_hw.o(.data) for delay_time
+    drv_usb_hw.o(i.usb_udelay) refers to drv_usb_hw.o(i.hw_delay) for hw_delay
+    gd32f3x0_adc.o(i.adc_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_adc.o(i.adc_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_cec.o(i.cec_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_cec.o(i.cec_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_ctc.o(i.ctc_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_ctc.o(i.ctc_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_dac.o(i.dac_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_dac.o(i.dac_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_dma.o(i.dma_init) refers to gd32f3x0_dma.o(i.dma_channel_disable) for dma_channel_disable
+    gd32f3x0_fmc.o(i.fmc_halfword_program) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.fmc_mass_erase) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.fmc_page_erase) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.fmc_ready_wait) refers to gd32f3x0_fmc.o(i.fmc_state_get) for fmc_state_get
+    gd32f3x0_fmc.o(i.fmc_wait_state_disable) refers to gd32f3x0_fmc.o(i.fmc_unlock) for fmc_unlock
+    gd32f3x0_fmc.o(i.fmc_wait_state_disable) refers to gd32f3x0_fmc.o(i.fmc_lock) for fmc_lock
+    gd32f3x0_fmc.o(i.fmc_wait_state_enable) refers to gd32f3x0_fmc.o(i.fmc_unlock) for fmc_unlock
+    gd32f3x0_fmc.o(i.fmc_wait_state_enable) refers to gd32f3x0_fmc.o(i.fmc_lock) for fmc_lock
+    gd32f3x0_fmc.o(i.fmc_word_program) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.fmc_word_reprogram) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.ob_data_program) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.ob_data_program) refers to gd32f3x0_fmc.o(i.ob_parm_get) for ob_parm_get
+    gd32f3x0_fmc.o(i.ob_data_program) refers to gd32f3x0_fmc.o(i.ob_value_modify) for ob_value_modify
+    gd32f3x0_fmc.o(i.ob_erase) refers to gd32f3x0_fmc.o(i.ob_obstat_plevel_get) for ob_obstat_plevel_get
+    gd32f3x0_fmc.o(i.ob_erase) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.ob_security_protection_config) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.ob_security_protection_config) refers to gd32f3x0_fmc.o(i.ob_parm_get) for ob_parm_get
+    gd32f3x0_fmc.o(i.ob_security_protection_config) refers to gd32f3x0_fmc.o(i.ob_obstat_plevel_get) for ob_obstat_plevel_get
+    gd32f3x0_fmc.o(i.ob_security_protection_config) refers to gd32f3x0_fmc.o(i.ob_value_modify) for ob_value_modify
+    gd32f3x0_fmc.o(i.ob_user_write) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.ob_user_write) refers to gd32f3x0_fmc.o(i.ob_parm_get) for ob_parm_get
+    gd32f3x0_fmc.o(i.ob_user_write) refers to gd32f3x0_fmc.o(i.ob_value_modify) for ob_value_modify
+    gd32f3x0_fmc.o(i.ob_write_protection_enable) refers to gd32f3x0_fmc.o(i.fmc_ready_wait) for fmc_ready_wait
+    gd32f3x0_fmc.o(i.ob_write_protection_enable) refers to gd32f3x0_fmc.o(i.ob_parm_get) for ob_parm_get
+    gd32f3x0_fmc.o(i.ob_write_protection_enable) refers to gd32f3x0_fmc.o(i.ob_value_modify) for ob_value_modify
+    gd32f3x0_gpio.o(i.gpio_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_gpio.o(i.gpio_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_i2c.o(i.i2c_clock_config) refers to gd32f3x0_rcu.o(i.rcu_clock_freq_get) for rcu_clock_freq_get
+    gd32f3x0_i2c.o(i.i2c_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_i2c.o(i.i2c_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_misc.o(i.nvic_irq_enable) refers to gd32f3x0_misc.o(i.nvic_priority_group_set) for nvic_priority_group_set
+    gd32f3x0_pmu.o(i.pmu_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_pmu.o(i.pmu_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_pmu.o(i.pmu_highdriver_switch_select) refers to gd32f3x0_pmu.o(i.pmu_flag_get) for pmu_flag_get
+    gd32f3x0_pmu.o(i.pmu_to_deepsleepmode) refers to gd32f3x0_pmu.o(.bss) for reg_snap
+    gd32f3x0_rcu.o(i.rcu_osci_stab_wait) refers to gd32f3x0_rcu.o(i.rcu_flag_get) for rcu_flag_get
+    gd32f3x0_rtc.o(i.rtc_deinit) refers to gd32f3x0_rtc.o(i.rtc_init_mode_enter) for rtc_init_mode_enter
+    gd32f3x0_rtc.o(i.rtc_deinit) refers to gd32f3x0_rtc.o(i.rtc_register_sync_wait) for rtc_register_sync_wait
+    gd32f3x0_rtc.o(i.rtc_init) refers to gd32f3x0_rtc.o(i.rtc_init_mode_enter) for rtc_init_mode_enter
+    gd32f3x0_rtc.o(i.rtc_init) refers to gd32f3x0_rtc.o(i.rtc_init_mode_exit) for rtc_init_mode_exit
+    gd32f3x0_rtc.o(i.rtc_init) refers to gd32f3x0_rtc.o(i.rtc_register_sync_wait) for rtc_register_sync_wait
+    gd32f3x0_rtc.o(i.rtc_refclock_detection_disable) refers to gd32f3x0_rtc.o(i.rtc_init_mode_enter) for rtc_init_mode_enter
+    gd32f3x0_rtc.o(i.rtc_refclock_detection_disable) refers to gd32f3x0_rtc.o(i.rtc_init_mode_exit) for rtc_init_mode_exit
+    gd32f3x0_rtc.o(i.rtc_refclock_detection_enable) refers to gd32f3x0_rtc.o(i.rtc_init_mode_enter) for rtc_init_mode_enter
+    gd32f3x0_rtc.o(i.rtc_refclock_detection_enable) refers to gd32f3x0_rtc.o(i.rtc_init_mode_exit) for rtc_init_mode_exit
+    gd32f3x0_rtc.o(i.rtc_second_adjust) refers to gd32f3x0_rtc.o(i.rtc_register_sync_wait) for rtc_register_sync_wait
+    gd32f3x0_spi.o(i.i2s_psc_config) refers to gd32f3x0_rcu.o(i.rcu_clock_freq_get) for rcu_clock_freq_get
+    gd32f3x0_spi.o(i.spi_i2s_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_spi.o(i.spi_i2s_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_syscfg.o(i.syscfg_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_syscfg.o(i.syscfg_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_timer.o(i.timer_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_timer.o(i.timer_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_timer.o(i.timer_external_clock_mode0_config) refers to gd32f3x0_timer.o(i.timer_external_trigger_config) for timer_external_trigger_config
+    gd32f3x0_timer.o(i.timer_external_clock_mode1_config) refers to gd32f3x0_timer.o(i.timer_external_trigger_config) for timer_external_trigger_config
+    gd32f3x0_timer.o(i.timer_external_trigger_as_external_clock_config) refers to gd32f3x0_timer.o(i.timer_input_trigger_source_select) for timer_input_trigger_source_select
+    gd32f3x0_timer.o(i.timer_input_capture_config) refers to gd32f3x0_timer.o(i.timer_channel_input_capture_prescaler_config) for timer_channel_input_capture_prescaler_config
+    gd32f3x0_timer.o(i.timer_input_pwm_capture_config) refers to gd32f3x0_timer.o(i.timer_channel_input_capture_prescaler_config) for timer_channel_input_capture_prescaler_config
+    gd32f3x0_timer.o(i.timer_internal_trigger_as_external_clock_config) refers to gd32f3x0_timer.o(i.timer_input_trigger_source_select) for timer_input_trigger_source_select
+    gd32f3x0_tsi.o(i.tsi_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_tsi.o(i.tsi_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_usart.o(i.usart_baudrate_set) refers to gd32f3x0_rcu.o(i.rcu_clock_freq_get) for rcu_clock_freq_get
+    gd32f3x0_usart.o(i.usart_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_usart.o(i.usart_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    gd32f3x0_wwdgt.o(i.wwdgt_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_enable) for rcu_periph_reset_enable
+    gd32f3x0_wwdgt.o(i.wwdgt_deinit) refers to gd32f3x0_rcu.o(i.rcu_periph_reset_disable) for rcu_periph_reset_disable
+    segger_rtt.o(i.SEGGER_RTT_AllocDownBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_AllocDownBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_AllocUpBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_AllocUpBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_ConfigDownBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_ConfigDownBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_ConfigUpBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_ConfigUpBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_GetAvailWriteSpace) refers to segger_rtt.o(i._GetAvailWriteSpace) for _GetAvailWriteSpace
+    segger_rtt.o(i.SEGGER_RTT_GetAvailWriteSpace) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_GetBytesInBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_GetKey) refers to segger_rtt.o(i.SEGGER_RTT_Read) for SEGGER_RTT_Read
+    segger_rtt.o(i.SEGGER_RTT_HasData) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_HasDataUp) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_HasKey) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_HasKey) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_Init) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_PutChar) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_PutChar) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_PutCharSkip) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_PutCharSkip) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_PutCharSkipNoLock) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_Read) refers to segger_rtt.o(i.SEGGER_RTT_ReadNoLock) for SEGGER_RTT_ReadNoLock
+    segger_rtt.o(i.SEGGER_RTT_ReadNoLock) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_ReadNoLock) refers to rt_memcpy_v6.o(.text) for __aeabi_memcpy
+    segger_rtt.o(i.SEGGER_RTT_ReadNoLock) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_ReadUpBuffer) refers to segger_rtt.o(i.SEGGER_RTT_ReadUpBufferNoLock) for SEGGER_RTT_ReadUpBufferNoLock
+    segger_rtt.o(i.SEGGER_RTT_ReadUpBufferNoLock) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_ReadUpBufferNoLock) refers to rt_memcpy_v6.o(.text) for __aeabi_memcpy
+    segger_rtt.o(i.SEGGER_RTT_ReadUpBufferNoLock) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_SetFlagsDownBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_SetFlagsDownBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_SetFlagsUpBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_SetFlagsUpBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_SetNameDownBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_SetNameDownBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_SetNameUpBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_SetNameUpBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_SetTerminal) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_SetTerminal) refers to segger_rtt.o(i._WriteBlocking) for _WriteBlocking
+    segger_rtt.o(i.SEGGER_RTT_SetTerminal) refers to segger_rtt.o(i._GetAvailWriteSpace) for _GetAvailWriteSpace
+    segger_rtt.o(i.SEGGER_RTT_SetTerminal) refers to segger_rtt.o(i._WriteNoCheck) for _WriteNoCheck
+    segger_rtt.o(i.SEGGER_RTT_SetTerminal) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_SetTerminal) refers to segger_rtt.o(.data) for _aTerminalId
+    segger_rtt.o(i.SEGGER_RTT_TerminalOut) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_TerminalOut) refers to strlen.o(.text) for strlen
+    segger_rtt.o(i.SEGGER_RTT_TerminalOut) refers to segger_rtt.o(i._GetAvailWriteSpace) for _GetAvailWriteSpace
+    segger_rtt.o(i.SEGGER_RTT_TerminalOut) refers to segger_rtt.o(i._PostTerminalSwitch) for _PostTerminalSwitch
+    segger_rtt.o(i.SEGGER_RTT_TerminalOut) refers to segger_rtt.o(i._WriteBlocking) for _WriteBlocking
+    segger_rtt.o(i.SEGGER_RTT_TerminalOut) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_TerminalOut) refers to segger_rtt.o(.data) for _ActiveTerminal
+    segger_rtt.o(i.SEGGER_RTT_WaitKey) refers to segger_rtt.o(i.SEGGER_RTT_GetKey) for SEGGER_RTT_GetKey
+    segger_rtt.o(i.SEGGER_RTT_Write) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_Write) refers to segger_rtt.o(i.SEGGER_RTT_WriteNoLock) for SEGGER_RTT_WriteNoLock
+    segger_rtt.o(i.SEGGER_RTT_Write) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_WriteDownBuffer) refers to segger_rtt.o(i._DoInit) for _DoInit
+    segger_rtt.o(i.SEGGER_RTT_WriteDownBuffer) refers to segger_rtt.o(i.SEGGER_RTT_WriteDownBufferNoLock) for SEGGER_RTT_WriteDownBufferNoLock
+    segger_rtt.o(i.SEGGER_RTT_WriteDownBuffer) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_WriteDownBufferNoLock) refers to segger_rtt.o(i._GetAvailWriteSpace) for _GetAvailWriteSpace
+    segger_rtt.o(i.SEGGER_RTT_WriteDownBufferNoLock) refers to segger_rtt.o(i._WriteNoCheck) for _WriteNoCheck
+    segger_rtt.o(i.SEGGER_RTT_WriteDownBufferNoLock) refers to segger_rtt.o(i._WriteBlocking) for _WriteBlocking
+    segger_rtt.o(i.SEGGER_RTT_WriteDownBufferNoLock) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_WriteNoLock) refers to segger_rtt.o(i._GetAvailWriteSpace) for _GetAvailWriteSpace
+    segger_rtt.o(i.SEGGER_RTT_WriteNoLock) refers to segger_rtt.o(i._WriteNoCheck) for _WriteNoCheck
+    segger_rtt.o(i.SEGGER_RTT_WriteNoLock) refers to segger_rtt.o(i._WriteBlocking) for _WriteBlocking
+    segger_rtt.o(i.SEGGER_RTT_WriteNoLock) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_WriteSkipNoLock) refers to rt_memcpy_v6.o(.text) for __aeabi_memcpy
+    segger_rtt.o(i.SEGGER_RTT_WriteSkipNoLock) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i.SEGGER_RTT_WriteString) refers to strlen.o(.text) for strlen
+    segger_rtt.o(i.SEGGER_RTT_WriteString) refers to segger_rtt.o(i.SEGGER_RTT_Write) for SEGGER_RTT_Write
+    segger_rtt.o(i.SEGGER_RTT_WriteWithOverwriteNoLock) refers to rt_memcpy_v6.o(.text) for __aeabi_memcpy
+    segger_rtt.o(i.SEGGER_RTT_WriteWithOverwriteNoLock) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i._DoInit) refers to strcpy.o(.text) for strcpy
+    segger_rtt.o(i._DoInit) refers to segger_rtt.o(.bss) for _SEGGER_RTT
+    segger_rtt.o(i._PostTerminalSwitch) refers to segger_rtt.o(i._WriteBlocking) for _WriteBlocking
+    segger_rtt.o(i._PostTerminalSwitch) refers to segger_rtt.o(.data) for _aTerminalId
+    segger_rtt.o(i._WriteBlocking) refers to rt_memcpy_v6.o(.text) for __aeabi_memcpy
+    segger_rtt.o(i._WriteNoCheck) refers to rt_memcpy_v6.o(.text) for __aeabi_memcpy
+    segger_rtt_printf.o(i.SEGGER_RTT_printf) refers to segger_rtt_printf.o(i.SEGGER_RTT_vprintf) for SEGGER_RTT_vprintf
+    segger_rtt_printf.o(i.SEGGER_RTT_vprintf) refers to segger_rtt_printf.o(i._StoreChar) for _StoreChar
+    segger_rtt_printf.o(i.SEGGER_RTT_vprintf) refers to segger_rtt_printf.o(i._PrintInt) for _PrintInt
+    segger_rtt_printf.o(i.SEGGER_RTT_vprintf) refers to segger_rtt_printf.o(i._PrintUnsigned) for _PrintUnsigned
+    segger_rtt_printf.o(i.SEGGER_RTT_vprintf) refers to segger_rtt.o(i.SEGGER_RTT_Write) for SEGGER_RTT_Write
+    segger_rtt_printf.o(i._PrintInt) refers to segger_rtt_printf.o(i._StoreChar) for _StoreChar
+    segger_rtt_printf.o(i._PrintInt) refers to segger_rtt_printf.o(i._PrintUnsigned) for _PrintUnsigned
+    segger_rtt_printf.o(i._PrintUnsigned) refers to segger_rtt_printf.o(i._StoreChar) for _StoreChar
+    segger_rtt_printf.o(i._PrintUnsigned) refers to segger_rtt_printf.o(.constdata) for _aV2C
+    segger_rtt_printf.o(i._StoreChar) refers to segger_rtt.o(i.SEGGER_RTT_Write) for SEGGER_RTT_Write
+    system_gd32f3x0.o(i.SystemCoreClockUpdate) refers to system_gd32f3x0.o(.data) for SystemCoreClock
+    system_gd32f3x0.o(i.SystemInit) refers to system_gd32f3x0.o(i._soft_delay_) for _soft_delay_
+    system_gd32f3x0.o(i.SystemInit) refers to system_gd32f3x0.o(i.system_clock_config) for system_clock_config
+    system_gd32f3x0.o(i.SystemInit) refers to gd32f3x0_misc.o(i.nvic_vector_table_set) for nvic_vector_table_set
+    system_gd32f3x0.o(i.system_clock_config) refers to system_gd32f3x0.o(i.system_clock_96m_hxtal) for system_clock_96m_hxtal
+    drv_usbd_int.o(i.usbd_emptytxfifo_write) refers to drv_usb_core.o(i.usb_txfifo_write) for usb_txfifo_write
+    drv_usbd_int.o(i.usbd_int_enumfinish) refers to drv_usbd_int.o(.constdata) for USB_SPEED
+    drv_usbd_int.o(i.usbd_int_epin) refers to drv_usb_dev.o(i.usb_iepintr_read) for usb_iepintr_read
+    drv_usbd_int.o(i.usbd_int_epin) refers to usbd_transc.o(i.usbd_in_transc) for usbd_in_transc
+    drv_usbd_int.o(i.usbd_int_epin) refers to drv_usbd_int.o(i.usbd_emptytxfifo_write) for usbd_emptytxfifo_write
+    drv_usbd_int.o(i.usbd_int_epout) refers to usbd_transc.o(i.usbd_out_transc) for usbd_out_transc
+    drv_usbd_int.o(i.usbd_int_epout) refers to usbd_transc.o(i.usbd_setup_transc) for usbd_setup_transc
+    drv_usbd_int.o(i.usbd_int_epout) refers to drv_usbd_int.o(.data) for setupc_flag
+    drv_usbd_int.o(i.usbd_int_reset) refers to drv_usb_core.o(i.usb_txfifo_flush) for usb_txfifo_flush
+    drv_usbd_int.o(i.usbd_int_reset) refers to drv_usb_dev.o(i.usb_ctlep_startout) for usb_ctlep_startout
+    drv_usbd_int.o(i.usbd_int_reset) refers to rt_memclr_w.o(.text) for __aeabi_memclr4
+    drv_usbd_int.o(i.usbd_int_reset) refers to rt_memcpy_w.o(.text) for __aeabi_memcpy4
+    drv_usbd_int.o(i.usbd_int_reset) refers to drv_usb_dev.o(i.usb_transc_active) for usb_transc_active
+    drv_usbd_int.o(i.usbd_int_reset) refers to drv_usbd_int.o(.constdata) for <Data1>
+    drv_usbd_int.o(i.usbd_int_rxfifo) refers to drv_usb_core.o(i.usb_rxfifo_read) for usb_rxfifo_read
+    drv_usbd_int.o(i.usbd_int_rxfifo) refers to drv_usbd_int.o(.data) for setupc_flag
+    drv_usbd_int.o(i.usbd_int_suspend) refers to gd32f3x0_pmu.o(i.pmu_to_deepsleepmode) for pmu_to_deepsleepmode
+    drv_usbd_int.o(i.usbd_isr) refers to drv_usbd_int.o(i.usbd_int_epout) for usbd_int_epout
+    drv_usbd_int.o(i.usbd_isr) refers to drv_usbd_int.o(i.usbd_int_epin) for usbd_int_epin
+    drv_usbd_int.o(i.usbd_isr) refers to drv_usbd_int.o(i.usbd_int_suspend) for usbd_int_suspend
+    drv_usbd_int.o(i.usbd_isr) refers to usbd_transc.o(i.usbd_setup_transc) for usbd_setup_transc
+    drv_usbd_int.o(i.usbd_isr) refers to drv_usbd_int.o(i.usbd_int_rxfifo) for usbd_int_rxfifo
+    drv_usbd_int.o(i.usbd_isr) refers to drv_usbd_int.o(i.usbd_int_reset) for usbd_int_reset
+    drv_usbd_int.o(i.usbd_isr) refers to drv_usbd_int.o(i.usbd_int_enumfinish) for usbd_int_enumfinish
+    drv_usbd_int.o(i.usbd_isr) refers to drv_usbd_int.o(.data) for setupc_flag
+    drv_usb_core.o(i.usb_basic_init) refers to rt_memclr_w.o(.text) for __aeabi_memclr4
+    drv_usb_core.o(i.usb_basic_init) refers to rt_memcpy_w.o(.text) for __aeabi_memcpy4
+    drv_usb_core.o(i.usb_core_init) refers to drv_usb_core.o(i.usb_core_reset) for usb_core_reset
+    drv_usb_core.o(i.usb_core_init) refers to drv_usb_hw.o(i.usb_mdelay) for usb_mdelay
+    drv_usb_core.o(i.usb_core_reset) refers to drv_usb_hw.o(i.usb_udelay) for usb_udelay
+    drv_usb_core.o(i.usb_rxfifo_flush) refers to drv_usb_hw.o(i.usb_udelay) for usb_udelay
+    drv_usb_core.o(i.usb_txfifo_flush) refers to drv_usb_hw.o(i.usb_udelay) for usb_udelay
+    drv_usb_dev.o(i.usb_dev_stop) refers to drv_usb_core.o(i.usb_rxfifo_flush) for usb_rxfifo_flush
+    drv_usb_dev.o(i.usb_dev_stop) refers to drv_usb_core.o(i.usb_txfifo_flush) for usb_txfifo_flush
+    drv_usb_dev.o(i.usb_dev_suspend) refers to gd32f3x0_pmu.o(i.pmu_to_deepsleepmode) for pmu_to_deepsleepmode
+    drv_usb_dev.o(i.usb_devcore_init) refers to drv_usb_core.o(i.usb_set_txfifo) for usb_set_txfifo
+    drv_usb_dev.o(i.usb_devcore_init) refers to drv_usb_core.o(i.usb_txfifo_flush) for usb_txfifo_flush
+    drv_usb_dev.o(i.usb_devcore_init) refers to drv_usb_core.o(i.usb_rxfifo_flush) for usb_rxfifo_flush
+    drv_usb_dev.o(i.usb_devcore_init) refers to drv_usb_dev.o(i.usb_devint_enable) for usb_devint_enable
+    drv_usb_dev.o(i.usb_devcore_init) refers to drv_usb_dev.o(.data) for USBFS_TX_FIFO_SIZE
+    drv_usb_dev.o(i.usb_rwkup_active) refers to drv_usb_hw.o(i.usb_mdelay) for usb_mdelay
+    drv_usb_dev.o(i.usb_transc0_active) refers to drv_usb_dev.o(.constdata) for EP0_MAXLEN
+    drv_usb_dev.o(i.usb_transc_active) refers to drv_usb_dev.o(.constdata) for EP0_MAXLEN
+    drv_usb_dev.o(i.usb_transc_inxfer) refers to drv_usb_core.o(i.usb_txfifo_write) for usb_txfifo_write
+    usbd_core.o(i.usbd_connect) refers to drv_usb_hw.o(i.usb_mdelay) for usb_mdelay
+    usbd_core.o(i.usbd_disconnect) refers to drv_usb_hw.o(i.usb_mdelay) for usb_mdelay
+    usbd_core.o(i.usbd_ep_clear) refers to drv_usb_dev.o(i.usb_transc_deactivate) for usb_transc_deactivate
+    usbd_core.o(i.usbd_ep_recev) refers to drv_usb_dev.o(i.usb_transc_outxfer) for usb_transc_outxfer
+    usbd_core.o(i.usbd_ep_send) refers to drv_usb_dev.o(i.usb_transc_inxfer) for usb_transc_inxfer
+    usbd_core.o(i.usbd_ep_setup) refers to drv_usb_dev.o(i.usb_transc_active) for usb_transc_active
+    usbd_core.o(i.usbd_ep_setup) refers to usbd_core.o(.constdata) for ep_type
+    usbd_core.o(i.usbd_ep_stall) refers to drv_usb_dev.o(i.usb_transc_stall) for usb_transc_stall
+    usbd_core.o(i.usbd_ep_stall_clear) refers to drv_usb_dev.o(i.usb_transc_clrstall) for usb_transc_clrstall
+    usbd_core.o(i.usbd_fifo_flush) refers to drv_usb_core.o(i.usb_txfifo_flush) for usb_txfifo_flush
+    usbd_core.o(i.usbd_fifo_flush) refers to drv_usb_core.o(i.usb_rxfifo_flush) for usb_rxfifo_flush
+    usbd_core.o(i.usbd_init) refers to usbd_enum.o(i.serial_string_get) for serial_string_get
+    usbd_core.o(i.usbd_init) refers to drv_usb_core.o(i.usb_basic_init) for usb_basic_init
+    usbd_core.o(i.usbd_init) refers to drv_usb_core.o(i.usb_core_init) for usb_core_init
+    usbd_core.o(i.usbd_init) refers to usbd_core.o(i.usbd_disconnect) for usbd_disconnect
+    usbd_core.o(i.usbd_init) refers to drv_usb_core.o(i.usb_curmode_set) for usb_curmode_set
+    usbd_core.o(i.usbd_init) refers to drv_usb_dev.o(i.usb_devcore_init) for usb_devcore_init
+    usbd_core.o(i.usbd_init) refers to usbd_core.o(i.usbd_connect) for usbd_connect
+    usbd_enum.o(i._usb_std_clearfeature) refers to usbd_core.o(i.usbd_ep_stall_clear) for usbd_ep_stall_clear
+    usbd_enum.o(i._usb_std_getdescriptor) refers to usbd_enum.o(i._usb_bos_desc_get) for _usb_bos_desc_get
+    usbd_enum.o(i._usb_std_getdescriptor) refers to usbd_enum.o(.data) for std_desc_get
+    usbd_enum.o(i._usb_std_getstatus) refers to usbd_enum.o(.data) for status
+    usbd_enum.o(i._usb_std_setconfiguration) refers to usbd_enum.o(.data) for config
+    usbd_enum.o(i._usb_std_setfeature) refers to usbd_core.o(i.usbd_ep_stall) for usbd_ep_stall
+    usbd_enum.o(i.serial_string_get) refers to usbd_enum.o(i.int_to_unicode) for int_to_unicode
+    usbd_enum.o(i.usbd_enum_error) refers to usbd_core.o(i.usbd_ep_stall) for usbd_ep_stall
+    usbd_enum.o(i.usbd_enum_error) refers to drv_usb_dev.o(i.usb_ctlep_startout) for usb_ctlep_startout
+    usbd_enum.o(i.usbd_standard_request) refers to usbd_enum.o(.data) for _std_dev_req
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_getstatus) for _usb_std_getstatus
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_clearfeature) for _usb_std_clearfeature
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_reserved) for _usb_std_reserved
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_setfeature) for _usb_std_setfeature
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_setaddress) for _usb_std_setaddress
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_getdescriptor) for _usb_std_getdescriptor
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_setdescriptor) for _usb_std_setdescriptor
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_getconfiguration) for _usb_std_getconfiguration
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_setconfiguration) for _usb_std_setconfiguration
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_getinterface) for _usb_std_getinterface
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_setinterface) for _usb_std_setinterface
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_std_synchframe) for _usb_std_synchframe
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_dev_desc_get) for _usb_dev_desc_get
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_config_desc_get) for _usb_config_desc_get
+    usbd_enum.o(.data) refers to usbd_enum.o(i._usb_str_desc_get) for _usb_str_desc_get
+    usbd_transc.o(i.usbd_ctl_recev) refers to usbd_core.o(i.usbd_ep_recev) for usbd_ep_recev
+    usbd_transc.o(i.usbd_ctl_send) refers to usbd_core.o(i.usbd_ep_send) for usbd_ep_send
+    usbd_transc.o(i.usbd_ctl_status_recev) refers to usbd_core.o(i.usbd_ep_recev) for usbd_ep_recev
+    usbd_transc.o(i.usbd_ctl_status_recev) refers to drv_usb_dev.o(i.usb_ctlep_startout) for usb_ctlep_startout
+    usbd_transc.o(i.usbd_ctl_status_send) refers to usbd_core.o(i.usbd_ep_send) for usbd_ep_send
+    usbd_transc.o(i.usbd_ctl_status_send) refers to drv_usb_dev.o(i.usb_ctlep_startout) for usb_ctlep_startout
+    usbd_transc.o(i.usbd_in_transc) refers to usbd_transc.o(i.usbd_ctl_send) for usbd_ctl_send
+    usbd_transc.o(i.usbd_in_transc) refers to usbd_core.o(i.usbd_ep_send) for usbd_ep_send
+    usbd_transc.o(i.usbd_in_transc) refers to usbd_transc.o(i.usbd_ctl_status_recev) for usbd_ctl_status_recev
+    usbd_transc.o(i.usbd_out_transc) refers to usbd_transc.o(i.usbd_ctl_recev) for usbd_ctl_recev
+    usbd_transc.o(i.usbd_out_transc) refers to usbd_transc.o(i.usbd_ctl_status_send) for usbd_ctl_status_send
+    usbd_transc.o(i.usbd_setup_transc) refers to usbd_enum.o(i.usbd_standard_request) for usbd_standard_request
+    usbd_transc.o(i.usbd_setup_transc) refers to usbd_enum.o(i.usbd_class_request) for usbd_class_request
+    usbd_transc.o(i.usbd_setup_transc) refers to usbd_enum.o(i.usbd_vendor_request) for usbd_vendor_request
+    usbd_transc.o(i.usbd_setup_transc) refers to usbd_transc.o(i.usbd_ctl_status_send) for usbd_ctl_status_send
+    usbd_transc.o(i.usbd_setup_transc) refers to usbd_transc.o(i.usbd_ctl_send) for usbd_ctl_send
+    usbd_transc.o(i.usbd_setup_transc) refers to usbd_transc.o(i.usbd_ctl_recev) for usbd_ctl_recev
+    usbd_transc.o(i.usbd_setup_transc) refers to usbd_enum.o(i.usbd_enum_error) for usbd_enum_error
+    rt_memcpy_v6.o(.text) refers to rt_memcpy_w.o(.text) for __aeabi_memcpy4
+    __main.o(!!!main) refers to __rtentry.o(.ARM.Collect$$rtentry$$00000000) for __rt_entry
+    __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$0000000A) for __rt_entry_li
+    __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$0000000D) for __rt_entry_main
+    __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$0000000C) for __rt_entry_postli_1
+    __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$00000009) for __rt_entry_postsh_1
+    __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$00000002) for __rt_entry_presh_1
+    __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry4.o(.ARM.Collect$$rtentry$$00000004) for __rt_entry_sh
+    __rtentry2.o(.ARM.Collect$$rtentry$$00000008) refers to boardinit2.o(.text) for _platform_post_stackheap_init
+    __rtentry2.o(.ARM.Collect$$rtentry$$0000000A) refers to libinit.o(.ARM.Collect$$libinit$$00000000) for __rt_lib_init
+    __rtentry2.o(.ARM.Collect$$rtentry$$0000000B) refers to boardinit3.o(.text) for _platform_post_lib_init
+    __rtentry2.o(.ARM.Collect$$rtentry$$0000000D) refers to main.o(i.main) for main
+    __rtentry2.o(.ARM.Collect$$rtentry$$0000000D) refers to exit.o(.text) for exit
+    __rtentry2.o(.ARM.exidx) refers to __rtentry2.o(.ARM.Collect$$rtentry$$00000001) for .ARM.Collect$$rtentry$$00000001
+    __rtentry2.o(.ARM.exidx) refers to __rtentry2.o(.ARM.Collect$$rtentry$$00000008) for .ARM.Collect$$rtentry$$00000008
+    __rtentry2.o(.ARM.exidx) refers to __rtentry2.o(.ARM.Collect$$rtentry$$0000000A) for .ARM.Collect$$rtentry$$0000000A
+    __rtentry2.o(.ARM.exidx) refers to __rtentry2.o(.ARM.Collect$$rtentry$$0000000B) for .ARM.Collect$$rtentry$$0000000B
+    __rtentry2.o(.ARM.exidx) refers to __rtentry2.o(.ARM.Collect$$rtentry$$0000000D) for .ARM.Collect$$rtentry$$0000000D
+    __rtentry4.o(.ARM.Collect$$rtentry$$00000004) refers to sys_stackheap_outer.o(.text) for __user_setup_stackheap
+    __rtentry4.o(.ARM.exidx) refers to __rtentry4.o(.ARM.Collect$$rtentry$$00000004) for .ARM.Collect$$rtentry$$00000004
+    sys_stackheap_outer.o(.text) refers to libspace.o(.text) for __user_perproc_libspace
+    sys_stackheap_outer.o(.text) refers to startup_gd32f3x0.o(.text) for __user_initial_stackheap
+    exit.o(.text) refers to rtexit.o(.ARM.Collect$$rtexit$$00000000) for __rt_exit
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000002E) for __rt_lib_init_alloca_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000002C) for __rt_lib_init_argv_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000001B) for __rt_lib_init_atexit_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000021) for __rt_lib_init_clock_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000032) for __rt_lib_init_cpp_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000030) for __rt_lib_init_exceptions_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000001) for __rt_lib_init_fp_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000001F) for __rt_lib_init_fp_trap_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000023) for __rt_lib_init_getenv_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000000A) for __rt_lib_init_heap_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000011) for __rt_lib_init_lc_collate_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000013) for __rt_lib_init_lc_ctype_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000015) for __rt_lib_init_lc_monetary_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000017) for __rt_lib_init_lc_numeric_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000019) for __rt_lib_init_lc_time_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000004) for __rt_lib_init_preinit_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000000E) for __rt_lib_init_rand_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000033) for __rt_lib_init_return
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000001D) for __rt_lib_init_signal_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000025) for __rt_lib_init_stdio_1
+    libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000000C) for __rt_lib_init_user_alloc_1
+    libspace.o(.text) refers to libspace.o(.bss) for __libspace_start
+    rtexit.o(.ARM.Collect$$rtexit$$00000000) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000004) for __rt_exit_exit
+    rtexit.o(.ARM.Collect$$rtexit$$00000000) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000003) for __rt_exit_ls
+    rtexit.o(.ARM.Collect$$rtexit$$00000000) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000002) for __rt_exit_prels_1
+    rtexit.o(.ARM.exidx) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000004) for __rt_exit_exit
+    rtexit.o(.ARM.exidx) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000003) for __rt_exit_ls
+    rtexit.o(.ARM.exidx) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000002) for __rt_exit_prels_1
+    rtexit.o(.ARM.exidx) refers to rtexit.o(.ARM.Collect$$rtexit$$00000000) for .ARM.Collect$$rtexit$$00000000
+    libinit2.o(.ARM.Collect$$libinit$$00000001) refers to fpinit.o(x$fpl$fpinit) for _fp_init
+    libinit2.o(.ARM.Collect$$libinit$$00000010) refers to libinit2.o(.ARM.Collect$$libinit$$0000000F) for .ARM.Collect$$libinit$$0000000F
+    libinit2.o(.ARM.Collect$$libinit$$00000012) refers to libinit2.o(.ARM.Collect$$libinit$$0000000F) for .ARM.Collect$$libinit$$0000000F
+    libinit2.o(.ARM.Collect$$libinit$$00000014) refers to libinit2.o(.ARM.Collect$$libinit$$0000000F) for .ARM.Collect$$libinit$$0000000F
+    libinit2.o(.ARM.Collect$$libinit$$00000016) refers to libinit2.o(.ARM.Collect$$libinit$$0000000F) for .ARM.Collect$$libinit$$0000000F
+    libinit2.o(.ARM.Collect$$libinit$$00000018) refers to libinit2.o(.ARM.Collect$$libinit$$0000000F) for .ARM.Collect$$libinit$$0000000F
+    libinit2.o(.ARM.Collect$$libinit$$00000026) refers to argv_veneer.o(.emb_text) for __ARM_argv_veneer
+    libinit2.o(.ARM.Collect$$libinit$$00000027) refers to argv_veneer.o(.emb_text) for __ARM_argv_veneer
+    rtexit2.o(.ARM.Collect$$rtexit$$00000003) refers to libshutdown.o(.ARM.Collect$$libshutdown$$00000000) for __rt_lib_shutdown
+    rtexit2.o(.ARM.Collect$$rtexit$$00000004) refers to sys_exit.o(.text) for _sys_exit
+    rtexit2.o(.ARM.exidx) refers to rtexit2.o(.ARM.Collect$$rtexit$$00000001) for .ARM.Collect$$rtexit$$00000001
+    rtexit2.o(.ARM.exidx) refers to rtexit2.o(.ARM.Collect$$rtexit$$00000003) for .ARM.Collect$$rtexit$$00000003
+    rtexit2.o(.ARM.exidx) refers to rtexit2.o(.ARM.Collect$$rtexit$$00000004) for .ARM.Collect$$rtexit$$00000004
+    argv_veneer.o(.emb_text) refers to no_argv.o(.text) for __ARM_get_argv
+    sys_exit.o(.text) refers (Special) to use_no_semi.o(.text) for __I$use$semihosting
+    sys_exit.o(.text) refers (Special) to indicate_semi.o(.text) for __semihosting_library_function
+    _get_argv_nomalloc.o(.text) refers (Special) to hrguard.o(.text) for __heap_region$guard
+    _get_argv_nomalloc.o(.text) refers to defsig_rtmem_outer.o(.text) for __rt_SIGRTMEM
+    _get_argv_nomalloc.o(.text) refers to sys_command.o(.text) for _sys_command_string
+    libshutdown.o(.ARM.Collect$$libshutdown$$00000000) refers (Special) to libshutdown2.o(.ARM.Collect$$libshutdown$$00000002) for __rt_lib_shutdown_cpp_1
+    libshutdown.o(.ARM.Collect$$libshutdown$$00000000) refers (Special) to libshutdown2.o(.ARM.Collect$$libshutdown$$00000007) for __rt_lib_shutdown_fp_trap_1
+    libshutdown.o(.ARM.Collect$$libshutdown$$00000000) refers (Special) to libshutdown2.o(.ARM.Collect$$libshutdown$$0000000F) for __rt_lib_shutdown_heap_1
+    libshutdown.o(.ARM.Collect$$libshutdown$$00000000) refers (Special) to libshutdown2.o(.ARM.Collect$$libshutdown$$00000010) for __rt_lib_shutdown_return
+    libshutdown.o(.ARM.Collect$$libshutdown$$00000000) refers (Special) to libshutdown2.o(.ARM.Collect$$libshutdown$$0000000A) for __rt_lib_shutdown_signal_1
+    libshutdown.o(.ARM.Collect$$libshutdown$$00000000) refers (Special) to libshutdown2.o(.ARM.Collect$$libshutdown$$00000004) for __rt_lib_shutdown_stdio_1
+    libshutdown.o(.ARM.Collect$$libshutdown$$00000000) refers (Special) to libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C) for __rt_lib_shutdown_user_alloc_1
+    sys_command.o(.text) refers (Special) to use_no_semi.o(.text) for __I$use$semihosting
+    sys_command.o(.text) refers (Special) to indicate_semi.o(.text) for __semihosting_library_function
+    defsig_rtmem_outer.o(.text) refers to defsig_rtmem_inner.o(.text) for __rt_SIGRTMEM_inner
+    defsig_rtmem_outer.o(.text) refers to defsig_exit.o(.text) for __sig_exit
+    defsig_rtmem_formal.o(.text) refers to rt_raise.o(.text) for __rt_raise
+    rt_raise.o(.text) refers to __raise.o(.text) for __raise
+    rt_raise.o(.text) refers to sys_exit.o(.text) for _sys_exit
+    defsig_exit.o(.text) refers to sys_exit.o(.text) for _sys_exit
+    defsig_rtmem_inner.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+    __raise.o(.text) refers to defsig.o(CL$$defsig) for __default_signal_handler
+    defsig_general.o(.text) refers to sys_wrch.o(.text) for _ttywrch
+    sys_wrch.o(.text) refers (Special) to use_no_semi.o(.text) for __I$use$semihosting
+    sys_wrch.o(.text) refers (Special) to indicate_semi.o(.text) for __semihosting_library_function
+    defsig.o(CL$$defsig) refers to defsig_rtmem_inner.o(.text) for __rt_SIGRTMEM_inner
+    defsig_abrt_inner.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+    defsig_fpe_inner.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+    defsig_rtred_inner.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+    defsig_stak_inner.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+    defsig_pvfn_inner.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+    defsig_cppl_inner.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+    defsig_segv_inner.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+    defsig_other.o(.text) refers to defsig_general.o(.text) for __default_signal_display
+
+
+==============================================================================
+
+Removing Unused input sections from the image.
+
+    Removing main.o(.rev16_text), (4 bytes).
+    Removing main.o(.revsh_text), (4 bytes).
+    Removing boot_main.o(.rev16_text), (4 bytes).
+    Removing boot_main.o(.revsh_text), (4 bytes).
+    Removing bsp_system.o(.rev16_text), (4 bytes).
+    Removing bsp_system.o(.revsh_text), (4 bytes).
+    Removing bsp_system.o(i.bsp_delay_ms), (24 bytes).
+    Removing bsp_system.o(i.bsp_get_tick), (12 bytes).
+    Removing bsp_system.o(i.bsp_nvic_config), (82 bytes).
+    Removing bsp_system.o(i.bsp_system_init), (184 bytes).
+    Removing bsp_system.o(i.bsp_system_reset), (44 bytes).
+    Removing bsp_system.o(i.bsp_systick_increment), (16 bytes).
+    Removing bsp_system.o(.data), (4 bytes).
+    Removing bsp_uart_midi.o(.rev16_text), (4 bytes).
+    Removing bsp_uart_midi.o(.revsh_text), (4 bytes).
+    Removing bsp_uart_midi.o(i.USART0_IRQHander), (52 bytes).
+    Removing bsp_uart_midi.o(i.bsp_uart_midi_init), (316 bytes).
+    Removing bsp_uart_midi.o(i.bsp_uart_midi_rx_available), (40 bytes).
+    Removing bsp_uart_midi.o(i.bsp_uart_midi_rx_read), (32 bytes).
+    Removing bsp_uart_midi.o(i.bsp_uart_midi_send_dma), (80 bytes).
+    Removing bsp_uart_midi.o(i.bsp_uart_midi_tx_busy), (12 bytes).
+    Removing bsp_uart_midi.o(.bss), (512 bytes).
+    Removing bsp_fmc.o(.rev16_text), (4 bytes).
+    Removing bsp_fmc.o(.revsh_text), (4 bytes).
+    Removing bsp_fmc.o(i.bsp_fmc_erase), (60 bytes).
+    Removing bsp_fmc.o(i.bsp_fmc_prog), (84 bytes).
+    Removing bsp_fmc.o(i.bsp_fmc_verify), (36 bytes).
+    Removing bsp_usb_midi.o(.rev16_text), (4 bytes).
+    Removing bsp_usb_midi.o(.revsh_text), (4 bytes).
+    Removing bsp_usb_midi.o(i.bsp_usb_deinit), (24 bytes).
+    Removing bsp_usb_midi.o(i.bsp_usb_init), (44 bytes).
+    Removing bsp_usb_midi.o(i.bsp_usb_is_configured), (24 bytes).
+    Removing bsp_usb_midi.o(i.bsp_usb_send), (24 bytes).
+    Removing bsp_usb_midi.o(i.bsp_usb_set_rx_callback), (12 bytes).
+    Removing bsp_usb_midi.o(i.bsp_usb_tx_ready), (16 bytes).
+    Removing bsp_usb_midi.o(i.usb_clock_init), (12 bytes).
+    Removing bsp_usb_midi.o(i.usb_gpio_init), (58 bytes).
+    Removing bsp_usb_midi.o(i.usb_irq_init), (14 bytes).
+    Removing bsp_usb_midi.o(.data), (16 bytes).
+    Removing usb_midi_desc.o(.rev16_text), (4 bytes).
+    Removing usb_midi_desc.o(.revsh_text), (4 bytes).
+    Removing usb_midi_desc.o(.constdata), (136 bytes).
+    Removing usb_midi_desc.o(.data), (1032 bytes).
+    Removing usb_midi_class.o(.rev16_text), (4 bytes).
+    Removing usb_midi_class.o(.revsh_text), (4 bytes).
+    Removing usb_midi_class.o(i.midi_deinit), (36 bytes).
+    Removing usb_midi_class.o(i.midi_in), (24 bytes).
+    Removing usb_midi_class.o(i.midi_init), (64 bytes).
+    Removing usb_midi_class.o(i.midi_out), (80 bytes).
+    Removing usb_midi_class.o(i.midi_req), (22 bytes).
+    Removing usb_midi_class.o(i.usb_midi_send), (80 bytes).
+    Removing usb_midi_class.o(i.usb_midi_set_rx_cb), (12 bytes).
+    Removing usb_midi_class.o(i.usb_midi_tx_ready), (36 bytes).
+    Removing usb_midi_class.o(.bss), (136 bytes).
+    Removing usb_midi_class.o(.constdata), (14 bytes).
+    Removing usb_midi_class.o(.data), (48 bytes).
+    Removing drv_usb_hw.o(.rev16_text), (4 bytes).
+    Removing drv_usb_hw.o(.revsh_text), (4 bytes).
+    Removing drv_usb_hw.o(i.usb_intr_config), (22 bytes).
+    Removing drv_usb_hw.o(i.usb_mdelay), (14 bytes).
+    Removing drv_usb_hw.o(i.usb_rcu_config), (156 bytes).
+    Removing drv_usb_hw.o(i.usb_timer_init), (30 bytes).
+    Removing drv_usb_hw.o(i.usb_timer_irq), (56 bytes).
+    Removing gd32f3x0_adc.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_adc.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_adc.o(i.adc_calibration_enable), (60 bytes).
+    Removing gd32f3x0_adc.o(i.adc_channel_length_config), (96 bytes).
+    Removing gd32f3x0_adc.o(i.adc_data_alignment_config), (36 bytes).
+    Removing gd32f3x0_adc.o(i.adc_deinit), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_disable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_discontinuous_mode_config), (100 bytes).
+    Removing gd32f3x0_adc.o(i.adc_dma_mode_disable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_dma_mode_enable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_enable), (28 bytes).
+    Removing gd32f3x0_adc.o(i.adc_external_trigger_config), (84 bytes).
+    Removing gd32f3x0_adc.o(i.adc_external_trigger_source_config), (64 bytes).
+    Removing gd32f3x0_adc.o(i.adc_flag_clear), (16 bytes).
+    Removing gd32f3x0_adc.o(i.adc_flag_get), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_inserted_channel_config), (140 bytes).
+    Removing gd32f3x0_adc.o(i.adc_inserted_channel_offset_config), (48 bytes).
+    Removing gd32f3x0_adc.o(i.adc_inserted_data_read), (64 bytes).
+    Removing gd32f3x0_adc.o(i.adc_interrupt_disable), (60 bytes).
+    Removing gd32f3x0_adc.o(i.adc_interrupt_enable), (60 bytes).
+    Removing gd32f3x0_adc.o(i.adc_interrupt_flag_clear), (16 bytes).
+    Removing gd32f3x0_adc.o(i.adc_interrupt_flag_get), (108 bytes).
+    Removing gd32f3x0_adc.o(i.adc_oversample_mode_config), (64 bytes).
+    Removing gd32f3x0_adc.o(i.adc_oversample_mode_disable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_oversample_mode_enable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_regular_channel_config), (212 bytes).
+    Removing gd32f3x0_adc.o(i.adc_regular_data_read), (12 bytes).
+    Removing gd32f3x0_adc.o(i.adc_resolution_config), (28 bytes).
+    Removing gd32f3x0_adc.o(i.adc_software_trigger_enable), (44 bytes).
+    Removing gd32f3x0_adc.o(i.adc_special_function_config), (128 bytes).
+    Removing gd32f3x0_adc.o(i.adc_tempsensor_vrefint_disable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_tempsensor_vrefint_enable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_vbat_disable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_vbat_enable), (20 bytes).
+    Removing gd32f3x0_adc.o(i.adc_watchdog_disable), (24 bytes).
+    Removing gd32f3x0_adc.o(i.adc_watchdog_group_channel_enable), (84 bytes).
+    Removing gd32f3x0_adc.o(i.adc_watchdog_single_channel_enable), (48 bytes).
+    Removing gd32f3x0_adc.o(i.adc_watchdog_threshold_config), (24 bytes).
+    Removing gd32f3x0_cec.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_cec.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_cec.o(i.cec_data_receive), (12 bytes).
+    Removing gd32f3x0_cec.o(i.cec_data_send), (12 bytes).
+    Removing gd32f3x0_cec.o(i.cec_deinit), (20 bytes).
+    Removing gd32f3x0_cec.o(i.cec_disable), (20 bytes).
+    Removing gd32f3x0_cec.o(i.cec_enable), (20 bytes).
+    Removing gd32f3x0_cec.o(i.cec_error_config), (56 bytes).
+    Removing gd32f3x0_cec.o(i.cec_flag_clear), (16 bytes).
+    Removing gd32f3x0_cec.o(i.cec_flag_get), (24 bytes).
+    Removing gd32f3x0_cec.o(i.cec_generate_errorbit_config), (32 bytes).
+    Removing gd32f3x0_cec.o(i.cec_init), (60 bytes).
+    Removing gd32f3x0_cec.o(i.cec_interrupt_disable), (16 bytes).
+    Removing gd32f3x0_cec.o(i.cec_interrupt_enable), (16 bytes).
+    Removing gd32f3x0_cec.o(i.cec_interrupt_flag_clear), (12 bytes).
+    Removing gd32f3x0_cec.o(i.cec_interrupt_flag_get), (40 bytes).
+    Removing gd32f3x0_cec.o(i.cec_listen_mode_disable), (20 bytes).
+    Removing gd32f3x0_cec.o(i.cec_listen_mode_enable), (20 bytes).
+    Removing gd32f3x0_cec.o(i.cec_own_address_config), (36 bytes).
+    Removing gd32f3x0_cec.o(i.cec_reception_tolerance_disable), (20 bytes).
+    Removing gd32f3x0_cec.o(i.cec_reception_tolerance_enable), (20 bytes).
+    Removing gd32f3x0_cec.o(i.cec_sft_config), (28 bytes).
+    Removing gd32f3x0_cec.o(i.cec_stop_receive_bre_config), (36 bytes).
+    Removing gd32f3x0_cec.o(i.cec_transmission_end), (20 bytes).
+    Removing gd32f3x0_cec.o(i.cec_transmission_start), (20 bytes).
+    Removing gd32f3x0_cmp.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_cmp.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_deinit), (36 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_disable), (40 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_enable), (40 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_lock_enable), (40 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_mode_init), (68 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_output_init), (84 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_output_level_get), (44 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_switch_disable), (20 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_switch_enable), (20 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_window_disable), (20 bytes).
+    Removing gd32f3x0_cmp.o(i.cmp_window_enable), (20 bytes).
+    Removing gd32f3x0_crc.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_crc.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_crc.o(i.crc_block_data_calculate), (84 bytes).
+    Removing gd32f3x0_crc.o(i.crc_data_register_read), (12 bytes).
+    Removing gd32f3x0_crc.o(i.crc_data_register_reset), (20 bytes).
+    Removing gd32f3x0_crc.o(i.crc_deinit), (32 bytes).
+    Removing gd32f3x0_crc.o(i.crc_free_data_register_read), (12 bytes).
+    Removing gd32f3x0_crc.o(i.crc_free_data_register_write), (12 bytes).
+    Removing gd32f3x0_crc.o(i.crc_init_data_register_write), (12 bytes).
+    Removing gd32f3x0_crc.o(i.crc_input_data_reverse_config), (28 bytes).
+    Removing gd32f3x0_crc.o(i.crc_polynomial_set), (20 bytes).
+    Removing gd32f3x0_crc.o(i.crc_polynomial_size_set), (28 bytes).
+    Removing gd32f3x0_crc.o(i.crc_reverse_output_data_disable), (20 bytes).
+    Removing gd32f3x0_crc.o(i.crc_reverse_output_data_enable), (28 bytes).
+    Removing gd32f3x0_crc.o(i.crc_single_data_calculate), (36 bytes).
+    Removing gd32f3x0_ctc.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_ctc.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_clock_limit_value_config), (36 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_counter_capture_value_read), (16 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_counter_direction_read), (20 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_counter_disable), (20 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_counter_enable), (20 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_counter_reload_value_config), (28 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_counter_reload_value_read), (16 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_deinit), (20 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_flag_clear), (36 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_flag_get), (20 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_hardware_trim_mode_config), (28 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_interrupt_disable), (16 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_interrupt_enable), (16 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_interrupt_flag_clear), (36 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_interrupt_flag_get), (56 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_irc48m_trim_value_config), (36 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_irc48m_trim_value_read), (16 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_refsource_polarity_config), (28 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_refsource_prescaler_config), (28 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_refsource_signal_select), (28 bytes).
+    Removing gd32f3x0_ctc.o(i.ctc_software_refsource_pulse_generate), (20 bytes).
+    Removing gd32f3x0_dac.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_dac.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_dac.o(i.dac_data_set), (32 bytes).
+    Removing gd32f3x0_dac.o(i.dac_deinit), (40 bytes).
+    Removing gd32f3x0_dac.o(i.dac_disable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_dma_disable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_dma_enable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_enable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_flag_clear), (14 bytes).
+    Removing gd32f3x0_dac.o(i.dac_flag_get), (26 bytes).
+    Removing gd32f3x0_dac.o(i.dac_interrupt_disable), (18 bytes).
+    Removing gd32f3x0_dac.o(i.dac_interrupt_enable), (18 bytes).
+    Removing gd32f3x0_dac.o(i.dac_interrupt_flag_clear), (10 bytes).
+    Removing gd32f3x0_dac.o(i.dac_interrupt_flag_get), (38 bytes).
+    Removing gd32f3x0_dac.o(i.dac_lfsr_noise_config), (18 bytes).
+    Removing gd32f3x0_dac.o(i.dac_output_buffer_disable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_output_buffer_enable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_output_value_get), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_software_trigger_enable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_triangle_noise_config), (18 bytes).
+    Removing gd32f3x0_dac.o(i.dac_trigger_disable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_trigger_enable), (12 bytes).
+    Removing gd32f3x0_dac.o(i.dac_trigger_source_config), (18 bytes).
+    Removing gd32f3x0_dac.o(i.dac_wave_mode_config), (18 bytes).
+    Removing gd32f3x0_dbg.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_dbg.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_dbg.o(i.dbg_deinit), (16 bytes).
+    Removing gd32f3x0_dbg.o(i.dbg_id_get), (12 bytes).
+    Removing gd32f3x0_dbg.o(i.dbg_low_power_disable), (16 bytes).
+    Removing gd32f3x0_dbg.o(i.dbg_low_power_enable), (16 bytes).
+    Removing gd32f3x0_dbg.o(i.dbg_periph_disable), (32 bytes).
+    Removing gd32f3x0_dbg.o(i.dbg_periph_enable), (32 bytes).
+    Removing gd32f3x0_dma.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_dma.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_dma.o(i.dma_channel_enable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_circulation_disable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_circulation_enable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_deinit), (92 bytes).
+    Removing gd32f3x0_dma.o(i.dma_flag_clear), (24 bytes).
+    Removing gd32f3x0_dma.o(i.dma_flag_get), (32 bytes).
+    Removing gd32f3x0_dma.o(i.dma_init), (284 bytes).
+    Removing gd32f3x0_dma.o(i.dma_interrupt_disable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_interrupt_enable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_memory_address_config), (20 bytes).
+    Removing gd32f3x0_dma.o(i.dma_memory_increase_disable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_memory_increase_enable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_memory_to_memory_disable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_memory_to_memory_enable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_memory_width_config), (40 bytes).
+    Removing gd32f3x0_dma.o(i.dma_periph_address_config), (20 bytes).
+    Removing gd32f3x0_dma.o(i.dma_periph_increase_disable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_periph_increase_enable), (36 bytes).
+    Removing gd32f3x0_dma.o(i.dma_periph_width_config), (40 bytes).
+    Removing gd32f3x0_dma.o(i.dma_priority_config), (40 bytes).
+    Removing gd32f3x0_dma.o(i.dma_struct_para_init), (22 bytes).
+    Removing gd32f3x0_dma.o(i.dma_transfer_direction_config), (68 bytes).
+    Removing gd32f3x0_dma.o(i.dma_transfer_number_config), (24 bytes).
+    Removing gd32f3x0_dma.o(i.dma_transfer_number_get), (20 bytes).
+    Removing gd32f3x0_exti.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_exti.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_exti.o(i.exti_deinit), (32 bytes).
+    Removing gd32f3x0_exti.o(i.exti_event_disable), (16 bytes).
+    Removing gd32f3x0_exti.o(i.exti_event_enable), (16 bytes).
+    Removing gd32f3x0_exti.o(i.exti_flag_clear), (12 bytes).
+    Removing gd32f3x0_exti.o(i.exti_flag_get), (24 bytes).
+    Removing gd32f3x0_exti.o(i.exti_init), (188 bytes).
+    Removing gd32f3x0_exti.o(i.exti_interrupt_disable), (16 bytes).
+    Removing gd32f3x0_exti.o(i.exti_interrupt_enable), (16 bytes).
+    Removing gd32f3x0_exti.o(i.exti_interrupt_flag_clear), (12 bytes).
+    Removing gd32f3x0_exti.o(i.exti_interrupt_flag_get), (24 bytes).
+    Removing gd32f3x0_exti.o(i.exti_software_interrupt_disable), (16 bytes).
+    Removing gd32f3x0_exti.o(i.exti_software_interrupt_enable), (16 bytes).
+    Removing gd32f3x0_fmc.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_fmc.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_flag_clear), (12 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_flag_get), (20 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_halfword_program), (64 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_interrupt_disable), (16 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_interrupt_enable), (16 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_interrupt_flag_clear), (12 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_interrupt_flag_get), (20 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_lock), (20 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_mass_erase), (68 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_page_erase), (76 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_ready_wait), (34 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_state_get), (48 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_unlock), (36 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_wait_state_disable), (32 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_wait_state_enable), (32 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_word_program), (64 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_word_reprogram), (96 bytes).
+    Removing gd32f3x0_fmc.o(i.fmc_wscnt_set), (24 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_data_get), (12 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_data_program), (200 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_erase), (164 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_lock), (20 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_obstat_plevel_get), (16 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_parm_get), (52 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_reset), (20 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_security_protection_config), (156 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_unlock), (36 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_user_get), (16 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_user_write), (144 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_value_modify), (172 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_write_protection_enable), (248 bytes).
+    Removing gd32f3x0_fmc.o(i.ob_write_protection_get), (12 bytes).
+    Removing gd32f3x0_fwdgt.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_fwdgt.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_config), (116 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_counter_reload), (16 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_enable), (16 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_flag_get), (20 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_prescaler_value_config), (56 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_reload_value_config), (60 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_window_value_config), (60 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_write_disable), (12 bytes).
+    Removing gd32f3x0_fwdgt.o(i.fwdgt_write_enable), (16 bytes).
+    Removing gd32f3x0_gpio.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_gpio.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_af_set), (94 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_bit_reset), (4 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_bit_set), (4 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_bit_toggle), (4 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_bit_write), (10 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_deinit), (148 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_input_bit_get), (18 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_input_port_get), (8 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_mode_set), (78 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_output_bit_get), (18 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_output_options_set), (124 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_output_port_get), (8 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_pin_lock), (18 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_port_toggle), (8 bytes).
+    Removing gd32f3x0_gpio.o(i.gpio_port_write), (4 bytes).
+    Removing gd32f3x0_i2c.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_i2c.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_ack_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_ackpos_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_clock_config), (312 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_data_receive), (8 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_data_transmit), (6 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_deinit), (64 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_disable), (10 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_dma_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_dma_last_transfer_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_dualaddr_disable), (10 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_dualaddr_enable), (12 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_enable), (10 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_flag_clear), (40 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_flag_get), (30 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_interrupt_disable), (26 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_interrupt_enable), (26 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_interrupt_flag_clear), (44 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_interrupt_flag_get), (96 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_master_addressing), (20 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_mode_addr_config), (28 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_pec_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_pec_transfer_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_pec_value_get), (10 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_slave_response_to_gcall_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_smbus_alert_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_smbus_arp_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_smbus_type_config), (24 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_software_reset_config), (16 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_start_on_bus), (10 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_stop_on_bus), (10 bytes).
+    Removing gd32f3x0_i2c.o(i.i2c_stretch_scl_low_config), (16 bytes).
+    Removing gd32f3x0_misc.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_misc.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_misc.o(i.nvic_irq_disable), (28 bytes).
+    Removing gd32f3x0_misc.o(i.nvic_irq_enable), (264 bytes).
+    Removing gd32f3x0_misc.o(i.nvic_priority_group_set), (20 bytes).
+    Removing gd32f3x0_misc.o(i.system_lowpower_reset), (16 bytes).
+    Removing gd32f3x0_misc.o(i.system_lowpower_set), (16 bytes).
+    Removing gd32f3x0_misc.o(i.systick_clksource_set), (40 bytes).
+    Removing gd32f3x0_pmu.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_pmu.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_backup_write_disable), (20 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_backup_write_enable), (20 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_deinit), (20 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_flag_clear), (44 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_flag_get), (20 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_highdriver_mode_disable), (20 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_highdriver_mode_enable), (20 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_highdriver_switch_select), (44 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_ldo_output_select), (28 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_lowdriver_mode_disable), (24 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_lowdriver_mode_enable), (28 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_lowpower_driver_config), (28 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_lvd_disable), (20 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_lvd_select), (48 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_normalpower_driver_config), (28 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_to_sleepmode), (32 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_to_standbymode), (96 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_wakeup_pin_disable), (16 bytes).
+    Removing gd32f3x0_pmu.o(i.pmu_wakeup_pin_enable), (16 bytes).
+    Removing gd32f3x0_rcu.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_rcu.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_adc_clock_config), (332 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_ahb_clock_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_all_reset_flag_clear), (20 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_apb1_clock_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_apb2_clock_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_bkp_reset_disable), (20 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_bkp_reset_enable), (20 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_cec_clock_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_ck48m_clock_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_ckout_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_clock_freq_get), (668 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_deepsleep_voltage_set), (36 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_deinit), (204 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_flag_get), (40 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_hxtal_clock_monitor_disable), (20 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_hxtal_clock_monitor_enable), (20 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_hxtal_prediv_config), (24 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_interrupt_disable), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_interrupt_enable), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_interrupt_flag_clear), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_interrupt_flag_get), (40 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_irc28m_adjust_value_set), (24 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_irc8m_adjust_value_set), (24 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_lxtal_drive_capability_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_osci_bypass_mode_disable), (108 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_osci_bypass_mode_enable), (108 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_osci_off), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_osci_on), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_osci_stab_wait), (316 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_periph_clock_disable), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_periph_clock_enable), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_periph_clock_sleep_disable), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_periph_clock_sleep_enable), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_periph_reset_disable), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_periph_reset_enable), (32 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_pll_config), (64 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_pll_preselection_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_rtc_clock_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_system_clock_source_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_system_clock_source_get), (16 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_usart_clock_config), (28 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_usbfs_clock_config), (56 bytes).
+    Removing gd32f3x0_rcu.o(i.rcu_voltage_key_unlock), (40 bytes).
+    Removing gd32f3x0_rtc.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_rtc.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_alarm_config), (84 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_alarm_disable), (80 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_alarm_enable), (40 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_alarm_get), (56 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_alarm_subsecond_config), (32 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_alarm_subsecond_get), (16 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_alter_output_config), (76 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_bypass_shadow_disable), (40 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_bypass_shadow_enable), (40 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_calibration_config), (76 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_current_time_get), (100 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_deinit), (128 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_flag_clear), (16 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_flag_get), (20 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_hour_adjust), (36 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_init), (196 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_init_mode_enter), (68 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_init_mode_exit), (20 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_interrupt_disable), (60 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_interrupt_enable), (60 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_refclock_detection_disable), (56 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_refclock_detection_enable), (56 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_register_sync_wait), (96 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_second_adjust), (108 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_subsecond_get), (20 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_tamper_disable), (16 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_tamper_enable), (164 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_timestamp_disable), (40 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_timestamp_enable), (48 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_timestamp_get), (60 bytes).
+    Removing gd32f3x0_rtc.o(i.rtc_timestamp_subsecond_get), (12 bytes).
+    Removing gd32f3x0_spi.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_spi.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_spi.o(i.i2s_disable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.i2s_enable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.i2s_init), (28 bytes).
+    Removing gd32f3x0_spi.o(i.i2s_psc_config), (164 bytes).
+    Removing gd32f3x0_spi.o(i.spi_bidirectional_transfer_config), (26 bytes).
+    Removing gd32f3x0_spi.o(i.spi_crc_error_clear), (8 bytes).
+    Removing gd32f3x0_spi.o(i.spi_crc_get), (16 bytes).
+    Removing gd32f3x0_spi.o(i.spi_crc_next), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_crc_off), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_crc_on), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_crc_polynomial_get), (8 bytes).
+    Removing gd32f3x0_spi.o(i.spi_crc_polynomial_set), (12 bytes).
+    Removing gd32f3x0_spi.o(i.spi_disable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_dma_disable), (22 bytes).
+    Removing gd32f3x0_spi.o(i.spi_dma_enable), (22 bytes).
+    Removing gd32f3x0_spi.o(i.spi_enable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_data_frame_format_config), (16 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_data_receive), (8 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_data_transmit), (4 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_deinit), (64 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_flag_get), (16 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_format_error_clear), (6 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_interrupt_disable), (8 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_interrupt_enable), (8 bytes).
+    Removing gd32f3x0_spi.o(i.spi_i2s_interrupt_flag_get), (112 bytes).
+    Removing gd32f3x0_spi.o(i.spi_init), (50 bytes).
+    Removing gd32f3x0_spi.o(i.spi_nss_internal_high), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_nss_internal_low), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_nss_output_disable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_nss_output_enable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_nssp_mode_disable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_nssp_mode_enable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_quad_disable), (14 bytes).
+    Removing gd32f3x0_spi.o(i.spi_quad_enable), (14 bytes).
+    Removing gd32f3x0_spi.o(i.spi_quad_read_enable), (14 bytes).
+    Removing gd32f3x0_spi.o(i.spi_quad_write_enable), (14 bytes).
+    Removing gd32f3x0_spi.o(i.spi_struct_para_init), (18 bytes).
+    Removing gd32f3x0_spi.o(i.spi_ti_mode_disable), (10 bytes).
+    Removing gd32f3x0_spi.o(i.spi_ti_mode_enable), (10 bytes).
+    Removing gd32f3x0_syscfg.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_syscfg.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_compensation_config), (24 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_cps_rdy_flag_get), (24 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_deinit), (20 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_dma_remap_disable), (16 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_dma_remap_enable), (16 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_exti_line_config), (160 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_flag_clear), (16 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_flag_get), (24 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_high_current_disable), (20 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_high_current_enable), (20 bytes).
+    Removing gd32f3x0_syscfg.o(i.syscfg_lock_config), (16 bytes).
+    Removing gd32f3x0_timer.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_timer.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_timer.o(i.timer_auto_reload_shadow_disable), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_automatic_output_disable), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_automatic_output_enable), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_autoreload_value_config), (4 bytes).
+    Removing gd32f3x0_timer.o(i.timer_break_config), (30 bytes).
+    Removing gd32f3x0_timer.o(i.timer_break_disable), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_break_enable), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_break_struct_para_init), (18 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_capture_value_register_read), (42 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_complementary_output_polarity_config), (92 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_complementary_output_state_config), (70 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_control_shadow_config), (24 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_control_shadow_update_config), (26 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_dma_request_source_select), (26 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_input_capture_prescaler_config), (90 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_input_struct_para_init), (16 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_clear_config), (90 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_config), (520 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_fast_config), (90 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_mode_config), (90 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_polarity_config), (92 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_pulse_value_config), (38 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_shadow_config), (90 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_state_config), (92 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_output_struct_para_init), (16 bytes).
+    Removing gd32f3x0_timer.o(i.timer_channel_remap_config), (4 bytes).
+    Removing gd32f3x0_timer.o(i.timer_counter_alignment), (16 bytes).
+    Removing gd32f3x0_timer.o(i.timer_counter_down_direction), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_counter_read), (8 bytes).
+    Removing gd32f3x0_timer.o(i.timer_counter_up_direction), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_counter_value_config), (4 bytes).
+    Removing gd32f3x0_timer.o(i.timer_deinit), (220 bytes).
+    Removing gd32f3x0_timer.o(i.timer_dma_disable), (8 bytes).
+    Removing gd32f3x0_timer.o(i.timer_dma_enable), (8 bytes).
+    Removing gd32f3x0_timer.o(i.timer_dma_transfer_config), (24 bytes).
+    Removing gd32f3x0_timer.o(i.timer_event_software_generate), (8 bytes).
+    Removing gd32f3x0_timer.o(i.timer_external_clock_mode0_config), (40 bytes).
+    Removing gd32f3x0_timer.o(i.timer_external_clock_mode1_config), (32 bytes).
+    Removing gd32f3x0_timer.o(i.timer_external_clock_mode1_disable), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_external_trigger_as_external_clock_config), (166 bytes).
+    Removing gd32f3x0_timer.o(i.timer_external_trigger_config), (30 bytes).
+    Removing gd32f3x0_timer.o(i.timer_flag_clear), (6 bytes).
+    Removing gd32f3x0_timer.o(i.timer_flag_get), (18 bytes).
+    Removing gd32f3x0_timer.o(i.timer_hall_mode_config), (26 bytes).
+    Removing gd32f3x0_timer.o(i.timer_input_capture_config), (326 bytes).
+    Removing gd32f3x0_timer.o(i.timer_input_pwm_capture_config), (356 bytes).
+    Removing gd32f3x0_timer.o(i.timer_input_trigger_source_select), (16 bytes).
+    Removing gd32f3x0_timer.o(i.timer_internal_clock_config), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_internal_trigger_as_external_clock_config), (32 bytes).
+    Removing gd32f3x0_timer.o(i.timer_interrupt_flag_get), (28 bytes).
+    Removing gd32f3x0_timer.o(i.timer_master_output_trigger_source_select), (16 bytes).
+    Removing gd32f3x0_timer.o(i.timer_master_slave_mode_config), (26 bytes).
+    Removing gd32f3x0_timer.o(i.timer_ocpre_clear_source_config), (26 bytes).
+    Removing gd32f3x0_timer.o(i.timer_output_value_selection_config), (34 bytes).
+    Removing gd32f3x0_timer.o(i.timer_prescaler_config), (14 bytes).
+    Removing gd32f3x0_timer.o(i.timer_prescaler_read), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_primary_output_config), (24 bytes).
+    Removing gd32f3x0_timer.o(i.timer_quadrature_decoder_mode_config), (64 bytes).
+    Removing gd32f3x0_timer.o(i.timer_repetition_value_config), (4 bytes).
+    Removing gd32f3x0_timer.o(i.timer_single_pulse_mode_config), (26 bytes).
+    Removing gd32f3x0_timer.o(i.timer_slave_mode_select), (16 bytes).
+    Removing gd32f3x0_timer.o(i.timer_struct_para_init), (22 bytes).
+    Removing gd32f3x0_timer.o(i.timer_update_event_disable), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_update_event_enable), (10 bytes).
+    Removing gd32f3x0_timer.o(i.timer_update_source_config), (26 bytes).
+    Removing gd32f3x0_timer.o(i.timer_write_chxval_register_config), (34 bytes).
+    Removing gd32f3x0_tsi.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_tsi.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_analog_off), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_analog_on), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_channel_pin_disable), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_channel_pin_enable), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_deinit), (20 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_disable), (20 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_enable), (20 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_extend_charge_config), (184 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_flag_clear), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_flag_get), (24 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group0_cycle_get), (12 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group1_cycle_get), (12 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group2_cycle_get), (12 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group3_cycle_get), (12 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group4_cycle_get), (12 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group5_cycle_get), (12 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group_disable), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group_enable), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_group_status_get), (24 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_hardware_mode_config), (56 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_hysteresis_off), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_hysteresis_on), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_init), (112 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_interrupt_disable), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_interrupt_enable), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_interrupt_flag_clear), (16 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_interrupt_flag_get), (40 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_max_number_config), (32 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_pin_mode_config), (44 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_pulse_config), (108 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_sample_pin_disable), (28 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_sample_pin_enable), (28 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_software_mode_config), (28 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_software_start), (20 bytes).
+    Removing gd32f3x0_tsi.o(i.tsi_software_stop), (20 bytes).
+    Removing gd32f3x0_usart.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_usart.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_usart.o(i.usart_address_config), (32 bytes).
+    Removing gd32f3x0_usart.o(i.usart_address_detection_mode_config), (28 bytes).
+    Removing gd32f3x0_usart.o(i.usart_baudrate_set), (124 bytes).
+    Removing gd32f3x0_usart.o(i.usart_block_length_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_clock_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_clock_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_command_enable), (8 bytes).
+    Removing gd32f3x0_usart.o(i.usart_data_first_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_data_receive), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_data_transmit), (8 bytes).
+    Removing gd32f3x0_usart.o(i.usart_deinit), (64 bytes).
+    Removing gd32f3x0_usart.o(i.usart_depolarity_config), (28 bytes).
+    Removing gd32f3x0_usart.o(i.usart_disable), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_dma_receive_config), (20 bytes).
+    Removing gd32f3x0_usart.o(i.usart_dma_transmit_config), (20 bytes).
+    Removing gd32f3x0_usart.o(i.usart_driver_assertime_config), (32 bytes).
+    Removing gd32f3x0_usart.o(i.usart_driver_deassertime_config), (32 bytes).
+    Removing gd32f3x0_usart.o(i.usart_enable), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_flag_clear), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_flag_get), (32 bytes).
+    Removing gd32f3x0_usart.o(i.usart_guard_time_config), (32 bytes).
+    Removing gd32f3x0_usart.o(i.usart_halfduplex_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_halfduplex_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_hardware_flow_cts_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_hardware_flow_rts_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_interrupt_disable), (26 bytes).
+    Removing gd32f3x0_usart.o(i.usart_interrupt_enable), (26 bytes).
+    Removing gd32f3x0_usart.o(i.usart_interrupt_flag_clear), (44 bytes).
+    Removing gd32f3x0_usart.o(i.usart_interrupt_flag_get), (58 bytes).
+    Removing gd32f3x0_usart.o(i.usart_invert_config), (110 bytes).
+    Removing gd32f3x0_usart.o(i.usart_irda_lowpower_config), (28 bytes).
+    Removing gd32f3x0_usart.o(i.usart_irda_mode_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_irda_mode_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_lin_break_detection_length_config), (28 bytes).
+    Removing gd32f3x0_usart.o(i.usart_lin_mode_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_lin_mode_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_mute_mode_disable), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_mute_mode_enable), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_mute_mode_wakeup_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_overrun_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_overrun_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_oversample_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_parity_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_prescaler_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_receive_config), (16 bytes).
+    Removing gd32f3x0_usart.o(i.usart_receive_fifo_counter_number), (12 bytes).
+    Removing gd32f3x0_usart.o(i.usart_receive_fifo_disable), (14 bytes).
+    Removing gd32f3x0_usart.o(i.usart_receive_fifo_enable), (14 bytes).
+    Removing gd32f3x0_usart.o(i.usart_receiver_timeout_disable), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_receiver_timeout_enable), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_receiver_timeout_threshold_config), (16 bytes).
+    Removing gd32f3x0_usart.o(i.usart_reception_error_dma_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_reception_error_dma_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_rs485_driver_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_rs485_driver_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_sample_bit_config), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_smartcard_autoretry_config), (32 bytes).
+    Removing gd32f3x0_usart.o(i.usart_smartcard_mode_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_smartcard_mode_early_nack_disable), (14 bytes).
+    Removing gd32f3x0_usart.o(i.usart_smartcard_mode_early_nack_enable), (14 bytes).
+    Removing gd32f3x0_usart.o(i.usart_smartcard_mode_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_smartcard_mode_nack_disable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_smartcard_mode_nack_enable), (18 bytes).
+    Removing gd32f3x0_usart.o(i.usart_stop_bit_set), (24 bytes).
+    Removing gd32f3x0_usart.o(i.usart_synchronous_clock_config), (50 bytes).
+    Removing gd32f3x0_usart.o(i.usart_transmit_config), (16 bytes).
+    Removing gd32f3x0_usart.o(i.usart_wakeup_disable), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_wakeup_enable), (10 bytes).
+    Removing gd32f3x0_usart.o(i.usart_wakeup_mode_config), (28 bytes).
+    Removing gd32f3x0_usart.o(i.usart_word_length_set), (24 bytes).
+    Removing gd32f3x0_wwdgt.o(.rev16_text), (4 bytes).
+    Removing gd32f3x0_wwdgt.o(.revsh_text), (4 bytes).
+    Removing gd32f3x0_wwdgt.o(i.wwdgt_config), (28 bytes).
+    Removing gd32f3x0_wwdgt.o(i.wwdgt_counter_update), (16 bytes).
+    Removing gd32f3x0_wwdgt.o(i.wwdgt_deinit), (20 bytes).
+    Removing gd32f3x0_wwdgt.o(i.wwdgt_enable), (20 bytes).
+    Removing gd32f3x0_wwdgt.o(i.wwdgt_flag_clear), (12 bytes).
+    Removing gd32f3x0_wwdgt.o(i.wwdgt_flag_get), (20 bytes).
+    Removing gd32f3x0_wwdgt.o(i.wwdgt_interrupt_enable), (20 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_AllocDownBuffer), (196 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_AllocUpBuffer), (196 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_ConfigDownBuffer), (176 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_ConfigUpBuffer), (176 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_GetAvailWriteSpace), (28 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_GetBytesInBuffer), (68 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_GetKey), (32 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_HasData), (28 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_HasDataUp), (28 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_HasKey), (48 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_Init), (8 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_PutChar), (128 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_PutCharSkip), (112 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_PutCharSkipNoLock), (56 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_Read), (56 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_ReadNoLock), (168 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_ReadUpBuffer), (56 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_ReadUpBufferNoLock), (168 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_SetFlagsDownBuffer), (92 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_SetFlagsUpBuffer), (92 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_SetNameDownBuffer), (92 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_SetNameUpBuffer), (92 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_SetTerminal), (160 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_TerminalOut), (260 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_WaitKey), (14 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_Write), (72 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_WriteDownBuffer), (72 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_WriteDownBufferNoLock), (132 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_WriteNoLock), (132 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_WriteSkipNoLock), (152 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_WriteString), (26 bytes).
+    Removing segger_rtt.o(i.SEGGER_RTT_WriteWithOverwriteNoLock), (180 bytes).
+    Removing segger_rtt.o(i._DoInit), (112 bytes).
+    Removing segger_rtt.o(i._GetAvailWriteSpace), (28 bytes).
+    Removing segger_rtt.o(i._PostTerminalSwitch), (36 bytes).
+    Removing segger_rtt.o(i._WriteBlocking), (118 bytes).
+    Removing segger_rtt.o(i._WriteNoCheck), (88 bytes).
+    Removing segger_rtt.o(.bss), (1208 bytes).
+    Removing segger_rtt.o(.data), (17 bytes).
+    Removing segger_rtt_printf.o(i.SEGGER_RTT_printf), (34 bytes).
+    Removing segger_rtt_printf.o(i.SEGGER_RTT_vprintf), (522 bytes).
+    Removing segger_rtt_printf.o(i._PrintInt), (236 bytes).
+    Removing segger_rtt_printf.o(i._PrintUnsigned), (236 bytes).
+    Removing segger_rtt_printf.o(i._StoreChar), (68 bytes).
+    Removing segger_rtt_printf.o(.constdata), (16 bytes).
+    Removing system_gd32f3x0.o(.rev16_text), (4 bytes).
+    Removing system_gd32f3x0.o(.revsh_text), (4 bytes).
+    Removing system_gd32f3x0.o(i.SystemCoreClockUpdate), (340 bytes).
+    Removing system_gd32f3x0.o(i.gd32f3x0_firmware_version_get), (8 bytes).
+    Removing system_gd32f3x0.o(.data), (4 bytes).
+    Removing drv_usbd_int.o(.rev16_text), (4 bytes).
+    Removing drv_usbd_int.o(.revsh_text), (4 bytes).
+    Removing drv_usb_core.o(.rev16_text), (4 bytes).
+    Removing drv_usb_core.o(.revsh_text), (4 bytes).
+    Removing drv_usb_core.o(i.usb_basic_init), (200 bytes).
+    Removing drv_usb_core.o(i.usb_core_init), (140 bytes).
+    Removing drv_usb_core.o(i.usb_core_reset), (38 bytes).
+    Removing drv_usb_core.o(i.usb_curmode_set), (46 bytes).
+    Removing drv_usb_core.o(i.usb_rxfifo_flush), (34 bytes).
+    Removing drv_usb_core.o(i.usb_set_txfifo), (72 bytes).
+    Removing drv_usb_dev.o(.rev16_text), (4 bytes).
+    Removing drv_usb_dev.o(.revsh_text), (4 bytes).
+    Removing drv_usb_dev.o(i.usb_clock_active), (32 bytes).
+    Removing drv_usb_dev.o(i.usb_dev_stop), (84 bytes).
+    Removing drv_usb_dev.o(i.usb_dev_suspend), (50 bytes).
+    Removing drv_usb_dev.o(i.usb_devcore_init), (332 bytes).
+    Removing drv_usb_dev.o(i.usb_devint_enable), (64 bytes).
+    Removing drv_usb_dev.o(i.usb_rwkup_active), (72 bytes).
+    Removing drv_usb_dev.o(i.usb_transc0_active), (92 bytes).
+    Removing drv_usb_dev.o(i.usb_transc_deactivate), (100 bytes).
+    Removing drv_usb_dev.o(.data), (8 bytes).
+    Removing usbd_core.o(.rev16_text), (4 bytes).
+    Removing usbd_core.o(.revsh_text), (4 bytes).
+    Removing usbd_core.o(i.usbd_connect), (28 bytes).
+    Removing usbd_core.o(i.usbd_disconnect), (28 bytes).
+    Removing usbd_core.o(i.usbd_ep_clear), (52 bytes).
+    Removing usbd_core.o(i.usbd_ep_setup), (112 bytes).
+    Removing usbd_core.o(i.usbd_fifo_flush), (36 bytes).
+    Removing usbd_core.o(i.usbd_init), (136 bytes).
+    Removing usbd_core.o(.constdata), (16 bytes).
+    Removing usbd_enum.o(.rev16_text), (4 bytes).
+    Removing usbd_enum.o(.revsh_text), (4 bytes).
+    Removing usbd_enum.o(i.int_to_unicode), (60 bytes).
+    Removing usbd_enum.o(i.serial_string_get), (76 bytes).
+    Removing usbd_transc.o(.rev16_text), (4 bytes).
+    Removing usbd_transc.o(.revsh_text), (4 bytes).
+
+777 unused section(s) (total 35259 bytes) removed from the image.
+
+==============================================================================
+
+Image Symbol Table
+
+    Local Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit3.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardshut.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit1.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit2.o ABSOLUTE
+    ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_copy.o ABSOLUTE
+    ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_zi.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit2.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry2.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry4.o ABSOLUTE
+    ../clib/angel/rt.s                       0x00000000   Number         0  rt_raise.o ABSOLUTE
+    ../clib/angel/scatter.s                  0x00000000   Number         0  __scatter.o ABSOLUTE
+    ../clib/angel/startup.s                  0x00000000   Number         0  __main.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  libspace.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  indicate_semi.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  use_no_semi.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  sys_stackheap_outer.o ABSOLUTE
+    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_command.o ABSOLUTE
+    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_exit.o ABSOLUTE
+    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_wrch.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  no_argv.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  _get_argv_nomalloc.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
+    ../clib/heapalloc.c                      0x00000000   Number         0  hrguard.o ABSOLUTE
+    ../clib/heapaux.c                        0x00000000   Number         0  heapauxi.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libshutdown.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libinit2.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libinit.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libshutdown2.o ABSOLUTE
+    ../clib/memcpset.s                       0x00000000   Number         0  rt_memclr_w.o ABSOLUTE
+    ../clib/memcpset.s                       0x00000000   Number         0  rt_memcpy_w.o ABSOLUTE
+    ../clib/memcpset.s                       0x00000000   Number         0  rt_memcpy_v6.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_other.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_segv_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_cppl_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_pvfn_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_stak_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_fpe_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_abrt_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_outer.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_formal.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_exit.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  __raise.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_general.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtred_inner.o ABSOLUTE
+    ../clib/signal.s                         0x00000000   Number         0  defsig.o ABSOLUTE
+    ../clib/stdlib.c                         0x00000000   Number         0  exit.o ABSOLUTE
+    ../clib/string.c                         0x00000000   Number         0  strlen.o ABSOLUTE
+    ../clib/string.c                         0x00000000   Number         0  strcpy.o ABSOLUTE
+    ../fplib/fpinit.s                        0x00000000   Number         0  fpinit.o ABSOLUTE
+    ..\Application\main.c                    0x00000000   Number         0  main.o ABSOLUTE
+    ..\Bootloader\boot_main.c                0x00000000   Number         0  boot_main.o ABSOLUTE
+    ..\Driver\bsp_fmc.c                      0x00000000   Number         0  bsp_fmc.o ABSOLUTE
+    ..\Driver\bsp_system.c                   0x00000000   Number         0  bsp_system.o ABSOLUTE
+    ..\Driver\bsp_uart_midi.c                0x00000000   Number         0  bsp_uart_midi.o ABSOLUTE
+    ..\Driver\bsp_usb_midi.c                 0x00000000   Number         0  bsp_usb_midi.o ABSOLUTE
+    ..\Driver\drv_usb_hw.c                   0x00000000   Number         0  drv_usb_hw.o ABSOLUTE
+    ..\Driver\gd32f3x0_it.c                  0x00000000   Number         0  gd32f3x0_it.o ABSOLUTE
+    ..\Driver\usb_midi_class.c               0x00000000   Number         0  usb_midi_class.o ABSOLUTE
+    ..\Driver\usb_midi_desc.c                0x00000000   Number         0  usb_midi_desc.o ABSOLUTE
+    ..\Fwlib\CMSIS\GD\GD32F3x0\Source\ARM\startup_gd32f3x0.s 0x00000000   Number         0  startup_gd32f3x0.o ABSOLUTE
+    ..\Fwlib\CMSIS\GD\GD32F3x0\Source\system_gd32f3x0.c 0x00000000   Number         0  system_gd32f3x0.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_adc.c 0x00000000   Number         0  gd32f3x0_adc.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_cec.c 0x00000000   Number         0  gd32f3x0_cec.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_cmp.c 0x00000000   Number         0  gd32f3x0_cmp.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_crc.c 0x00000000   Number         0  gd32f3x0_crc.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_ctc.c 0x00000000   Number         0  gd32f3x0_ctc.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_dac.c 0x00000000   Number         0  gd32f3x0_dac.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_dbg.c 0x00000000   Number         0  gd32f3x0_dbg.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_dma.c 0x00000000   Number         0  gd32f3x0_dma.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_exti.c 0x00000000   Number         0  gd32f3x0_exti.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_fmc.c 0x00000000   Number         0  gd32f3x0_fmc.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_fwdgt.c 0x00000000   Number         0  gd32f3x0_fwdgt.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_gpio.c 0x00000000   Number         0  gd32f3x0_gpio.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_i2c.c 0x00000000   Number         0  gd32f3x0_i2c.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_misc.c 0x00000000   Number         0  gd32f3x0_misc.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_pmu.c 0x00000000   Number         0  gd32f3x0_pmu.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_rcu.c 0x00000000   Number         0  gd32f3x0_rcu.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_rtc.c 0x00000000   Number         0  gd32f3x0_rtc.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_spi.c 0x00000000   Number         0  gd32f3x0_spi.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_syscfg.c 0x00000000   Number         0  gd32f3x0_syscfg.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_timer.c 0x00000000   Number         0  gd32f3x0_timer.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_tsi.c 0x00000000   Number         0  gd32f3x0_tsi.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_usart.c 0x00000000   Number         0  gd32f3x0_usart.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_standard_peripheral\Source\gd32f3x0_wwdgt.c 0x00000000   Number         0  gd32f3x0_wwdgt.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source\usbd_core.c 0x00000000   Number         0  usbd_core.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source\usbd_enum.c 0x00000000   Number         0  usbd_enum.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source\usbd_transc.c 0x00000000   Number         0  usbd_transc.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_usbfs_library\driver\Source\drv_usb_core.c 0x00000000   Number         0  drv_usb_core.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_usbfs_library\driver\Source\drv_usb_dev.c 0x00000000   Number         0  drv_usb_dev.o ABSOLUTE
+    ..\Fwlib\GD32F3x0_usbfs_library\driver\Source\drv_usbd_int.c 0x00000000   Number         0  drv_usbd_int.o ABSOLUTE
+    ..\JLinkPrintf\SEGGER_RTT.c              0x00000000   Number         0  segger_rtt.o ABSOLUTE
+    ..\JLinkPrintf\SEGGER_RTT_printf.c       0x00000000   Number         0  segger_rtt_printf.o ABSOLUTE
+    ..\Middleware\crc_engine.c               0x00000000   Number         0  crc_engine.o ABSOLUTE
+    ..\\Application\\main.c                  0x00000000   Number         0  main.o ABSOLUTE
+    ..\\Bootloader\\boot_main.c              0x00000000   Number         0  boot_main.o ABSOLUTE
+    ..\\Driver\\bsp_fmc.c                    0x00000000   Number         0  bsp_fmc.o ABSOLUTE
+    ..\\Driver\\bsp_system.c                 0x00000000   Number         0  bsp_system.o ABSOLUTE
+    ..\\Driver\\bsp_uart_midi.c              0x00000000   Number         0  bsp_uart_midi.o ABSOLUTE
+    ..\\Driver\\bsp_usb_midi.c               0x00000000   Number         0  bsp_usb_midi.o ABSOLUTE
+    ..\\Driver\\drv_usb_hw.c                 0x00000000   Number         0  drv_usb_hw.o ABSOLUTE
+    ..\\Driver\\usb_midi_class.c             0x00000000   Number         0  usb_midi_class.o ABSOLUTE
+    ..\\Driver\\usb_midi_desc.c              0x00000000   Number         0  usb_midi_desc.o ABSOLUTE
+    ..\\Fwlib\\CMSIS\\GD\\GD32F3x0\\Source\\system_gd32f3x0.c 0x00000000   Number         0  system_gd32f3x0.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_adc.c 0x00000000   Number         0  gd32f3x0_adc.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_cec.c 0x00000000   Number         0  gd32f3x0_cec.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_cmp.c 0x00000000   Number         0  gd32f3x0_cmp.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_crc.c 0x00000000   Number         0  gd32f3x0_crc.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_ctc.c 0x00000000   Number         0  gd32f3x0_ctc.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_dac.c 0x00000000   Number         0  gd32f3x0_dac.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_dbg.c 0x00000000   Number         0  gd32f3x0_dbg.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_dma.c 0x00000000   Number         0  gd32f3x0_dma.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_exti.c 0x00000000   Number         0  gd32f3x0_exti.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_fmc.c 0x00000000   Number         0  gd32f3x0_fmc.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_fwdgt.c 0x00000000   Number         0  gd32f3x0_fwdgt.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_gpio.c 0x00000000   Number         0  gd32f3x0_gpio.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_i2c.c 0x00000000   Number         0  gd32f3x0_i2c.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_misc.c 0x00000000   Number         0  gd32f3x0_misc.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_pmu.c 0x00000000   Number         0  gd32f3x0_pmu.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_rcu.c 0x00000000   Number         0  gd32f3x0_rcu.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_rtc.c 0x00000000   Number         0  gd32f3x0_rtc.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_spi.c 0x00000000   Number         0  gd32f3x0_spi.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_syscfg.c 0x00000000   Number         0  gd32f3x0_syscfg.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_timer.c 0x00000000   Number         0  gd32f3x0_timer.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_tsi.c 0x00000000   Number         0  gd32f3x0_tsi.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_usart.c 0x00000000   Number         0  gd32f3x0_usart.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_standard_peripheral\\Source\\gd32f3x0_wwdgt.c 0x00000000   Number         0  gd32f3x0_wwdgt.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_usbfs_library\\device\\core\\Source\\usbd_core.c 0x00000000   Number         0  usbd_core.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_usbfs_library\\device\\core\\Source\\usbd_enum.c 0x00000000   Number         0  usbd_enum.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_usbfs_library\\device\\core\\Source\\usbd_transc.c 0x00000000   Number         0  usbd_transc.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_usbfs_library\\driver\\Source\\drv_usb_core.c 0x00000000   Number         0  drv_usb_core.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_usbfs_library\\driver\\Source\\drv_usb_dev.c 0x00000000   Number         0  drv_usb_dev.o ABSOLUTE
+    ..\\Fwlib\\GD32F3x0_usbfs_library\\driver\\Source\\drv_usbd_int.c 0x00000000   Number         0  drv_usbd_int.o ABSOLUTE
+    dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
+    RESET                                    0x08000000   Section      336  startup_gd32f3x0.o(RESET)
+    !!!main                                  0x08000150   Section        8  __main.o(!!!main)
+    !!!scatter                               0x08000158   Section       52  __scatter.o(!!!scatter)
+    !!handler_copy                           0x0800018c   Section       26  __scatter_copy.o(!!handler_copy)
+    !!handler_zi                             0x080001a8   Section       28  __scatter_zi.o(!!handler_zi)
+    .ARM.Collect$$libinit$$00000000          0x080001c4   Section        2  libinit.o(.ARM.Collect$$libinit$$00000000)
+    .ARM.Collect$$libinit$$00000001          0x080001c6   Section        4  libinit2.o(.ARM.Collect$$libinit$$00000001)
+    .ARM.Collect$$libinit$$00000004          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000004)
+    .ARM.Collect$$libinit$$0000000A          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$0000000A)
+    .ARM.Collect$$libinit$$0000000C          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$0000000C)
+    .ARM.Collect$$libinit$$0000000E          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$0000000E)
+    .ARM.Collect$$libinit$$00000011          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000011)
+    .ARM.Collect$$libinit$$00000013          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000013)
+    .ARM.Collect$$libinit$$00000015          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000015)
+    .ARM.Collect$$libinit$$00000017          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000017)
+    .ARM.Collect$$libinit$$00000019          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000019)
+    .ARM.Collect$$libinit$$0000001B          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$0000001B)
+    .ARM.Collect$$libinit$$0000001D          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$0000001D)
+    .ARM.Collect$$libinit$$0000001F          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$0000001F)
+    .ARM.Collect$$libinit$$00000021          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000021)
+    .ARM.Collect$$libinit$$00000023          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000023)
+    .ARM.Collect$$libinit$$00000025          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000025)
+    .ARM.Collect$$libinit$$0000002C          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$0000002C)
+    .ARM.Collect$$libinit$$0000002E          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$0000002E)
+    .ARM.Collect$$libinit$$00000030          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000030)
+    .ARM.Collect$$libinit$$00000032          0x080001ca   Section        0  libinit2.o(.ARM.Collect$$libinit$$00000032)
+    .ARM.Collect$$libinit$$00000033          0x080001ca   Section        2  libinit2.o(.ARM.Collect$$libinit$$00000033)
+    .ARM.Collect$$libshutdown$$00000000      0x080001cc   Section        2  libshutdown.o(.ARM.Collect$$libshutdown$$00000000)
+    .ARM.Collect$$libshutdown$$00000002      0x080001ce   Section        0  libshutdown2.o(.ARM.Collect$$libshutdown$$00000002)
+    .ARM.Collect$$libshutdown$$00000004      0x080001ce   Section        0  libshutdown2.o(.ARM.Collect$$libshutdown$$00000004)
+    .ARM.Collect$$libshutdown$$00000007      0x080001ce   Section        0  libshutdown2.o(.ARM.Collect$$libshutdown$$00000007)
+    .ARM.Collect$$libshutdown$$0000000A      0x080001ce   Section        0  libshutdown2.o(.ARM.Collect$$libshutdown$$0000000A)
+    .ARM.Collect$$libshutdown$$0000000C      0x080001ce   Section        0  libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C)
+    .ARM.Collect$$libshutdown$$0000000F      0x080001ce   Section        0  libshutdown2.o(.ARM.Collect$$libshutdown$$0000000F)
+    .ARM.Collect$$libshutdown$$00000010      0x080001ce   Section        2  libshutdown2.o(.ARM.Collect$$libshutdown$$00000010)
+    .ARM.Collect$$rtentry$$00000000          0x080001d0   Section        0  __rtentry.o(.ARM.Collect$$rtentry$$00000000)
+    .ARM.Collect$$rtentry$$00000002          0x080001d0   Section        0  __rtentry2.o(.ARM.Collect$$rtentry$$00000002)
+    .ARM.Collect$$rtentry$$00000004          0x080001d0   Section        6  __rtentry4.o(.ARM.Collect$$rtentry$$00000004)
+    .ARM.Collect$$rtentry$$00000009          0x080001d6   Section        0  __rtentry2.o(.ARM.Collect$$rtentry$$00000009)
+    .ARM.Collect$$rtentry$$0000000A          0x080001d6   Section        4  __rtentry2.o(.ARM.Collect$$rtentry$$0000000A)
+    .ARM.Collect$$rtentry$$0000000C          0x080001da   Section        0  __rtentry2.o(.ARM.Collect$$rtentry$$0000000C)
+    .ARM.Collect$$rtentry$$0000000D          0x080001da   Section        8  __rtentry2.o(.ARM.Collect$$rtentry$$0000000D)
+    .ARM.Collect$$rtexit$$00000000           0x080001e2   Section        2  rtexit.o(.ARM.Collect$$rtexit$$00000000)
+    .ARM.Collect$$rtexit$$00000002           0x080001e4   Section        0  rtexit2.o(.ARM.Collect$$rtexit$$00000002)
+    .ARM.Collect$$rtexit$$00000003           0x080001e4   Section        4  rtexit2.o(.ARM.Collect$$rtexit$$00000003)
+    .ARM.Collect$$rtexit$$00000004           0x080001e8   Section        6  rtexit2.o(.ARM.Collect$$rtexit$$00000004)
+    .text                                    0x080001f0   Section       64  startup_gd32f3x0.o(.text)
+    $v0                                      0x080001f0   Number         0  startup_gd32f3x0.o(.text)
+    .text                                    0x08000230   Section      100  rt_memcpy_w.o(.text)
+    .text                                    0x08000294   Section       78  rt_memclr_w.o(.text)
+    .text                                    0x080002e2   Section        0  heapauxi.o(.text)
+    .text                                    0x080002e8   Section       74  sys_stackheap_outer.o(.text)
+    .text                                    0x08000332   Section        0  exit.o(.text)
+    .text                                    0x08000344   Section        8  libspace.o(.text)
+    .text                                    0x0800034c   Section        0  sys_exit.o(.text)
+    .text                                    0x08000358   Section        2  use_no_semi.o(.text)
+    .text                                    0x0800035a   Section        0  indicate_semi.o(.text)
+    i.BusFault_Handler                       0x0800035a   Section        0  gd32f3x0_it.o(i.BusFault_Handler)
+    i.DMA_Channel1_2_IRQHandler              0x08000360   Section        0  bsp_uart_midi.o(i.DMA_Channel1_2_IRQHandler)
+    i.DebugMon_Handler                       0x08000388   Section        0  gd32f3x0_it.o(i.DebugMon_Handler)
+    i.HardFault_Handler                      0x0800038c   Section        0  gd32f3x0_it.o(i.HardFault_Handler)
+    i.MemManage_Handler                      0x08000390   Section        0  gd32f3x0_it.o(i.MemManage_Handler)
+    i.NMI_Handler                            0x08000394   Section        0  gd32f3x0_it.o(i.NMI_Handler)
+    i.PendSV_Handler                         0x08000398   Section        0  gd32f3x0_it.o(i.PendSV_Handler)
+    i.SVC_Handler                            0x0800039c   Section        0  gd32f3x0_it.o(i.SVC_Handler)
+    i.SysTick_Handler                        0x080003a0   Section        0  gd32f3x0_it.o(i.SysTick_Handler)
+    i.SystemInit                             0x080003a4   Section        0  system_gd32f3x0.o(i.SystemInit)
+    i.TIMER2_IRQHandler                      0x0800068c   Section        0  gd32f3x0_it.o(i.TIMER2_IRQHandler)
+    i.USBFS_IRQHandler                       0x08000690   Section        0  bsp_usb_midi.o(i.USBFS_IRQHandler)
+    i.UsageFault_Handler                     0x080006a0   Section        0  gd32f3x0_it.o(i.UsageFault_Handler)
+    i._soft_delay_                           0x080006a4   Section        0  system_gd32f3x0.o(i._soft_delay_)
+    _soft_delay_                             0x080006a5   Thumb Code    28  system_gd32f3x0.o(i._soft_delay_)
+    i._usb_bos_desc_get                      0x080006c0   Section        0  usbd_enum.o(i._usb_bos_desc_get)
+    _usb_bos_desc_get                        0x080006c1   Thumb Code    20  usbd_enum.o(i._usb_bos_desc_get)
+    i._usb_config_desc_get                   0x080006d4   Section        0  usbd_enum.o(i._usb_config_desc_get)
+    _usb_config_desc_get                     0x080006d5   Thumb Code    34  usbd_enum.o(i._usb_config_desc_get)
+    i._usb_dev_desc_get                      0x080006f6   Section        0  usbd_enum.o(i._usb_dev_desc_get)
+    _usb_dev_desc_get                        0x080006f7   Thumb Code    20  usbd_enum.o(i._usb_dev_desc_get)
+    i._usb_std_clearfeature                  0x0800070a   Section        0  usbd_enum.o(i._usb_std_clearfeature)
+    _usb_std_clearfeature                    0x0800070b   Thumb Code   116  usbd_enum.o(i._usb_std_clearfeature)
+    i._usb_std_getconfiguration              0x0800077e   Section        0  usbd_enum.o(i._usb_std_getconfiguration)
+    _usb_std_getconfiguration                0x0800077f   Thumb Code    64  usbd_enum.o(i._usb_std_getconfiguration)
+    i._usb_std_getdescriptor                 0x080007c0   Section        0  usbd_enum.o(i._usb_std_getdescriptor)
+    _usb_std_getdescriptor                   0x080007c1   Thumb Code   266  usbd_enum.o(i._usb_std_getdescriptor)
+    i._usb_std_getinterface                  0x080008d0   Section        0  usbd_enum.o(i._usb_std_getinterface)
+    _usb_std_getinterface                    0x080008d1   Thumb Code    60  usbd_enum.o(i._usb_std_getinterface)
+    i._usb_std_getstatus                     0x0800090c   Section        0  usbd_enum.o(i._usb_std_getstatus)
+    _usb_std_getstatus                       0x0800090d   Thumb Code   184  usbd_enum.o(i._usb_std_getstatus)
+    i._usb_std_reserved                      0x080009c8   Section        0  usbd_enum.o(i._usb_std_reserved)
+    _usb_std_reserved                        0x080009c9   Thumb Code     6  usbd_enum.o(i._usb_std_reserved)
+    i._usb_std_setaddress                    0x080009ce   Section        0  usbd_enum.o(i._usb_std_setaddress)
+    _usb_std_setaddress                      0x080009cf   Thumb Code    92  usbd_enum.o(i._usb_std_setaddress)
+    i._usb_std_setconfiguration              0x08000a2c   Section        0  usbd_enum.o(i._usb_std_setconfiguration)
+    _usb_std_setconfiguration                0x08000a2d   Thumb Code   176  usbd_enum.o(i._usb_std_setconfiguration)
+    i._usb_std_setdescriptor                 0x08000ae0   Section        0  usbd_enum.o(i._usb_std_setdescriptor)
+    _usb_std_setdescriptor                   0x08000ae1   Thumb Code     6  usbd_enum.o(i._usb_std_setdescriptor)
+    i._usb_std_setfeature                    0x08000ae6   Section        0  usbd_enum.o(i._usb_std_setfeature)
+    _usb_std_setfeature                      0x08000ae7   Thumb Code   104  usbd_enum.o(i._usb_std_setfeature)
+    i._usb_std_setinterface                  0x08000b4e   Section        0  usbd_enum.o(i._usb_std_setinterface)
+    _usb_std_setinterface                    0x08000b4f   Thumb Code    68  usbd_enum.o(i._usb_std_setinterface)
+    i._usb_std_synchframe                    0x08000b92   Section        0  usbd_enum.o(i._usb_std_synchframe)
+    _usb_std_synchframe                      0x08000b93   Thumb Code     6  usbd_enum.o(i._usb_std_synchframe)
+    i._usb_str_desc_get                      0x08000b98   Section        0  usbd_enum.o(i._usb_str_desc_get)
+    _usb_str_desc_get                        0x08000b99   Thumb Code    20  usbd_enum.o(i._usb_str_desc_get)
+    i.dma_channel_disable                    0x08000bac   Section        0  gd32f3x0_dma.o(i.dma_channel_disable)
+    i.dma_interrupt_flag_clear               0x08000bd0   Section        0  gd32f3x0_dma.o(i.dma_interrupt_flag_clear)
+    i.dma_interrupt_flag_get                 0x08000be8   Section        0  gd32f3x0_dma.o(i.dma_interrupt_flag_get)
+    i.hw_delay                               0x08000c74   Section        0  drv_usb_hw.o(i.hw_delay)
+    hw_delay                                 0x08000c75   Thumb Code    34  drv_usb_hw.o(i.hw_delay)
+    i.hw_time_set                            0x08000ca0   Section        0  drv_usb_hw.o(i.hw_time_set)
+    hw_time_set                              0x08000ca1   Thumb Code   104  drv_usb_hw.o(i.hw_time_set)
+    i.main                                   0x08000d10   Section        0  main.o(i.main)
+    i.nvic_vector_table_set                  0x08000d18   Section        0  gd32f3x0_misc.o(i.nvic_vector_table_set)
+    i.pmu_to_deepsleepmode                   0x08000d30   Section        0  gd32f3x0_pmu.o(i.pmu_to_deepsleepmode)
+    i.system_clock_96m_hxtal                 0x08000e24   Section        0  system_gd32f3x0.o(i.system_clock_96m_hxtal)
+    system_clock_96m_hxtal                   0x08000e25   Thumb Code   202  system_gd32f3x0.o(i.system_clock_96m_hxtal)
+    i.system_clock_config                    0x08000f00   Section        0  system_gd32f3x0.o(i.system_clock_config)
+    system_clock_config                      0x08000f01   Thumb Code     8  system_gd32f3x0.o(i.system_clock_config)
+    i.timer_auto_reload_shadow_enable        0x08000f08   Section        0  gd32f3x0_timer.o(i.timer_auto_reload_shadow_enable)
+    i.timer_disable                          0x08000f12   Section        0  gd32f3x0_timer.o(i.timer_disable)
+    i.timer_enable                           0x08000f1c   Section        0  gd32f3x0_timer.o(i.timer_enable)
+    i.timer_init                             0x08000f28   Section        0  gd32f3x0_timer.o(i.timer_init)
+    i.timer_interrupt_disable                0x08000fd4   Section        0  gd32f3x0_timer.o(i.timer_interrupt_disable)
+    i.timer_interrupt_enable                 0x08000fdc   Section        0  gd32f3x0_timer.o(i.timer_interrupt_enable)
+    i.timer_interrupt_flag_clear             0x08000fe4   Section        0  gd32f3x0_timer.o(i.timer_interrupt_flag_clear)
+    i.usb_ctlep_startout                     0x08000fec   Section        0  drv_usb_dev.o(i.usb_ctlep_startout)
+    i.usb_iepintr_read                       0x08000ff8   Section        0  drv_usb_dev.o(i.usb_iepintr_read)
+    i.usb_rxfifo_read                        0x08001022   Section        0  drv_usb_core.o(i.usb_rxfifo_read)
+    i.usb_transc_active                      0x08001040   Section        0  drv_usb_dev.o(i.usb_transc_active)
+    i.usb_transc_clrstall                    0x080010d4   Section        0  drv_usb_dev.o(i.usb_transc_clrstall)
+    i.usb_transc_inxfer                      0x08001118   Section        0  drv_usb_dev.o(i.usb_transc_inxfer)
+    i.usb_transc_outxfer                     0x08001212   Section        0  drv_usb_dev.o(i.usb_transc_outxfer)
+    i.usb_transc_stall                       0x08001290   Section        0  drv_usb_dev.o(i.usb_transc_stall)
+    i.usb_txfifo_flush                       0x080012d2   Section        0  drv_usb_core.o(i.usb_txfifo_flush)
+    i.usb_txfifo_write                       0x080012fa   Section        0  drv_usb_core.o(i.usb_txfifo_write)
+    i.usb_udelay                             0x0800131c   Section        0  drv_usb_hw.o(i.usb_udelay)
+    i.usbd_class_request                     0x0800132a   Section        0  usbd_enum.o(i.usbd_class_request)
+    i.usbd_ctl_recev                         0x08001350   Section        0  usbd_transc.o(i.usbd_ctl_recev)
+    i.usbd_ctl_send                          0x0800137e   Section        0  usbd_transc.o(i.usbd_ctl_send)
+    i.usbd_ctl_status_recev                  0x080013ac   Section        0  usbd_transc.o(i.usbd_ctl_status_recev)
+    i.usbd_ctl_status_send                   0x080013cc   Section        0  usbd_transc.o(i.usbd_ctl_status_send)
+    i.usbd_emptytxfifo_write                 0x080013ec   Section        0  drv_usbd_int.o(i.usbd_emptytxfifo_write)
+    usbd_emptytxfifo_write                   0x080013ed   Thumb Code   140  drv_usbd_int.o(i.usbd_emptytxfifo_write)
+    i.usbd_enum_error                        0x08001478   Section        0  usbd_enum.o(i.usbd_enum_error)
+    i.usbd_ep_recev                          0x08001496   Section        0  usbd_core.o(i.usbd_ep_recev)
+    i.usbd_ep_send                           0x080014ca   Section        0  usbd_core.o(i.usbd_ep_send)
+    i.usbd_ep_stall                          0x080014fe   Section        0  usbd_core.o(i.usbd_ep_stall)
+    i.usbd_ep_stall_clear                    0x08001538   Section        0  usbd_core.o(i.usbd_ep_stall_clear)
+    i.usbd_in_transc                         0x08001572   Section        0  usbd_transc.o(i.usbd_in_transc)
+    i.usbd_int_enumfinish                    0x08001604   Section        0  drv_usbd_int.o(i.usbd_int_enumfinish)
+    usbd_int_enumfinish                      0x08001605   Thumb Code    98  drv_usbd_int.o(i.usbd_int_enumfinish)
+    i.usbd_int_epin                          0x0800166c   Section        0  drv_usbd_int.o(i.usbd_int_epin)
+    usbd_int_epin                            0x0800166d   Thumb Code   116  drv_usbd_int.o(i.usbd_int_epin)
+    i.usbd_int_epout                         0x080016e0   Section        0  drv_usbd_int.o(i.usbd_int_epout)
+    usbd_int_epout                           0x080016e1   Thumb Code   140  drv_usbd_int.o(i.usbd_int_epout)
+    i.usbd_int_reset                         0x08001770   Section        0  drv_usbd_int.o(i.usbd_int_reset)
+    usbd_int_reset                           0x08001771   Thumb Code   208  drv_usbd_int.o(i.usbd_int_reset)
+    i.usbd_int_rxfifo                        0x08001848   Section        0  drv_usbd_int.o(i.usbd_int_rxfifo)
+    usbd_int_rxfifo                          0x08001849   Thumb Code   184  drv_usbd_int.o(i.usbd_int_rxfifo)
+    i.usbd_int_suspend                       0x08001904   Section        0  drv_usbd_int.o(i.usbd_int_suspend)
+    usbd_int_suspend                         0x08001905   Thumb Code   104  drv_usbd_int.o(i.usbd_int_suspend)
+    i.usbd_isr                               0x0800196c   Section        0  drv_usbd_int.o(i.usbd_isr)
+    i.usbd_out_transc                        0x08001a7c   Section        0  usbd_transc.o(i.usbd_out_transc)
+    i.usbd_setup_transc                      0x08001af2   Section        0  usbd_transc.o(i.usbd_setup_transc)
+    i.usbd_standard_request                  0x08001b78   Section        0  usbd_enum.o(i.usbd_standard_request)
+    i.usbd_vendor_request                    0x08001b94   Section        0  usbd_enum.o(i.usbd_vendor_request)
+    x$fpl$fpinit                             0x08001b9a   Section       10  fpinit.o(x$fpl$fpinit)
+    $v0                                      0x08001b9a   Number         0  fpinit.o(x$fpl$fpinit)
+    .constdata                               0x08001ba4   Section       52  drv_usbd_int.o(.constdata)
+    USB_SPEED                                0x08001ba4   Data           4  drv_usbd_int.o(.constdata)
+    <Data1>                                  0x08001ba8   Data          24  drv_usbd_int.o(.constdata)
+    <Data2>                                  0x08001bc0   Data          24  drv_usbd_int.o(.constdata)
+    .constdata                               0x08001bd8   Section        4  drv_usb_dev.o(.constdata)
+    EP0_MAXLEN                               0x08001bd8   Data           4  drv_usb_dev.o(.constdata)
+    .data                                    0x20000000   Section        5  bsp_uart_midi.o(.data)
+    s_rx_head                                0x20000000   Data           2  bsp_uart_midi.o(.data)
+    s_rx_tail                                0x20000002   Data           2  bsp_uart_midi.o(.data)
+    s_tx_busy                                0x20000004   Data           1  bsp_uart_midi.o(.data)
+    .data                                    0x20000008   Section       12  drv_usb_hw.o(.data)
+    .data                                    0x20000014   Section        1  drv_usbd_int.o(.data)
+    .data                                    0x20000018   Section       67  usbd_enum.o(.data)
+    _std_dev_req                             0x20000018   Data          52  usbd_enum.o(.data)
+    std_desc_get                             0x2000004c   Data          12  usbd_enum.o(.data)
+    status                                   0x20000058   Data           2  usbd_enum.o(.data)
+    config                                   0x2000005a   Data           1  usbd_enum.o(.data)
+    .bss                                     0x2000005c   Section      976  bsp_usb_midi.o(.bss)
+    .bss                                     0x2000042c   Section       16  gd32f3x0_pmu.o(.bss)
+    reg_snap                                 0x2000042c   Data          16  gd32f3x0_pmu.o(.bss)
+    .bss                                     0x2000043c   Section       96  libspace.o(.bss)
+    HEAP                                     0x200004a0   Section     1024  startup_gd32f3x0.o(HEAP)
+    Heap_Mem                                 0x200004a0   Data        1024  startup_gd32f3x0.o(HEAP)
+    STACK                                    0x200008a0   Section     1024  startup_gd32f3x0.o(STACK)
+    Stack_Mem                                0x200008a0   Data        1024  startup_gd32f3x0.o(STACK)
+    __initial_sp                             0x20000ca0   Data           0  startup_gd32f3x0.o(STACK)
+
+    Global Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    BuildAttributes$$THM_ISAv4$E$P$D$K$B$S$7EM$VFPi3$EXTD16$VFPS$VFMA$PE$A:L22UL41UL21$X:L11$S22US41US21$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OSPACE$ROPI$EBA8$UX$STANDARDLIB$REQ8$PRES8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
+    __ARM_use_no_argv                        0x00000000   Number         0  main.o ABSOLUTE
+    __ARM_exceptions_init                     - Undefined Weak Reference
+    __alloca_initialize                       - Undefined Weak Reference
+    __arm_preinit_                            - Undefined Weak Reference
+    __cpp_initialize__aeabi_                  - Undefined Weak Reference
+    __cxa_finalize                            - Undefined Weak Reference
+    __rt_locale                               - Undefined Weak Reference
+    __sigvec_lookup                           - Undefined Weak Reference
+    _atexit_init                              - Undefined Weak Reference
+    _call_atexit_fns                          - Undefined Weak Reference
+    _clock_init                               - Undefined Weak Reference
+    _fp_trap_init                             - Undefined Weak Reference
+    _fp_trap_shutdown                         - Undefined Weak Reference
+    _get_lc_collate                           - Undefined Weak Reference
+    _get_lc_ctype                             - Undefined Weak Reference
+    _get_lc_monetary                          - Undefined Weak Reference
+    _get_lc_numeric                           - Undefined Weak Reference
+    _get_lc_time                              - Undefined Weak Reference
+    _getenv_init                              - Undefined Weak Reference
+    _handle_redirection                       - Undefined Weak Reference
+    _init_alloc                               - Undefined Weak Reference
+    _init_user_alloc                          - Undefined Weak Reference
+    _initio                                   - Undefined Weak Reference
+    _rand_init                                - Undefined Weak Reference
+    _signal_finish                            - Undefined Weak Reference
+    _signal_init                              - Undefined Weak Reference
+    _terminate_alloc                          - Undefined Weak Reference
+    _terminate_user_alloc                     - Undefined Weak Reference
+    _terminateio                              - Undefined Weak Reference
+    __Vectors_Size                           0x00000150   Number         0  startup_gd32f3x0.o ABSOLUTE
+    __Vectors                                0x08000000   Data           4  startup_gd32f3x0.o(RESET)
+    __Vectors_End                            0x08000150   Data           0  startup_gd32f3x0.o(RESET)
+    __main                                   0x08000151   Thumb Code     8  __main.o(!!!main)
+    __scatterload                            0x08000159   Thumb Code     0  __scatter.o(!!!scatter)
+    __scatterload_rt2                        0x08000159   Thumb Code    44  __scatter.o(!!!scatter)
+    __scatterload_rt2_thumb_only             0x08000159   Thumb Code     0  __scatter.o(!!!scatter)
+    __scatterload_null                       0x08000167   Thumb Code     0  __scatter.o(!!!scatter)
+    __scatterload_copy                       0x0800018d   Thumb Code    26  __scatter_copy.o(!!handler_copy)
+    __scatterload_zeroinit                   0x080001a9   Thumb Code    28  __scatter_zi.o(!!handler_zi)
+    __rt_lib_init                            0x080001c5   Thumb Code     0  libinit.o(.ARM.Collect$$libinit$$00000000)
+    __rt_lib_init_fp_1                       0x080001c7   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000001)
+    __rt_lib_init_alloca_1                   0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$0000002E)
+    __rt_lib_init_argv_1                     0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$0000002C)
+    __rt_lib_init_atexit_1                   0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$0000001B)
+    __rt_lib_init_clock_1                    0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000021)
+    __rt_lib_init_cpp_1                      0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000032)
+    __rt_lib_init_exceptions_1               0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000030)
+    __rt_lib_init_fp_trap_1                  0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$0000001F)
+    __rt_lib_init_getenv_1                   0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000023)
+    __rt_lib_init_heap_1                     0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$0000000A)
+    __rt_lib_init_lc_collate_1               0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000011)
+    __rt_lib_init_lc_ctype_1                 0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000013)
+    __rt_lib_init_lc_monetary_1              0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000015)
+    __rt_lib_init_lc_numeric_1               0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000017)
+    __rt_lib_init_lc_time_1                  0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000019)
+    __rt_lib_init_preinit_1                  0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000004)
+    __rt_lib_init_rand_1                     0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$0000000E)
+    __rt_lib_init_return                     0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000033)
+    __rt_lib_init_signal_1                   0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$0000001D)
+    __rt_lib_init_stdio_1                    0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$00000025)
+    __rt_lib_init_user_alloc_1               0x080001cb   Thumb Code     0  libinit2.o(.ARM.Collect$$libinit$$0000000C)
+    __rt_lib_shutdown                        0x080001cd   Thumb Code     0  libshutdown.o(.ARM.Collect$$libshutdown$$00000000)
+    __rt_lib_shutdown_cpp_1                  0x080001cf   Thumb Code     0  libshutdown2.o(.ARM.Collect$$libshutdown$$00000002)
+    __rt_lib_shutdown_fp_trap_1              0x080001cf   Thumb Code     0  libshutdown2.o(.ARM.Collect$$libshutdown$$00000007)
+    __rt_lib_shutdown_heap_1                 0x080001cf   Thumb Code     0  libshutdown2.o(.ARM.Collect$$libshutdown$$0000000F)
+    __rt_lib_shutdown_return                 0x080001cf   Thumb Code     0  libshutdown2.o(.ARM.Collect$$libshutdown$$00000010)
+    __rt_lib_shutdown_signal_1               0x080001cf   Thumb Code     0  libshutdown2.o(.ARM.Collect$$libshutdown$$0000000A)
+    __rt_lib_shutdown_stdio_1                0x080001cf   Thumb Code     0  libshutdown2.o(.ARM.Collect$$libshutdown$$00000004)
+    __rt_lib_shutdown_user_alloc_1           0x080001cf   Thumb Code     0  libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C)
+    __rt_entry                               0x080001d1   Thumb Code     0  __rtentry.o(.ARM.Collect$$rtentry$$00000000)
+    __rt_entry_presh_1                       0x080001d1   Thumb Code     0  __rtentry2.o(.ARM.Collect$$rtentry$$00000002)
+    __rt_entry_sh                            0x080001d1   Thumb Code     0  __rtentry4.o(.ARM.Collect$$rtentry$$00000004)
+    __rt_entry_li                            0x080001d7   Thumb Code     0  __rtentry2.o(.ARM.Collect$$rtentry$$0000000A)
+    __rt_entry_postsh_1                      0x080001d7   Thumb Code     0  __rtentry2.o(.ARM.Collect$$rtentry$$00000009)
+    __rt_entry_main                          0x080001db   Thumb Code     0  __rtentry2.o(.ARM.Collect$$rtentry$$0000000D)
+    __rt_entry_postli_1                      0x080001db   Thumb Code     0  __rtentry2.o(.ARM.Collect$$rtentry$$0000000C)
+    __rt_exit                                0x080001e3   Thumb Code     0  rtexit.o(.ARM.Collect$$rtexit$$00000000)
+    __rt_exit_ls                             0x080001e5   Thumb Code     0  rtexit2.o(.ARM.Collect$$rtexit$$00000003)
+    __rt_exit_prels_1                        0x080001e5   Thumb Code     0  rtexit2.o(.ARM.Collect$$rtexit$$00000002)
+    __rt_exit_exit                           0x080001e9   Thumb Code     0  rtexit2.o(.ARM.Collect$$rtexit$$00000004)
+    Reset_Handler                            0x080001f1   Thumb Code     8  startup_gd32f3x0.o(.text)
+    ADC_CMP_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    CEC_IRQHandler                           0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    DMA_Channel0_IRQHandler                  0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    DMA_Channel3_4_IRQHandler                0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    DMA_Channel5_6_IRQHandler                0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    EXTI0_1_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    EXTI2_3_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    EXTI4_15_IRQHandler                      0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    FMC_IRQHandler                           0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    I2C0_ER_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    I2C0_EV_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    I2C1_ER_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    I2C1_EV_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    LVD_IRQHandler                           0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    RCU_CTC_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    RTC_IRQHandler                           0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    SPI0_IRQHandler                          0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    SPI1_IRQHandler                          0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TIMER0_BRK_UP_TRG_COM_IRQHandler         0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TIMER0_Channel_IRQHandler                0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TIMER13_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TIMER14_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TIMER15_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TIMER16_IRQHandler                       0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TIMER1_IRQHandler                        0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TIMER5_DAC_IRQHandler                    0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    TSI_IRQHandler                           0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    USART0_IRQHandler                        0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    USART1_IRQHandler                        0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    USBFS_WKUP_IRQHandler                    0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    WWDGT_IRQHandler                         0x0800020b   Thumb Code     0  startup_gd32f3x0.o(.text)
+    __user_initial_stackheap                 0x0800020d   Thumb Code    10  startup_gd32f3x0.o(.text)
+    __aeabi_memcpy4                          0x08000231   Thumb Code     0  rt_memcpy_w.o(.text)
+    __aeabi_memcpy8                          0x08000231   Thumb Code     0  rt_memcpy_w.o(.text)
+    __rt_memcpy_w                            0x08000231   Thumb Code   100  rt_memcpy_w.o(.text)
+    _memcpy_lastbytes_aligned                0x08000279   Thumb Code     0  rt_memcpy_w.o(.text)
+    __aeabi_memclr4                          0x08000295   Thumb Code     0  rt_memclr_w.o(.text)
+    __aeabi_memclr8                          0x08000295   Thumb Code     0  rt_memclr_w.o(.text)
+    __rt_memclr_w                            0x08000295   Thumb Code    78  rt_memclr_w.o(.text)
+    _memset_w                                0x08000299   Thumb Code     0  rt_memclr_w.o(.text)
+    __use_two_region_memory                  0x080002e3   Thumb Code     2  heapauxi.o(.text)
+    __rt_heap_escrow$2region                 0x080002e5   Thumb Code     2  heapauxi.o(.text)
+    __rt_heap_expand$2region                 0x080002e7   Thumb Code     2  heapauxi.o(.text)
+    __user_setup_stackheap                   0x080002e9   Thumb Code    74  sys_stackheap_outer.o(.text)
+    exit                                     0x08000333   Thumb Code    18  exit.o(.text)
+    __user_libspace                          0x08000345   Thumb Code     8  libspace.o(.text)
+    __user_perproc_libspace                  0x08000345   Thumb Code     0  libspace.o(.text)
+    __user_perthread_libspace                0x08000345   Thumb Code     0  libspace.o(.text)
+    _sys_exit                                0x0800034d   Thumb Code     8  sys_exit.o(.text)
+    __I$use$semihosting                      0x08000359   Thumb Code     0  use_no_semi.o(.text)
+    __use_no_semihosting_swi                 0x08000359   Thumb Code     2  use_no_semi.o(.text)
+    BusFault_Handler                         0x0800035b   Thumb Code     4  gd32f3x0_it.o(i.BusFault_Handler)
+    __semihosting_library_function           0x0800035b   Thumb Code     0  indicate_semi.o(.text)
+    DMA_Channel1_2_IRQHandler                0x08000361   Thumb Code    34  bsp_uart_midi.o(i.DMA_Channel1_2_IRQHandler)
+    DebugMon_Handler                         0x08000389   Thumb Code     4  gd32f3x0_it.o(i.DebugMon_Handler)
+    HardFault_Handler                        0x0800038d   Thumb Code     4  gd32f3x0_it.o(i.HardFault_Handler)
+    MemManage_Handler                        0x08000391   Thumb Code     4  gd32f3x0_it.o(i.MemManage_Handler)
+    NMI_Handler                              0x08000395   Thumb Code     4  gd32f3x0_it.o(i.NMI_Handler)
+    PendSV_Handler                           0x08000399   Thumb Code     4  gd32f3x0_it.o(i.PendSV_Handler)
+    SVC_Handler                              0x0800039d   Thumb Code     4  gd32f3x0_it.o(i.SVC_Handler)
+    SysTick_Handler                          0x080003a1   Thumb Code     2  gd32f3x0_it.o(i.SysTick_Handler)
+    SystemInit                               0x080003a5   Thumb Code   694  system_gd32f3x0.o(i.SystemInit)
+    TIMER2_IRQHandler                        0x0800068d   Thumb Code     2  gd32f3x0_it.o(i.TIMER2_IRQHandler)
+    USBFS_IRQHandler                         0x08000691   Thumb Code    10  bsp_usb_midi.o(i.USBFS_IRQHandler)
+    UsageFault_Handler                       0x080006a1   Thumb Code     4  gd32f3x0_it.o(i.UsageFault_Handler)
+    dma_channel_disable                      0x08000bad   Thumb Code    30  gd32f3x0_dma.o(i.dma_channel_disable)
+    dma_interrupt_flag_clear                 0x08000bd1   Thumb Code    18  gd32f3x0_dma.o(i.dma_interrupt_flag_clear)
+    dma_interrupt_flag_get                   0x08000be9   Thumb Code   134  gd32f3x0_dma.o(i.dma_interrupt_flag_get)
+    main                                     0x08000d11   Thumb Code     6  main.o(i.main)
+    nvic_vector_table_set                    0x08000d19   Thumb Code    16  gd32f3x0_misc.o(i.nvic_vector_table_set)
+    pmu_to_deepsleepmode                     0x08000d31   Thumb Code   206  gd32f3x0_pmu.o(i.pmu_to_deepsleepmode)
+    timer_auto_reload_shadow_enable          0x08000f09   Thumb Code    10  gd32f3x0_timer.o(i.timer_auto_reload_shadow_enable)
+    timer_disable                            0x08000f13   Thumb Code    10  gd32f3x0_timer.o(i.timer_disable)
+    timer_enable                             0x08000f1d   Thumb Code    10  gd32f3x0_timer.o(i.timer_enable)
+    timer_init                               0x08000f29   Thumb Code   146  gd32f3x0_timer.o(i.timer_init)
+    timer_interrupt_disable                  0x08000fd5   Thumb Code     8  gd32f3x0_timer.o(i.timer_interrupt_disable)
+    timer_interrupt_enable                   0x08000fdd   Thumb Code     8  gd32f3x0_timer.o(i.timer_interrupt_enable)
+    timer_interrupt_flag_clear               0x08000fe5   Thumb Code     6  gd32f3x0_timer.o(i.timer_interrupt_flag_clear)
+    usb_ctlep_startout                       0x08000fed   Thumb Code     8  drv_usb_dev.o(i.usb_ctlep_startout)
+    usb_iepintr_read                         0x08000ff9   Thumb Code    42  drv_usb_dev.o(i.usb_iepintr_read)
+    usb_rxfifo_read                          0x08001023   Thumb Code    30  drv_usb_core.o(i.usb_rxfifo_read)
+    usb_transc_active                        0x08001041   Thumb Code   138  drv_usb_dev.o(i.usb_transc_active)
+    usb_transc_clrstall                      0x080010d5   Thumb Code    68  drv_usb_dev.o(i.usb_transc_clrstall)
+    usb_transc_inxfer                        0x08001119   Thumb Code   250  drv_usb_dev.o(i.usb_transc_inxfer)
+    usb_transc_outxfer                       0x08001213   Thumb Code   126  drv_usb_dev.o(i.usb_transc_outxfer)
+    usb_transc_stall                         0x08001291   Thumb Code    66  drv_usb_dev.o(i.usb_transc_stall)
+    usb_txfifo_flush                         0x080012d3   Thumb Code    40  drv_usb_core.o(i.usb_txfifo_flush)
+    usb_txfifo_write                         0x080012fb   Thumb Code    34  drv_usb_core.o(i.usb_txfifo_write)
+    usb_udelay                               0x0800131d   Thumb Code    14  drv_usb_hw.o(i.usb_udelay)
+    usbd_class_request                       0x0800132b   Thumb Code    38  usbd_enum.o(i.usbd_class_request)
+    usbd_ctl_recev                           0x08001351   Thumb Code    46  usbd_transc.o(i.usbd_ctl_recev)
+    usbd_ctl_send                            0x0800137f   Thumb Code    46  usbd_transc.o(i.usbd_ctl_send)
+    usbd_ctl_status_recev                    0x080013ad   Thumb Code    32  usbd_transc.o(i.usbd_ctl_status_recev)
+    usbd_ctl_status_send                     0x080013cd   Thumb Code    32  usbd_transc.o(i.usbd_ctl_status_send)
+    usbd_enum_error                          0x08001479   Thumb Code    30  usbd_enum.o(i.usbd_enum_error)
+    usbd_ep_recev                            0x08001497   Thumb Code    52  usbd_core.o(i.usbd_ep_recev)
+    usbd_ep_send                             0x080014cb   Thumb Code    52  usbd_core.o(i.usbd_ep_send)
+    usbd_ep_stall                            0x080014ff   Thumb Code    58  usbd_core.o(i.usbd_ep_stall)
+    usbd_ep_stall_clear                      0x08001539   Thumb Code    58  usbd_core.o(i.usbd_ep_stall_clear)
+    usbd_in_transc                           0x08001573   Thumb Code   146  usbd_transc.o(i.usbd_in_transc)
+    usbd_isr                                 0x0800196d   Thumb Code   268  drv_usbd_int.o(i.usbd_isr)
+    usbd_out_transc                          0x08001a7d   Thumb Code   118  usbd_transc.o(i.usbd_out_transc)
+    usbd_setup_transc                        0x08001af3   Thumb Code   132  usbd_transc.o(i.usbd_setup_transc)
+    usbd_standard_request                    0x08001b79   Thumb Code    22  usbd_enum.o(i.usbd_standard_request)
+    usbd_vendor_request                      0x08001b95   Thumb Code     6  usbd_enum.o(i.usbd_vendor_request)
+    _fp_init                                 0x08001b9b   Thumb Code    10  fpinit.o(x$fpl$fpinit)
+    __fplib_config_fpu_vfp                   0x08001ba3   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fplib_config_pureend_doubles           0x08001ba3   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    Region$$Table$$Base                      0x08001bdc   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08001bfc   Number         0  anon$$obj.o(Region$$Table)
+    delay_time                               0x20000008   Data           4  drv_usb_hw.o(.data)
+    timer_prescaler                          0x2000000c   Data           4  drv_usb_hw.o(.data)
+    usbfs_prescaler                          0x20000010   Data           4  drv_usb_hw.o(.data)
+    setupc_flag                              0x20000014   Data           1  drv_usbd_int.o(.data)
+    g_udev                                   0x2000005c   Data         976  bsp_usb_midi.o(.bss)
+    __libspace_start                         0x2000043c   Data          96  libspace.o(.bss)
+    __temporary_stack_top$libspace           0x2000049c   Data           0  libspace.o(.bss)
+
+
+
+==============================================================================
+
+Memory Map of the image
+
+  Image Entry point : 0x080001f1
+
+  Load Region LR_1 (Base: 0x08000000, Size: 0x00001c58, Max: 0xffffffff, ABSOLUTE)
+
+    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001bfc, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x08000000   0x08000000   0x00000150   Data   RO            3    RESET               startup_gd32f3x0.o
+    0x08000150   0x08000150   0x00000008   Code   RO         5427  * !!!main             c_w.l(__main.o)
+    0x08000158   0x08000158   0x00000034   Code   RO         5584    !!!scatter          c_w.l(__scatter.o)
+    0x0800018c   0x0800018c   0x0000001a   Code   RO         5586    !!handler_copy      c_w.l(__scatter_copy.o)
+    0x080001a6   0x080001a6   0x00000002   PAD
+    0x080001a8   0x080001a8   0x0000001c   Code   RO         5588    !!handler_zi        c_w.l(__scatter_zi.o)
+    0x080001c4   0x080001c4   0x00000002   Code   RO         5454    .ARM.Collect$$libinit$$00000000  c_w.l(libinit.o)
+    0x080001c6   0x080001c6   0x00000004   Code   RO         5460    .ARM.Collect$$libinit$$00000001  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5463    .ARM.Collect$$libinit$$00000004  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5466    .ARM.Collect$$libinit$$0000000A  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5468    .ARM.Collect$$libinit$$0000000C  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5470    .ARM.Collect$$libinit$$0000000E  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5473    .ARM.Collect$$libinit$$00000011  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5475    .ARM.Collect$$libinit$$00000013  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5477    .ARM.Collect$$libinit$$00000015  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5479    .ARM.Collect$$libinit$$00000017  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5481    .ARM.Collect$$libinit$$00000019  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5483    .ARM.Collect$$libinit$$0000001B  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5485    .ARM.Collect$$libinit$$0000001D  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5487    .ARM.Collect$$libinit$$0000001F  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5489    .ARM.Collect$$libinit$$00000021  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5491    .ARM.Collect$$libinit$$00000023  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5493    .ARM.Collect$$libinit$$00000025  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5497    .ARM.Collect$$libinit$$0000002C  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5499    .ARM.Collect$$libinit$$0000002E  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5501    .ARM.Collect$$libinit$$00000030  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000000   Code   RO         5503    .ARM.Collect$$libinit$$00000032  c_w.l(libinit2.o)
+    0x080001ca   0x080001ca   0x00000002   Code   RO         5504    .ARM.Collect$$libinit$$00000033  c_w.l(libinit2.o)
+    0x080001cc   0x080001cc   0x00000002   Code   RO         5524    .ARM.Collect$$libshutdown$$00000000  c_w.l(libshutdown.o)
+    0x080001ce   0x080001ce   0x00000000   Code   RO         5537    .ARM.Collect$$libshutdown$$00000002  c_w.l(libshutdown2.o)
+    0x080001ce   0x080001ce   0x00000000   Code   RO         5539    .ARM.Collect$$libshutdown$$00000004  c_w.l(libshutdown2.o)
+    0x080001ce   0x080001ce   0x00000000   Code   RO         5542    .ARM.Collect$$libshutdown$$00000007  c_w.l(libshutdown2.o)
+    0x080001ce   0x080001ce   0x00000000   Code   RO         5545    .ARM.Collect$$libshutdown$$0000000A  c_w.l(libshutdown2.o)
+    0x080001ce   0x080001ce   0x00000000   Code   RO         5547    .ARM.Collect$$libshutdown$$0000000C  c_w.l(libshutdown2.o)
+    0x080001ce   0x080001ce   0x00000000   Code   RO         5550    .ARM.Collect$$libshutdown$$0000000F  c_w.l(libshutdown2.o)
+    0x080001ce   0x080001ce   0x00000002   Code   RO         5551    .ARM.Collect$$libshutdown$$00000010  c_w.l(libshutdown2.o)
+    0x080001d0   0x080001d0   0x00000000   Code   RO         5429    .ARM.Collect$$rtentry$$00000000  c_w.l(__rtentry.o)
+    0x080001d0   0x080001d0   0x00000000   Code   RO         5431    .ARM.Collect$$rtentry$$00000002  c_w.l(__rtentry2.o)
+    0x080001d0   0x080001d0   0x00000006   Code   RO         5443    .ARM.Collect$$rtentry$$00000004  c_w.l(__rtentry4.o)
+    0x080001d6   0x080001d6   0x00000000   Code   RO         5433    .ARM.Collect$$rtentry$$00000009  c_w.l(__rtentry2.o)
+    0x080001d6   0x080001d6   0x00000004   Code   RO         5434    .ARM.Collect$$rtentry$$0000000A  c_w.l(__rtentry2.o)
+    0x080001da   0x080001da   0x00000000   Code   RO         5436    .ARM.Collect$$rtentry$$0000000C  c_w.l(__rtentry2.o)
+    0x080001da   0x080001da   0x00000008   Code   RO         5437    .ARM.Collect$$rtentry$$0000000D  c_w.l(__rtentry2.o)
+    0x080001e2   0x080001e2   0x00000002   Code   RO         5458    .ARM.Collect$$rtexit$$00000000  c_w.l(rtexit.o)
+    0x080001e4   0x080001e4   0x00000000   Code   RO         5506    .ARM.Collect$$rtexit$$00000002  c_w.l(rtexit2.o)
+    0x080001e4   0x080001e4   0x00000004   Code   RO         5507    .ARM.Collect$$rtexit$$00000003  c_w.l(rtexit2.o)
+    0x080001e8   0x080001e8   0x00000006   Code   RO         5508    .ARM.Collect$$rtexit$$00000004  c_w.l(rtexit2.o)
+    0x080001ee   0x080001ee   0x00000002   PAD
+    0x080001f0   0x080001f0   0x00000040   Code   RO            4  * .text               startup_gd32f3x0.o
+    0x08000230   0x08000230   0x00000064   Code   RO         5421    .text               c_w.l(rt_memcpy_w.o)
+    0x08000294   0x08000294   0x0000004e   Code   RO         5423    .text               c_w.l(rt_memclr_w.o)
+    0x080002e2   0x080002e2   0x00000006   Code   RO         5425    .text               c_w.l(heapauxi.o)
+    0x080002e8   0x080002e8   0x0000004a   Code   RO         5445    .text               c_w.l(sys_stackheap_outer.o)
+    0x08000332   0x08000332   0x00000012   Code   RO         5447    .text               c_w.l(exit.o)
+    0x08000344   0x08000344   0x00000008   Code   RO         5455    .text               c_w.l(libspace.o)
+    0x0800034c   0x0800034c   0x0000000c   Code   RO         5516    .text               c_w.l(sys_exit.o)
+    0x08000358   0x08000358   0x00000002   Code   RO         5527    .text               c_w.l(use_no_semi.o)
+    0x0800035a   0x0800035a   0x00000000   Code   RO         5529    .text               c_w.l(indicate_semi.o)
+    0x0800035a   0x0800035a   0x00000004   Code   RO          236    i.BusFault_Handler  gd32f3x0_it.o
+    0x0800035e   0x0800035e   0x00000002   PAD
+    0x08000360   0x08000360   0x00000028   Code   RO          307    i.DMA_Channel1_2_IRQHandler  bsp_uart_midi.o
+    0x08000388   0x08000388   0x00000004   Code   RO          237    i.DebugMon_Handler  gd32f3x0_it.o
+    0x0800038c   0x0800038c   0x00000004   Code   RO          238    i.HardFault_Handler  gd32f3x0_it.o
+    0x08000390   0x08000390   0x00000004   Code   RO          239    i.MemManage_Handler  gd32f3x0_it.o
+    0x08000394   0x08000394   0x00000004   Code   RO          240    i.NMI_Handler       gd32f3x0_it.o
+    0x08000398   0x08000398   0x00000004   Code   RO          241    i.PendSV_Handler    gd32f3x0_it.o
+    0x0800039c   0x0800039c   0x00000004   Code   RO          242    i.SVC_Handler       gd32f3x0_it.o
+    0x080003a0   0x080003a0   0x00000002   Code   RO          243    i.SysTick_Handler   gd32f3x0_it.o
+    0x080003a2   0x080003a2   0x00000002   PAD
+    0x080003a4   0x080003a4   0x000002e8   Code   RO         4819    i.SystemInit        system_gd32f3x0.o
+    0x0800068c   0x0800068c   0x00000002   Code   RO          244    i.TIMER2_IRQHandler  gd32f3x0_it.o
+    0x0800068e   0x0800068e   0x00000002   PAD
+    0x08000690   0x08000690   0x00000010   Code   RO          404    i.USBFS_IRQHandler  bsp_usb_midi.o
+    0x080006a0   0x080006a0   0x00000004   Code   RO          245    i.UsageFault_Handler  gd32f3x0_it.o
+    0x080006a4   0x080006a4   0x0000001c   Code   RO         4820    i._soft_delay_      system_gd32f3x0.o
+    0x080006c0   0x080006c0   0x00000014   Code   RO         5215    i._usb_bos_desc_get  usbd_enum.o
+    0x080006d4   0x080006d4   0x00000022   Code   RO         5216    i._usb_config_desc_get  usbd_enum.o
+    0x080006f6   0x080006f6   0x00000014   Code   RO         5217    i._usb_dev_desc_get  usbd_enum.o
+    0x0800070a   0x0800070a   0x00000074   Code   RO         5218    i._usb_std_clearfeature  usbd_enum.o
+    0x0800077e   0x0800077e   0x00000040   Code   RO         5219    i._usb_std_getconfiguration  usbd_enum.o
+    0x080007be   0x080007be   0x00000002   PAD
+    0x080007c0   0x080007c0   0x00000110   Code   RO         5220    i._usb_std_getdescriptor  usbd_enum.o
+    0x080008d0   0x080008d0   0x0000003c   Code   RO         5221    i._usb_std_getinterface  usbd_enum.o
+    0x0800090c   0x0800090c   0x000000bc   Code   RO         5222    i._usb_std_getstatus  usbd_enum.o
+    0x080009c8   0x080009c8   0x00000006   Code   RO         5223    i._usb_std_reserved  usbd_enum.o
+    0x080009ce   0x080009ce   0x0000005c   Code   RO         5224    i._usb_std_setaddress  usbd_enum.o
+    0x08000a2a   0x08000a2a   0x00000002   PAD
+    0x08000a2c   0x08000a2c   0x000000b4   Code   RO         5225    i._usb_std_setconfiguration  usbd_enum.o
+    0x08000ae0   0x08000ae0   0x00000006   Code   RO         5226    i._usb_std_setdescriptor  usbd_enum.o
+    0x08000ae6   0x08000ae6   0x00000068   Code   RO         5227    i._usb_std_setfeature  usbd_enum.o
+    0x08000b4e   0x08000b4e   0x00000044   Code   RO         5228    i._usb_std_setinterface  usbd_enum.o
+    0x08000b92   0x08000b92   0x00000006   Code   RO         5229    i._usb_std_synchframe  usbd_enum.o
+    0x08000b98   0x08000b98   0x00000014   Code   RO         5230    i._usb_str_desc_get  usbd_enum.o
+    0x08000bac   0x08000bac   0x00000024   Code   RO         1538    i.dma_channel_disable  gd32f3x0_dma.o
+    0x08000bd0   0x08000bd0   0x00000018   Code   RO         1548    i.dma_interrupt_flag_clear  gd32f3x0_dma.o
+    0x08000be8   0x08000be8   0x0000008c   Code   RO         1549    i.dma_interrupt_flag_get  gd32f3x0_dma.o
+    0x08000c74   0x08000c74   0x0000002c   Code   RO          585    i.hw_delay          drv_usb_hw.o
+    0x08000ca0   0x08000ca0   0x00000070   Code   RO          586    i.hw_time_set       drv_usb_hw.o
+    0x08000d10   0x08000d10   0x00000006   Code   RO           12    i.main              main.o
+    0x08000d16   0x08000d16   0x00000002   PAD
+    0x08000d18   0x08000d18   0x00000018   Code   RO         2381    i.nvic_vector_table_set  gd32f3x0_misc.o
+    0x08000d30   0x08000d30   0x000000f4   Code   RO         2453    i.pmu_to_deepsleepmode  gd32f3x0_pmu.o
+    0x08000e24   0x08000e24   0x000000dc   Code   RO         4822    i.system_clock_96m_hxtal  system_gd32f3x0.o
+    0x08000f00   0x08000f00   0x00000008   Code   RO         4823    i.system_clock_config  system_gd32f3x0.o
+    0x08000f08   0x08000f08   0x0000000a   Code   RO         3374    i.timer_auto_reload_shadow_enable  gd32f3x0_timer.o
+    0x08000f12   0x08000f12   0x0000000a   Code   RO         3406    i.timer_disable     gd32f3x0_timer.o
+    0x08000f1c   0x08000f1c   0x0000000a   Code   RO         3410    i.timer_enable      gd32f3x0_timer.o
+    0x08000f26   0x08000f26   0x00000002   PAD
+    0x08000f28   0x08000f28   0x000000ac   Code   RO         3420    i.timer_init        gd32f3x0_timer.o
+    0x08000fd4   0x08000fd4   0x00000008   Code   RO         3426    i.timer_interrupt_disable  gd32f3x0_timer.o
+    0x08000fdc   0x08000fdc   0x00000008   Code   RO         3427    i.timer_interrupt_enable  gd32f3x0_timer.o
+    0x08000fe4   0x08000fe4   0x00000006   Code   RO         3428    i.timer_interrupt_flag_clear  gd32f3x0_timer.o
+    0x08000fea   0x08000fea   0x00000002   PAD
+    0x08000fec   0x08000fec   0x0000000c   Code   RO         5011    i.usb_ctlep_startout  drv_usb_dev.o
+    0x08000ff8   0x08000ff8   0x0000002a   Code   RO         5016    i.usb_iepintr_read  drv_usb_dev.o
+    0x08001022   0x08001022   0x0000001e   Code   RO         4941    i.usb_rxfifo_read   drv_usb_core.o
+    0x08001040   0x08001040   0x00000094   Code   RO         5019    i.usb_transc_active  drv_usb_dev.o
+    0x080010d4   0x080010d4   0x00000044   Code   RO         5020    i.usb_transc_clrstall  drv_usb_dev.o
+    0x08001118   0x08001118   0x000000fa   Code   RO         5022    i.usb_transc_inxfer  drv_usb_dev.o
+    0x08001212   0x08001212   0x0000007e   Code   RO         5023    i.usb_transc_outxfer  drv_usb_dev.o
+    0x08001290   0x08001290   0x00000042   Code   RO         5024    i.usb_transc_stall  drv_usb_dev.o
+    0x080012d2   0x080012d2   0x00000028   Code   RO         4943    i.usb_txfifo_flush  drv_usb_core.o
+    0x080012fa   0x080012fa   0x00000022   Code   RO         4944    i.usb_txfifo_write  drv_usb_core.o
+    0x0800131c   0x0800131c   0x0000000e   Code   RO          592    i.usb_udelay        drv_usb_hw.o
+    0x0800132a   0x0800132a   0x00000026   Code   RO         5233    i.usbd_class_request  usbd_enum.o
+    0x08001350   0x08001350   0x0000002e   Code   RO         5356    i.usbd_ctl_recev    usbd_transc.o
+    0x0800137e   0x0800137e   0x0000002e   Code   RO         5357    i.usbd_ctl_send     usbd_transc.o
+    0x080013ac   0x080013ac   0x00000020   Code   RO         5358    i.usbd_ctl_status_recev  usbd_transc.o
+    0x080013cc   0x080013cc   0x00000020   Code   RO         5359    i.usbd_ctl_status_send  usbd_transc.o
+    0x080013ec   0x080013ec   0x0000008c   Code   RO         4871    i.usbd_emptytxfifo_write  drv_usbd_int.o
+    0x08001478   0x08001478   0x0000001e   Code   RO         5234    i.usbd_enum_error   usbd_enum.o
+    0x08001496   0x08001496   0x00000034   Code   RO         5126    i.usbd_ep_recev     usbd_core.o
+    0x080014ca   0x080014ca   0x00000034   Code   RO         5127    i.usbd_ep_send      usbd_core.o
+    0x080014fe   0x080014fe   0x0000003a   Code   RO         5129    i.usbd_ep_stall     usbd_core.o
+    0x08001538   0x08001538   0x0000003a   Code   RO         5130    i.usbd_ep_stall_clear  usbd_core.o
+    0x08001572   0x08001572   0x00000092   Code   RO         5360    i.usbd_in_transc    usbd_transc.o
+    0x08001604   0x08001604   0x00000068   Code   RO         4872    i.usbd_int_enumfinish  drv_usbd_int.o
+    0x0800166c   0x0800166c   0x00000074   Code   RO         4873    i.usbd_int_epin     drv_usbd_int.o
+    0x080016e0   0x080016e0   0x00000090   Code   RO         4874    i.usbd_int_epout    drv_usbd_int.o
+    0x08001770   0x08001770   0x000000d8   Code   RO         4875    i.usbd_int_reset    drv_usbd_int.o
+    0x08001848   0x08001848   0x000000bc   Code   RO         4876    i.usbd_int_rxfifo   drv_usbd_int.o
+    0x08001904   0x08001904   0x00000068   Code   RO         4877    i.usbd_int_suspend  drv_usbd_int.o
+    0x0800196c   0x0800196c   0x00000110   Code   RO         4878    i.usbd_isr          drv_usbd_int.o
+    0x08001a7c   0x08001a7c   0x00000076   Code   RO         5361    i.usbd_out_transc   usbd_transc.o
+    0x08001af2   0x08001af2   0x00000084   Code   RO         5362    i.usbd_setup_transc  usbd_transc.o
+    0x08001b76   0x08001b76   0x00000002   PAD
+    0x08001b78   0x08001b78   0x0000001c   Code   RO         5235    i.usbd_standard_request  usbd_enum.o
+    0x08001b94   0x08001b94   0x00000006   Code   RO         5236    i.usbd_vendor_request  usbd_enum.o
+    0x08001b9a   0x08001b9a   0x0000000a   Code   RO         5514    x$fpl$fpinit        fz_wm.l(fpinit.o)
+    0x08001ba4   0x08001ba4   0x00000034   Data   RO         4879    .constdata          drv_usbd_int.o
+    0x08001bd8   0x08001bd8   0x00000004   Data   RO         5025    .constdata          drv_usb_dev.o
+    0x08001bdc   0x08001bdc   0x00000020   Data   RO         5582    Region$$Table       anon$$obj.o
+
+
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08001bfc, Size: 0x0000005c, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000000   0x08001bfc   0x00000005   Data   RW          315    .data               bsp_uart_midi.o
+    0x20000005   0x08001c01   0x00000003   PAD
+    0x20000008   0x08001c04   0x0000000c   Data   RW          593    .data               drv_usb_hw.o
+    0x20000014   0x08001c10   0x00000001   Data   RW         4880    .data               drv_usbd_int.o
+    0x20000015   0x08001c11   0x00000003   PAD
+    0x20000018   0x08001c14   0x00000043   Data   RW         5237    .data               usbd_enum.o
+
+
+    Execution Region ER_ZI (Exec base: 0x2000005c, Load base: 0x08001c58, Size: 0x00000c44, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x2000005c        -       0x000003d0   Zero   RW          414    .bss                bsp_usb_midi.o
+    0x2000042c        -       0x00000010   Zero   RW         2458    .bss                gd32f3x0_pmu.o
+    0x2000043c        -       0x00000060   Zero   RW         5456    .bss                c_w.l(libspace.o)
+    0x2000049c   0x08001c58   0x00000004   PAD
+    0x200004a0        -       0x00000400   Zero   RW            2    HEAP                startup_gd32f3x0.o
+    0x200008a0        -       0x00000400   Zero   RW            1    STACK               startup_gd32f3x0.o
+
+
+==============================================================================
+
+Image component sizes
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+
+        40          6          0          5          0       1332   bsp_uart_midi.o
+        16          6          0          0        976       1344   bsp_usb_midi.o
+       104          0          0          0          0      17288   drv_usb_core.o
+       712         14          4          0          0       8902   drv_usb_dev.o
+       170         18          0         12          0       2366   drv_usb_hw.o
+      1284         34         52          1          0       8225   drv_usbd_int.o
+       200         18          0          0          0       1970   gd32f3x0_dma.o
+        36          0          0          0          0       4406   gd32f3x0_it.o
+        24          8          0          0          0        616   gd32f3x0_misc.o
+       244         38          0          0         16        791   gd32f3x0_pmu.o
+       224         26          0          0          0       4790   gd32f3x0_timer.o
+         6          0          0          0          0      47387   main.o
+        64         26        336          0       2048        944   startup_gd32f3x0.o
+      1000         68          0          0          0       3889   system_gd32f3x0.o
+       220          0          0          0          0       7425   usbd_core.o
+      1358         36          0         67          0      16629   usbd_enum.o
+       552          0          0          0          0       5479   usbd_transc.o
+
+    ----------------------------------------------------------------------
+      6272        298        424         92       3040     133783   Object Totals
+         0          0         32          0          0          0   (incl. Generated)
+        18          0          0          7          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Member Name
+
+         8          0          0          0          0         68   __main.o
+         0          0          0          0          0          0   __rtentry.o
+        12          0          0          0          0          0   __rtentry2.o
+         6          0          0          0          0          0   __rtentry4.o
+        52          8          0          0          0          0   __scatter.o
+        26          0          0          0          0          0   __scatter_copy.o
+        28          0          0          0          0          0   __scatter_zi.o
+        18          0          0          0          0         80   exit.o
+         6          0          0          0          0        152   heapauxi.o
+         0          0          0          0          0          0   indicate_semi.o
+         2          0          0          0          0          0   libinit.o
+         6          0          0          0          0          0   libinit2.o
+         2          0          0          0          0          0   libshutdown.o
+         2          0          0          0          0          0   libshutdown2.o
+         8          4          0          0         96         68   libspace.o
+        78          0          0          0          0         80   rt_memclr_w.o
+       100          0          0          0          0         80   rt_memcpy_w.o
+         2          0          0          0          0          0   rtexit.o
+        10          0          0          0          0          0   rtexit2.o
+        12          4          0          0          0         68   sys_exit.o
+        74          0          0          0          0         80   sys_stackheap_outer.o
+         2          0          0          0          0         68   use_no_semi.o
+        10          0          0          0          0        116   fpinit.o
+
+    ----------------------------------------------------------------------
+       468         16          0          0        100        860   Library Totals
+         4          0          0          0          4          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
+
+       454         16          0          0         96        744   c_w.l
+        10          0          0          0          0        116   fz_wm.l
+
+    ----------------------------------------------------------------------
+       468         16          0          0        100        860   Library Totals
+
+    ----------------------------------------------------------------------
+
+==============================================================================
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
+
+      6740        314        424         92       3140     126783   Grand Totals
+      6740        314        424         92       3140     126783   ELF Image Totals
+      6740        314        424         92          0          0   ROM Totals
+
+==============================================================================
+
+    Total RO  Size (Code + RO Data)                 7164 (   7.00kB)
+    Total RW  Size (RW Data + ZI Data)              3232 (   3.16kB)
+    Total ROM Size (Code + RO Data + RW Data)       7256 (   7.09kB)
+
+==============================================================================
+

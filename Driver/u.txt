@@ -1,0 +1,735 @@
+/******************************************************************************
+ * Utilities/debug_rtt.h
+ *****************************************************************************/
+#ifndef DEBUG_RTT_H
+#define DEBUG_RTT_H
+#include "common_types.h"
+
+#define DBG_LVL_NONE  0
+#define DBG_LVL_ERR   1
+#define DBG_LVL_WARN  2
+#define DBG_LVL_INFO  3
+#define DBG_LVL_DBG   4
+#ifndef DBG_LEVEL
+#define DBG_LEVEL     DBG_LVL_DBG
+#endif
+
+void dbg_init(void);
+void dbg_printf(const char *fmt, ...);
+void dbg_log(uint8_t lv, const char *mod, const char *fmt, ...);
+void dbg_hex_dump(const char *label, const uint8_t *data, uint16_t len);
+void dbg_midi_msg(const char *pfx, uint8_t st, uint8_t d1, uint8_t d2);
+
+#if DBG_LEVEL >= DBG_LVL_ERR
+  #define DBG_ERR(m,...)  dbg_log(DBG_LVL_ERR,m,__VA_ARGS__)
+#else
+  #define DBG_ERR(m,...)
+#endif
+#if DBG_LEVEL >= DBG_LVL_WARN
+  #define DBG_WARN(m,...) dbg_log(DBG_LVL_WARN,m,__VA_ARGS__)
+#else
+  #define DBG_WARN(m,...)
+#endif
+#if DBG_LEVEL >= DBG_LVL_INFO
+  #define DBG_INFO(m,...) dbg_log(DBG_LVL_INFO,m,__VA_ARGS__)
+#else
+  #define DBG_INFO(m,...)
+#endif
+#if DBG_LEVEL >= DBG_LVL_DBG
+  #define DBG_DBG(m,...)  dbg_log(DBG_LVL_DBG,m,__VA_ARGS__)
+#else
+  #define DBG_DBG(m,...)
+#endif
+#endif /* DEBUG_RTT_H */
+
+/******************************************************************************
+ * Utilities/debug_rtt.c
+ *****************************************************************************/
+#include "debug_rtt.h"
+#include "SEGGER_RTT.h"
+#include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
+
+extern uint32_t bsp_get_tick(void);
+
+static char s_buf[256];
+static const char *s_tag[] = {"", "[ERR]", "[WRN]", "[INF]", "[DBG]"};
+
+void dbg_init(void)
+{
+    SEGGER_RTT_Init();
+    SEGGER_RTT_ConfigUpBuffer(0, "Term", NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
+    SEGGER_RTT_WriteString(0, "\r\n=== " PRODUCT_NAME " v"
+        /* manual version string */ "1.0.0 ===\r\n");
+}
+
+void dbg_printf(const char *fmt, ...)
+{
+    va_list a; va_start(a, fmt);
+    int n = vsnprintf(s_buf, sizeof(s_buf), fmt, a); va_end(a);
+    if (n > 0) SEGGER_RTT_Write(0, s_buf, (unsigned)n);
+}
+
+void dbg_log(uint8_t lv, const char *mod, const char *fmt, ...)
+{
+    if (lv > DBG_LEVEL) return;
+    uint32_t t = bsp_get_tick();
+    int h = snprintf(s_buf, sizeof(s_buf), "%5lu.%03lu %s [%s] ",
+                     t / 1000, t % 1000, s_tag[lv], mod);
+    va_list a; va_start(a, fmt);
+    int m = vsnprintf(s_buf + h, sizeof(s_buf) - h, fmt, a); va_end(a);
+    int tot = h + m;
+    if (tot < (int)sizeof(s_buf) - 2) { s_buf[tot++] = '\r'; s_buf[tot++] = '\n'; }
+    SEGGER_RTT_Write(0, s_buf, (unsigned)tot);
+}
+
+void dbg_hex_dump(const char *lb, const uint8_t *d, uint16_t len)
+{
+    dbg_printf("%s[%u]: ", lb, len);
+    for (uint16_t i = 0; i < len && i < 64; i++) dbg_printf("%02X ", d[i]);
+    if (len > 64) dbg_printf("...");
+    dbg_printf("\r\n");
+}
+
+void dbg_midi_msg(const char *p, uint8_t st, uint8_t d1, uint8_t d2)
+{
+    static const char *nm[] = {"NtOff","NtOn","PolyAT","CC","PC","ChAT","PB","Sys"};
+    if (st < 0x80) return;
+    if (st < 0xF0) dbg_printf("%s %s ch%u %u %u\r\n", p, nm[(st>>4)&7], (st&0xF)+1, d1, d2);
+    else dbg_printf("%s Sys 0x%02X\r\n", p, st);
+}
+
+/******************************************************************************
+ * Utilities/error_handler.h
+ *****************************************************************************/
+#ifndef ERROR_HANDLER_H
+#define ERROR_HANDLER_H
+#include "common_types.h"
+
+typedef enum {
+    ERR_SRC_SYS = 0, ERR_SRC_USB, ERR_SRC_UART, ERR_SRC_MIDI, ERR_SRC_SYSEX,
+    ERR_SRC_DFU, ERR_SRC_EE, ERR_SRC_LCD, ERR_SRC_LED, ERR_SRC_ADC,
+    ERR_SRC_AUDIO, ERR_SRC_JACK, ERR_SRC_COUNT
+} error_src_t;
+
+typedef enum {
+    ERR_NONE = 0,
+    ERR_HARDFAULT   = 0x0100, ERR_STACK_OVF  = 0x0101,
+    ERR_USB_DISC    = 0x0200, ERR_USB_OVF     = 0x0201,
+    ERR_UART_FRAME  = 0x0300, ERR_UART_OVR    = 0x0301,
+    ERR_MIDI_RX_OVF = 0x0400, ERR_MIDI_TX_OVF = 0x0401,
+    ERR_SYSEX_OVF   = 0x0500, ERR_SYSEX_TMO   = 0x0501,
+    ERR_DFU_SIZE    = 0x0600, ERR_DFU_CRC     = 0x0601,
+    ERR_DFU_FLASH   = 0x0602, ERR_DFU_SEQ     = 0x0603,
+    ERR_EE_CRC      = 0x0700, ERR_EE_WR       = 0x0701, ERR_EE_FULL = 0x0703,
+    ERR_LCD_TMO     = 0x0800, ERR_LED_I2C     = 0x0910,
+    ERR_AUDIO_CLIP  = 0x0B00,
+} error_code_t;
+
+typedef struct {
+    uint32_t     ts;
+    error_code_t code;
+    error_src_t  src;
+    uint32_t     param;
+} error_rec_t;
+
+#define ERR_LOG_SIZE 32
+
+void        err_init(void);
+void        err_raise(error_src_t s, error_code_t c, uint32_t p);
+error_rec_t err_last(void);
+uint8_t     err_count(void);
+void        err_clear(void);
+
+typedef void (*err_cb_t)(error_src_t, error_code_t);
+void err_set_cb(err_cb_t cb);
+
+#endif /* ERROR_HANDLER_H */
+
+/******************************************************************************
+ * Utilities/error_handler.c
+ *****************************************************************************/
+#include "error_handler.h"
+#include "debug_rtt.h"
+#include <string.h>
+
+extern uint32_t bsp_get_tick(void);
+
+static error_rec_t s_log[ERR_LOG_SIZE];
+static uint8_t s_h = 0, s_n = 0;
+static err_cb_t s_cb = NULL;
+static const char *s_nm[] = {
+    "SYS","USB","UART","MIDI","SXX","DFU","EE","LCD","LED","ADC","AUD","JACK"
+};
+
+void err_init(void)  { memset(s_log, 0, sizeof(s_log)); s_h = 0; s_n = 0; }
+void err_set_cb(err_cb_t cb) { s_cb = cb; }
+
+void err_raise(error_src_t s, error_code_t c, uint32_t p)
+{
+    s_log[s_h] = (error_rec_t){ bsp_get_tick(), c, s, p };
+    s_h = (s_h + 1) % ERR_LOG_SIZE;
+    if (s_n < ERR_LOG_SIZE) s_n++;
+    DBG_ERR(s < ERR_SRC_COUNT ? s_nm[s] : "?", "0x%04X p=%08lX", c, p);
+    if (s_cb) s_cb(s, c);
+}
+
+error_rec_t err_last(void)
+{
+    if (!s_n) return (error_rec_t){0};
+    return s_log[s_h ? s_h - 1 : ERR_LOG_SIZE - 1];
+}
+
+uint8_t err_count(void) { return s_n; }
+void err_clear(void) { s_h = 0; s_n = 0; }
+
+/******************************************************************************
+ * Utilities/assert_handler.h
+ *****************************************************************************/
+#ifndef ASSERT_HANDLER_H
+#define ASSERT_HANDLER_H
+#include "common_types.h"
+
+#ifdef USE_ASSERT
+  #define ASSERT(x) do { if (!(x)) assert_failed(__FILE__, __LINE__, #x); } while(0)
+#else
+  #define ASSERT(x) ((void)0)
+#endif
+
+void assert_failed(const char *f, uint32_t ln, const char *expr);
+
+#endif /* ASSERT_HANDLER_H */
+
+/******************************************************************************
+ * Utilities/assert_handler.c
+ *****************************************************************************/
+#include "assert_handler.h"
+#include "debug_rtt.h"
+#include "error_handler.h"
+
+void assert_failed(const char *f, uint32_t ln, const char *expr)
+{
+    DBG_ERR("ASSERT", "%s:%lu [%s]", f, ln, expr);
+    err_raise(ERR_SRC_SYS, ERR_HARDFAULT, ln);
+    __disable_irq();
+    while (1) { __NOP(); }
+}
+
+/******************************************************************************
+ * Utilities/math_utils.h
+ *****************************************************************************/
+#ifndef MATH_UTILS_H
+#define MATH_UTILS_H
+#include "common_types.h"
+
+int32_t  clamp_i32(int32_t v, int32_t lo, int32_t hi);
+uint8_t  clamp_u8(uint8_t v, uint8_t lo, uint8_t hi);
+int32_t  map_range(int32_t v, int32_t il, int32_t ih, int32_t ol, int32_t oh);
+uint8_t  adc_to_midi_linear(uint16_t a);
+uint8_t  adc_to_midi_log(uint16_t a);
+uint8_t  adc_to_midi_scurve(uint16_t a);
+uint16_t ema_filter(uint16_t nv, uint16_t pv, uint8_t alpha);
+uint16_t median3(uint16_t a, uint16_t b, uint16_t c);
+int8_t   amp_to_db(uint16_t amp, uint16_t fs);
+uint8_t  db_to_bright(int8_t db);
+
+typedef enum { VEL_LINEAR = 0, VEL_SOFT, VEL_HARD, VEL_FIXED } vel_curve_t;
+uint8_t vel_curve(uint8_t raw, vel_curve_t c);
+uint16_t clk_to_bpm(uint32_t us);
+uint32_t bpm_to_clk(uint16_t bpm);
+
+#endif /* MATH_UTILS_H */
+
+/******************************************************************************
+ * Utilities/math_utils.c
+ *****************************************************************************/
+#include "math_utils.h"
+#include <math.h>
+
+int32_t clamp_i32(int32_t v, int32_t lo, int32_t hi) { return v < lo ? lo : v > hi ? hi : v; }
+uint8_t clamp_u8(uint8_t v, uint8_t lo, uint8_t hi)  { return v < lo ? lo : v > hi ? hi : v; }
+
+int32_t map_range(int32_t v, int32_t il, int32_t ih, int32_t ol, int32_t oh)
+{
+    if (ih == il) return ol;
+    return clamp_i32((int32_t)((int64_t)(v - il) * (oh - ol) / (ih - il)) + ol, ol, oh);
+}
+
+uint8_t adc_to_midi_linear(uint16_t a)
+{
+    uint32_t v = (uint32_t)a * 127 / 4095;
+    return v > 127 ? 127 : (uint8_t)v;
+}
+
+uint8_t adc_to_midi_log(uint16_t a)
+{
+    if (!a) return 0;
+    return (uint8_t)(log10f(1.0f + (float)a / 4095.0f * 9.0f) * 127.0f);
+}
+
+uint8_t adc_to_midi_scurve(uint16_t a)
+{
+    float n = (float)a / 4095.0f;
+    return (uint8_t)(n * n * (3.0f - 2.0f * n) * 127.0f);
+}
+
+uint16_t ema_filter(uint16_t nv, uint16_t pv, uint8_t al)
+{
+    return (uint16_t)(((uint32_t)al * nv + (uint32_t)(256 - al) * pv) >> 8);
+}
+
+uint16_t median3(uint16_t a, uint16_t b, uint16_t c)
+{
+    if (a > b) { uint16_t t = a; a = b; b = t; }
+    if (b > c) { uint16_t t = b; b = c; c = t; }
+    if (a > b) { uint16_t t = a; a = b; b = t; }
+    return b;
+}
+
+int8_t amp_to_db(uint16_t a, uint16_t fs)
+{
+    if (!a) return -96;
+    int8_t d = (int8_t)(20.0f * log10f((float)a / (float)fs));
+    return d < -96 ? -96 : d;
+}
+
+uint8_t db_to_bright(int8_t db)
+{
+    if (db <= -96) return 0;
+    if (db >= 0) return 255;
+    return (uint8_t)((int16_t)(db + 96) * 255 / 96);
+}
+
+uint8_t vel_curve(uint8_t r, vel_curve_t c)
+{
+    float n = (float)r / 127.0f;
+    switch (c) {
+    case VEL_SOFT:  return (uint8_t)(sqrtf(n) * 127.0f);
+    case VEL_HARD:  return (uint8_t)(n * n * 127.0f);
+    case VEL_FIXED: return r ? 100 : 0;
+    default:        return r;
+    }
+}
+
+uint16_t clk_to_bpm(uint32_t us) { return us ? (uint16_t)(60000000UL / (us * 24)) : 0; }
+uint32_t bpm_to_clk(uint16_t b)  { return b ? 60000000UL / ((uint32_t)b * 24) : 0; }
+
+/******************************************************************************
+ * Utilities/midi_utils.h
+ *****************************************************************************/
+#ifndef MIDI_UTILS_H
+#define MIDI_UTILS_H
+#include "common_types.h"
+
+const char *midi_note_name(uint8_t n);
+uint8_t     midi_name_to_note(const char *s);
+const char *midi_cc_name(uint8_t cc);
+
+void    midi_pb_pack(int16_t v, uint8_t *l, uint8_t *m);
+int16_t midi_pb_unpack(uint8_t l, uint8_t m);
+
+#define SYSEX_MFR0   0x00
+#define SYSEX_MFR1   0x00
+#define SYSEX_MFR2   0x7F
+#define SYSEX_DEVID  0x01
+
+uint8_t  midi_sysex_hdr(uint8_t *buf, uint8_t cmd);
+uint8_t  midi_sysex_checksum(const uint8_t *d, uint16_t len);
+uint8_t  midi_sysex_verify(const uint8_t *d, uint16_t len);
+uint16_t midi_enc_7bit(const uint8_t *in, uint16_t il, uint8_t *out, uint16_t om);
+uint16_t midi_dec_7bit(const uint8_t *in, uint16_t il, uint8_t *out, uint16_t om);
+uint8_t  midi_transpose(uint8_t n, int8_t s);
+uint8_t  midi_in_scale(uint8_t n, uint16_t mask);
+
+#define SCALE_MAJOR 0x0AB5
+#define SCALE_MINOR 0x05AD
+#define SCALE_PENTA 0x0295
+
+#endif /* MIDI_UTILS_H */
+
+/******************************************************************************
+ * Utilities/midi_utils.c
+ *****************************************************************************/
+#include "midi_utils.h"
+#include <stdio.h>
+#include <string.h>
+
+static const char *s_nn[12] = {
+    "C","C#","D","D#","E","F","F#","G","G#","A","A#","B"
+};
+static char s_nb[8];
+
+const char *midi_note_name(uint8_t n)
+{
+    if (n > 127) return "?";
+    snprintf(s_nb, sizeof(s_nb), "%s%d", s_nn[n % 12], (int)(n / 12) - 1);
+    return s_nb;
+}
+
+uint8_t midi_name_to_note(const char *s)
+{
+    if (!s || !*s) return 0xFF;
+    int8_t b = -1;
+    for (int i = 0; i < 12; i++) {
+        uint8_t l = strlen(s_nn[i]);
+        if (!strncmp(s, s_nn[i], l)) { b = i; s += l; break; }
+    }
+    if (b < 0) return 0xFF;
+    int8_t o = 0, ng = 0;
+    if (*s == '-') { ng = 1; s++; }
+    while (*s >= '0' && *s <= '9') { o = o * 10 + (*s++ - '0'); }
+    if (ng) o = -o;
+    int16_t r = (o + 1) * 12 + b;
+    return (r < 0 || r > 127) ? 0xFF : (uint8_t)r;
+}
+
+const char *midi_cc_name(uint8_t cc)
+{
+    switch (cc) {
+    case 0:   return "BankMSB";  case 1:   return "ModWhl";
+    case 7:   return "Vol";      case 10:  return "Pan";
+    case 11:  return "Expr";     case 64:  return "Sustain";
+    case 74:  return "Cutoff";   case 91:  return "Reverb";
+    case 123: return "AllNtOff"; default:  return "CC";
+    }
+}
+
+void midi_pb_pack(int16_t v, uint8_t *l, uint8_t *m)
+{
+    uint16_t r = (uint16_t)(v + 8192);
+    *l = r & 0x7F; *m = (r >> 7) & 0x7F;
+}
+
+int16_t midi_pb_unpack(uint8_t l, uint8_t m)
+{
+    return (int16_t)(((uint16_t)m << 7) | l) - 8192;
+}
+
+uint8_t midi_sysex_hdr(uint8_t *b, uint8_t cmd)
+{
+    b[0] = 0xF0; b[1] = SYSEX_MFR0; b[2] = SYSEX_MFR1;
+    b[3] = SYSEX_MFR2; b[4] = SYSEX_DEVID; b[5] = cmd;
+    return 6;
+}
+
+uint8_t midi_sysex_checksum(const uint8_t *d, uint16_t l)
+{
+    uint8_t c = 0;
+    for (uint16_t i = 1; i < l - 1; i++) c ^= d[i];
+    return c & 0x7F;
+}
+
+uint8_t midi_sysex_verify(const uint8_t *d, uint16_t l)
+{
+    if (l < 3 || d[0] != 0xF0 || d[l-1] != 0xF7) return 0;
+    uint8_t c = 0;
+    for (uint16_t i = 1; i < l - 2; i++) c ^= d[i];
+    return ((c & 0x7F) == d[l-2]) ? 1 : 0;
+}
+
+uint16_t midi_enc_7bit(const uint8_t *in, uint16_t il, uint8_t *out, uint16_t om)
+{
+    uint16_t oi = 0, i = 0;
+    while (i < il && oi < om) {
+        uint16_t ch = (il - i > 7) ? 7 : il - i;
+        uint8_t ms = 0;
+        for (uint16_t j = 0; j < ch; j++)
+            if (in[i+j] & 0x80) ms |= (1 << j);
+        out[oi++] = ms;
+        for (uint16_t j = 0; j < ch && oi < om; j++)
+            out[oi++] = in[i+j] & 0x7F;
+        i += ch;
+    }
+    return oi;
+}
+
+uint16_t midi_dec_7bit(const uint8_t *in, uint16_t il, uint8_t *out, uint16_t om)
+{
+    uint16_t oi = 0, i = 0;
+    while (i < il && oi < om) {
+        uint8_t ms = in[i++];
+        uint16_t ch = (il - i > 7) ? 7 : il - i;
+        for (uint16_t j = 0; j < ch && oi < om; j++) {
+            uint8_t v = in[i+j];
+            if (ms & (1 << j)) v |= 0x80;
+            out[oi++] = v;
+        }
+        i += ch;
+    }
+    return oi;
+}
+
+uint8_t midi_transpose(uint8_t n, int8_t s)
+{
+    int16_t r = (int16_t)n + s;
+    return (r < 0) ? 0 : (r > 127) ? 127 : (uint8_t)r;
+}
+
+uint8_t midi_in_scale(uint8_t n, uint16_t m)
+{
+    return (m & (1 << (n % 12))) ? 1 : 0;
+}
+
+/******************************************************************************
+ * Utilities/color_utils.h
+ *****************************************************************************/
+#ifndef COLOR_UTILS_H
+#define COLOR_UTILS_H
+#include "common_types.h"
+
+typedef struct { uint8_t g, r, b; } led_rgb_t;  /* WS2812 GRB order */
+
+uint16_t  rgb565(uint8_t r, uint8_t g, uint8_t b);
+uint16_t  rgb565_blend(uint16_t c1, uint16_t c2, uint8_t a);
+uint16_t  rgb565_dim(uint16_t c, uint8_t br);
+led_rgb_t hsv_to_rgb(uint16_t h, uint8_t s, uint8_t v);
+led_rgb_t note_to_color(uint8_t note, uint8_t br);
+led_rgb_t velocity_to_color(uint8_t vel);
+led_rgb_t channel_to_color(uint8_t ch);
+led_rgb_t led_dim(led_rgb_t c, uint8_t br);
+
+#define LED_OFF   ((led_rgb_t){0, 0, 0})
+#define LED_RED   ((led_rgb_t){0, 255, 0})
+#define LED_GREEN ((led_rgb_t){255, 0, 0})
+#define LED_BLUE  ((led_rgb_t){0, 0, 255})
+#define LED_WHITE ((led_rgb_t){255, 255, 255})
+
+#endif /* COLOR_UTILS_H */
+
+/******************************************************************************
+ * Utilities/color_utils.c
+ *****************************************************************************/
+#include "color_utils.h"
+
+uint16_t rgb565(uint8_t r, uint8_t g, uint8_t b)
+{
+    return ((uint16_t)(r & 0xF8) << 8) | ((uint16_t)(g & 0xFC) << 3) | ((uint16_t)(b & 0xF8) >> 3);
+}
+
+uint16_t rgb565_blend(uint16_t c1, uint16_t c2, uint8_t a)
+{
+    uint8_t r1 = (c1 >> 8) & 0xF8, g1 = (c1 >> 3) & 0xFC, b1 = (c1 << 3) & 0xF8;
+    uint8_t r2 = (c2 >> 8) & 0xF8, g2 = (c2 >> 3) & 0xFC, b2 = (c2 << 3) & 0xF8;
+    return rgb565((r1*(255-a) + r2*a) >> 8, (g1*(255-a) + g2*a) >> 8, (b1*(255-a) + b2*a) >> 8);
+}
+
+uint16_t rgb565_dim(uint16_t c, uint8_t br)
+{
+    uint8_t r = (c >> 8) & 0xF8, g = (c >> 3) & 0xFC, b = (c << 3) & 0xF8;
+    return rgb565(r * br / 255, g * br / 255, b * br / 255);
+}
+
+led_rgb_t led_dim(led_rgb_t c, uint8_t br)
+{
+    return (led_rgb_t){
+        (uint8_t)((uint16_t)c.g * br / 255),
+        (uint8_t)((uint16_t)c.r * br / 255),
+        (uint8_t)((uint16_t)c.b * br / 255)
+    };
+}
+
+led_rgb_t hsv_to_rgb(uint16_t h, uint8_t s, uint8_t v)
+{
+    if (!s) return (led_rgb_t){v, v, v};
+    h %= 360;
+    uint8_t rg = h / 60, rm = (h % 60) * 255 / 60;
+    uint8_t p = v * (255 - s) / 255;
+    uint8_t q = v * (255 - (uint16_t)s * rm / 255) / 255;
+    uint8_t t = v * (255 - (uint16_t)s * (255 - rm) / 255) / 255;
+    switch (rg) {
+    case 0: return (led_rgb_t){p, v, t}; case 1: return (led_rgb_t){v, q, p};
+    case 2: return (led_rgb_t){v, p, t}; case 3: return (led_rgb_t){q, p, v};
+    case 4: return (led_rgb_t){p, t, v}; default: return (led_rgb_t){t, v, p};
+    }
+}
+
+led_rgb_t note_to_color(uint8_t n, uint8_t br) { return hsv_to_rgb((uint16_t)(n % 12) * 30, 255, br); }
+
+led_rgb_t velocity_to_color(uint8_t v)
+{
+    if (v < 43) return (led_rgb_t){(uint8_t)(v * 6), (uint8_t)(v * 2), 0};
+    if (v < 85) return (led_rgb_t){(uint8_t)((127 - v) * 6), 255, 0};
+    return (led_rgb_t){0, 255, (uint8_t)((127 - v) * 2)};
+}
+
+led_rgb_t channel_to_color(uint8_t ch) { return hsv_to_rgb((uint16_t)(ch & 0xF) * 22, 200, 180); }
+
+/******************************************************************************
+ * Utilities/string_utils.h
+ *****************************************************************************/
+#ifndef STRING_UTILS_H
+#define STRING_UTILS_H
+#include "common_types.h"
+
+uint8_t str_u16(uint16_t v, char *b);
+void    str_hex8(uint8_t v, char *b);
+void    str_db(int8_t db, char *b);
+void    str_dbf(float db, char *b, uint8_t m);
+void    str_pct(uint8_t p, char *b);
+void    str_bpm(uint16_t bpm, char *b);
+void    str_pad(char *b, uint8_t w);
+void    str_safe(char *d, const char *s, uint8_t m);
+
+#endif /* STRING_UTILS_H */
+
+/******************************************************************************
+ * Utilities/string_utils.c
+ *****************************************************************************/
+#include "string_utils.h"
+#include <stdio.h>
+#include <string.h>
+
+static const char hx[] = "0123456789ABCDEF";
+
+uint8_t str_u16(uint16_t v, char *b) { return (uint8_t)sprintf(b, "%u", v); }
+void str_hex8(uint8_t v, char *b)    { b[0] = hx[(v>>4)&0xF]; b[1] = hx[v&0xF]; b[2] = 0; }
+void str_db(int8_t d, char *b)       { sprintf(b, "%ddB", d); }
+void str_dbf(float d, char *b, uint8_t m) { snprintf(b, m, "%.1fdB", d); }
+void str_pct(uint8_t p, char *b)     { sprintf(b, "%3u%%", p); }
+void str_bpm(uint16_t b, char *buf)  { sprintf(buf, "%uBPM", b); }
+
+void str_pad(char *b, uint8_t w)
+{
+    uint8_t l = strlen(b);
+    while (l < w) b[l++] = ' ';
+    b[l] = 0;
+}
+
+void str_safe(char *d, const char *s, uint8_t m)
+{
+    uint8_t i = 0;
+    while (i < m - 1 && s[i]) { d[i] = s[i]; i++; }
+    d[i] = 0;
+}
+
+/******************************************************************************
+ * Utilities/event_queue.h
+ *****************************************************************************/
+#ifndef EVENT_QUEUE_H
+#define EVENT_QUEUE_H
+#include "common_types.h"
+
+typedef enum {
+    EVT_NONE = 0,
+    EVT_KEY_PRESS, EVT_KEY_RELEASE, EVT_KEY_LONG, EVT_KEY_REPEAT,
+    EVT_ENC_CW, EVT_ENC_CCW, EVT_ENC_CLICK,
+    EVT_KNOB_CHANGE,
+    EVT_JACK_INSERT, EVT_JACK_REMOVE,
+    EVT_JACK_CLICK, EVT_JACK_DOUBLE, EVT_JACK_TRIPLE, EVT_JACK_LONG,
+    EVT_MIDI_RX,
+    EVT_DFU_PROG, EVT_DFU_DONE,
+    EVT_ERROR, EVT_PAGE_SW
+} evt_type_t;
+
+typedef struct {
+    evt_type_t type;
+    uint8_t    p1, p2;
+    uint16_t   val;
+    uint32_t   ts;
+} event_t;
+
+#define EVT_Q_SIZE 32
+
+void     evt_init(void);
+uint8_t  evt_post(evt_type_t t, uint8_t p1, uint8_t p2, uint16_t v);
+uint8_t  evt_poll(event_t *e);
+uint16_t evt_pending(void);
+void     evt_flush(void);
+
+#endif /* EVENT_QUEUE_H */
+
+/******************************************************************************
+ * Utilities/event_queue.c
+ *****************************************************************************/
+#include "event_queue.h"
+
+extern uint32_t bsp_get_tick(void);
+
+static event_t           s_q[EVT_Q_SIZE];
+static volatile uint16_t s_h = 0, s_t = 0;
+
+void evt_init(void) { s_h = 0; s_t = 0; }
+
+uint8_t evt_post(evt_type_t t, uint8_t p1, uint8_t p2, uint16_t v)
+{
+    uint16_t nx = (s_h + 1) % EVT_Q_SIZE;
+    if (nx == s_t) return 0;
+    s_q[s_h] = (event_t){ t, p1, p2, v, bsp_get_tick() };
+    s_h = nx;
+    return 1;
+}
+
+uint8_t evt_poll(event_t *e)
+{
+    if (s_h == s_t) return 0;
+    *e = s_q[s_t];
+    s_t = (s_t + 1) % EVT_Q_SIZE;
+    return 1;
+}
+
+uint16_t evt_pending(void)
+{
+    return (s_h >= s_t) ? (s_h - s_t) : (EVT_Q_SIZE - s_t + s_h);
+}
+
+void evt_flush(void) { s_t = s_h; }
+
+/******************************************************************************
+ * Utilities/mempool.h
+ *****************************************************************************/
+#ifndef MEMPOOL_H
+#define MEMPOOL_H
+#include "common_types.h"
+
+typedef struct {
+    uint8_t  *pool;
+    uint16_t  bsz, cnt;
+    uint32_t  used;     /* Bitmask, max 32 blocks */
+} mempool_t;
+
+void    mp_init(mempool_t *m, void *buf, uint16_t bsz, uint16_t cnt);
+void   *mp_alloc(mempool_t *m);
+void    mp_free(mempool_t *m, void *p);
+uint8_t mp_avail(const mempool_t *m);
+
+#endif /* MEMPOOL_H */
+
+/******************************************************************************
+ * Utilities/mempool.c
+ *****************************************************************************/
+#include "mempool.h"
+
+void mp_init(mempool_t *m, void *b, uint16_t bs, uint16_t c)
+{
+    m->pool = (uint8_t *)b;
+    m->bsz  = bs;
+    m->cnt  = (c > 32) ? 32 : c;
+    m->used = 0;
+}
+
+void *mp_alloc(mempool_t *m)
+{
+    for (uint16_t i = 0; i < m->cnt; i++) {
+        if (!(m->used & (1U << i))) {
+            m->used |= (1U << i);
+            return &m->pool[i * m->bsz];
+        }
+    }
+    return NULL;
+}
+
+void mp_free(mempool_t *m, void *p)
+{
+    if (!p) return;
+    uint16_t i = ((uint8_t *)p - m->pool) / m->bsz;
+    if (i < m->cnt) m->used &= ~(1U << i);
+}
+
+uint8_t mp_avail(const mempool_t *m)
+{
+    uint8_t n = 0;
+    for (uint16_t i = 0; i < m->cnt; i++)
+        if (!(m->used & (1U << i))) n++;
+    return n;
+}
