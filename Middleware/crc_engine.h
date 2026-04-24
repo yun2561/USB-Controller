@@ -4,6 +4,6 @@
 
 #include "common_types.h"
 
-uint16_t crc16_ccitt(const uint8_t *data, uint32_t len,uint16_t init);
-uint32_t crc32(const uint8_t *data,uint32_t len,uint32_t init);
+uint16_t crc16(const uint8_t *d, uint32_t len, uint16_t crc);
+uint32_t crc32(const uint8_t *d, uint32_t len, uint32_t crc);
 #endif /*CRC_ENGINE_H*/
