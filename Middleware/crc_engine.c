@@ -23,3 +23,4 @@ uint32_t crc32(const uint8_t *d, uint32_t len, uint32_t crc)
     }
     return crc ^ 0xFFFFFFFF;
 }
+

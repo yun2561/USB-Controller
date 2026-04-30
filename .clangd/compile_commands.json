@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "P:/USB-Controller",
+    "file": "Middleware/dfu_engine.c",
+    "command": "arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -std=gnu11 -DGD32F3x0 -DUSE_HAL_DRIVER -IApplication -IBootloader -ICommon -IDriver -IMiddleware -IUtilities -IDrivers -IDrivers/CMSIS -IDrivers/GD32F3x0_HAL_Driver/Inc -isystem \"C:/Program Files (x86)/GNU Arm Embedded Toolchain/12.3 rel1/arm-none-eabi/include\""
+  }
+]

@@ -15,8 +15,8 @@ typedef struct{
 } ring_buf_t;
 
 void        rb_init(ring_buf_t *rb);
-void        rb_push(ring_buf_t *rb, uint8_t b);
-void        rb_pop(ring_buf_t *rb, uint8_t *b);
+uint8_t        rb_push(ring_buf_t *rb, uint8_t b);
+uint8_t        rb_pop(ring_buf_t *rb, uint8_t *b);
 uint16_t    rb_push_blk(ring_buf_t *rb, const uint8_t*data, uint16_t len);
 uint16_t    rb_pop_blk(ring_buf_t *rb, uint8_t *data, uint16_t max);
 uint16_t    rb_avail(const ring_buf_t *rb);
@@ -25,3 +25,4 @@ void        rb_flush(ring_buf_t *rb);
 
 
 #endif /* RING_BUFFER_H */
+

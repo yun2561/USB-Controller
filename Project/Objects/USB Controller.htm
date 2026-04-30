@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\USB Controller.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\USB Controller.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Apr 17 14:48:14 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Apr 28 15:06:58 2026
 <BR><P>
 <H3>Maximum Stack Usage =        164 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -84,8 +84,8 @@ Function Pointers
 Global Symbols
 </H3>
 <P><STRONG><a name="[40]"></a>__main</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, __main.o(!!!main))
-<BR><BR>[Calls]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
-<LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
+<BR><BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
 </UL>
 
 <P><STRONG><a name="[42]"></a>__scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter))
@@ -175,8 +175,8 @@ Global Symbols
 <P><STRONG><a name="[a8]"></a>__rt_lib_shutdown_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C))
 
 <P><STRONG><a name="[43]"></a>__rt_entry</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry.o(.ARM.Collect$$rtentry$$00000000))
-<BR><BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
+<BR><BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
 <P><STRONG><a name="[a9]"></a>__rt_entry_presh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000002))
@@ -500,10 +500,10 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[72]"></a>usb_ctlep_startout</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, drv_usb_dev.o(i.usb_ctlep_startout))
-<BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ctl_status_send
+<BR><BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_int_reset
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ctl_status_send
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ctl_status_recev
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_enum_error
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_int_reset
 </UL>
 
 <P><STRONG><a name="[7b]"></a>usb_iepintr_read</STRONG> (Thumb, 42 bytes, Stack size 12 bytes, drv_usb_dev.o(i.usb_iepintr_read))
@@ -639,9 +639,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_transc_inxfer
 </UL>
-<BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ctl_status_send
+<BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_in_transc
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ctl_status_send
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_ctl_send
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_in_transc
 </UL>
 
 <P><STRONG><a name="[5e]"></a>usbd_ep_stall</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, usbd_core.o(i.usbd_ep_stall))
@@ -649,8 +649,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_transc_stall
 </UL>
-<BR>[Called By]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_enum_error
-<LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_usb_std_setfeature
+<BR>[Called By]<UL><LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_usb_std_setfeature
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_enum_error
 </UL>
 
 <P><STRONG><a name="[5c]"></a>usbd_ep_stall_clear</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, usbd_core.o(i.usbd_ep_stall_clear))
@@ -807,11 +807,11 @@ Local Symbols
 <P><STRONG><a name="[7f]"></a>usbd_int_reset</STRONG> (Thumb, 208 bytes, Stack size 64 bytes, drv_usbd_int.o(i.usbd_int_reset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = usbd_int_reset &rArr; usb_txfifo_flush &rArr; usb_udelay &rArr; hw_delay &rArr; hw_time_set
 </UL>
-<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_txfifo_flush
+<BR>[Calls]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_txfifo_flush
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_transc_active
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_ctlep_startout
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usbd_isr
 </UL>

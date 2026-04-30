@@ -123,3 +123,4 @@ uint8_t midi_encode_msg(const midi_msg_t *m, uint8_t *buf, uint8_t max)
     if (dlen >= 2 && max >= 3) buf[2] = m->data[1];
     return 1 + dlen;
 }
+

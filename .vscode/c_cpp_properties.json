@@ -13,6 +13,8 @@
         "P:/USB-Controller/Fwlib/GD32F3x0_usbfs_library/device/core/Include",
         "P:/USB-Controller/Fwlib/GD32F3x0_usbfs_library/driver/Include",
 
+        "P:/USB-Controller/Application",
+        "P:/USB-Controller/Middleware",
         "P:/USB-Controller/Driver",
         "P:/USB-Controller/Common",
         "C:/Keil_v5/ARM/ARMCC/include",

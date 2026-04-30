@@ -10,7 +10,7 @@ void rb_init(ring_buf_t *rb)
 
 }
 
-void rb_push(ring_buf_t *rb, uint8_t b)
+uint8_t rb_push(ring_buf_t *rb, uint8_t b)
 {
     uint16_t n = (rb->head + 1) & RB_MASK;
     if ( n == rb->tail) return 0;
@@ -32,7 +32,7 @@ uint16_t rb_push_blk(ring_buf_t *rb, const uint8_t*data, uint16_t len)
     uint16_t n = 0;
     for (uint16_t i = 0; i < len; i++)
     {
-        if(!push(rb,data[i])) break;
+        if(!rb_push(rb,data[i])) break;
         n++;
     }
     return n;

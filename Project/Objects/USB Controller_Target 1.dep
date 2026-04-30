@@ -41,6 +41,12 @@ I (..\Fwlib\GD32F3x0_usbfs_library\driver\Include\drv_usb_regs.h)(0x696056A5)
 I (..\Fwlib\GD32F3x0_usbfs_library\ustd\common\usb_ch9_std.h)(0x696056A5)
 I (..\Fwlib\GD32F3x0_usbfs_library\driver\Include\drv_usb_dev.h)(0x696056A5)
 I (..\Driver\usbd_conf.h)(0x69E1AA30)
+F (..\Application\ui_manager.h)(0x69F044DF)()
+F (..\Application\ui_manager.c)(0x69F044FB)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\ui_manager.o --omf_browse .\objects\ui_manager.crf --depend .\objects\ui_manager.d)
+F (..\Application\usb_midi_bridge.c)(0x69F04521)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\usb_midi_bridge.o --omf_browse .\objects\usb_midi_bridge.crf --depend .\objects\usb_midi_bridge.d)
+F (..\Application\usb_midi_bridge.h)(0x69F05643)()
+F (..\Application\midi_api.c)(0x69F059EB)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\midi_api.o --omf_browse .\objects\midi_api.crf --depend .\objects\midi_api.d)
+F (..\Application\midi_api.h)(0x69F05A89)()
 F (..\Bootloader\boot_main.c)(0x69DF3AEE)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\boot_main.o --omf_browse .\objects\boot_main.crf --depend .\objects\boot_main.d)
 I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
 I (..\Fwlib\CMSIS\core_cm4.h)(0x696056A5)
@@ -1110,8 +1116,271 @@ I (..\JLinkPrintf\SEGGER_RTT.h)(0x68C27146)
 I (..\JLinkPrintf\SEGGER_RTT_Conf.h)(0x68C27146)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
 I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5CEB79E4)
-F (..\Middleware\crc_engine.h)(0x69DC45EA)()
-F (..\Middleware\crc_engine.c)(0x69DC44EB)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\crc_engine.o --omf_browse .\objects\crc_engine.crf --depend .\objects\crc_engine.d)
+F (..\Middleware\crc_engine.h)(0x69F05AB2)()
+F (..\Middleware\crc_engine.c)(0x69F05B48)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\crc_engine.o --omf_browse .\objects\crc_engine.crf --depend .\objects\crc_engine.d)
+I (..\Middleware\crc_engine.h)(0x69F05AB2)
+I (..\Common\common_types.h)(0x69DF3EF2)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
+I (..\Fwlib\CMSIS\core_cm4.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
+I (..\Fwlib\CMSIS\core_cmInstr.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cmFunc.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cm4_simd.h)(0x696056A5)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\system_gd32f3x0.h)(0x696056A5)
+I (..\Driver\gd32f3x0_libopt.h)(0x67BD7BE0)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_adc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_crc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_ctc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dbg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dma.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_exti.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fmc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_gpio.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_syscfg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_i2c.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_pmu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rcu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rtc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_spi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_timer.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_usart.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_wwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_misc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_tsi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cec.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cmp.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dac.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
+F (..\Middleware\ring_buffer.h)(0x69F05BF8)()
+F (..\Middleware\ring_buffer.c)(0x69F05C3C)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\ring_buffer.o --omf_browse .\objects\ring_buffer.crf --depend .\objects\ring_buffer.d)
+I (..\Middleware\ring_buffer.h)(0x69F05BF8)
+I (..\Common\common_types.h)(0x69DF3EF2)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
+I (..\Fwlib\CMSIS\core_cm4.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
+I (..\Fwlib\CMSIS\core_cmInstr.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cmFunc.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cm4_simd.h)(0x696056A5)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\system_gd32f3x0.h)(0x696056A5)
+I (..\Driver\gd32f3x0_libopt.h)(0x67BD7BE0)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_adc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_crc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_ctc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dbg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dma.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_exti.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fmc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_gpio.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_syscfg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_i2c.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_pmu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rcu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rtc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_spi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_timer.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_usart.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_wwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_misc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_tsi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cec.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cmp.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dac.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
+F (..\Middleware\midi_parser.h)(0x69EB1FE3)()
+F (..\Middleware\midi_parser.c)(0x69F05AC7)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\midi_parser.o --omf_browse .\objects\midi_parser.crf --depend .\objects\midi_parser.d)
+I (..\Middleware\midi_parser.h)(0x69EB1FE3)
+I (..\Common\common_types.h)(0x69DF3EF2)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
+I (..\Fwlib\CMSIS\core_cm4.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
+I (..\Fwlib\CMSIS\core_cmInstr.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cmFunc.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cm4_simd.h)(0x696056A5)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\system_gd32f3x0.h)(0x696056A5)
+I (..\Driver\gd32f3x0_libopt.h)(0x67BD7BE0)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_adc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_crc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_ctc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dbg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dma.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_exti.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fmc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_gpio.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_syscfg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_i2c.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_pmu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rcu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rtc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_spi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_timer.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_usart.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_wwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_misc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_tsi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cec.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cmp.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dac.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
+F (..\Middleware\usb_midi_codec.h)(0x69EB2102)()
+F (..\Middleware\usb_midi_codec.c)(0x69EB2D1D)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\usb_midi_codec.o --omf_browse .\objects\usb_midi_codec.crf --depend .\objects\usb_midi_codec.d)
+I (..\Middleware\usb_midi_codec.h)(0x69EB2102)
+I (..\Middleware\midi_parser.h)(0x69EB1FE3)
+I (..\Common\common_types.h)(0x69DF3EF2)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
+I (..\Fwlib\CMSIS\core_cm4.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
+I (..\Fwlib\CMSIS\core_cmInstr.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cmFunc.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cm4_simd.h)(0x696056A5)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\system_gd32f3x0.h)(0x696056A5)
+I (..\Driver\gd32f3x0_libopt.h)(0x67BD7BE0)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_adc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_crc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_ctc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dbg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dma.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_exti.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fmc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_gpio.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_syscfg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_i2c.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_pmu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rcu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rtc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_spi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_timer.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_usart.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_wwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_misc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_tsi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cec.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cmp.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dac.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
+F (..\Middleware\midi_router.h)(0x69F05BBD)()
+F (..\Middleware\midi_router.c)(0x69F05BBD)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\midi_router.o --omf_browse .\objects\midi_router.crf --depend .\objects\midi_router.d)
+I (..\Middleware\midi_router.h)(0x69F05BBD)
+I (..\Middleware\midi_parser.h)(0x69EB1FE3)
+I (..\Common\common_types.h)(0x69DF3EF2)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
+I (..\Fwlib\CMSIS\core_cm4.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
+I (..\Fwlib\CMSIS\core_cmInstr.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cmFunc.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cm4_simd.h)(0x696056A5)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\system_gd32f3x0.h)(0x696056A5)
+I (..\Driver\gd32f3x0_libopt.h)(0x67BD7BE0)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_adc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_crc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_ctc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dbg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dma.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_exti.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fmc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_gpio.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_syscfg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_i2c.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_pmu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rcu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rtc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_spi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_timer.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_usart.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_wwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_misc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_tsi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cec.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cmp.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dac.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
+I (..\Middleware\ring_buffer.h)(0x69F05BF8)
+F (..\Middleware\sysex_assembler.h)(0x69F05C54)()
+F (..\Middleware\sysex_assembler.c)(0x69F05C8B)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\sysex_assembler.o --omf_browse .\objects\sysex_assembler.crf --depend .\objects\sysex_assembler.d)
+I (..\Middleware\sysex_assembler.h)(0x69F05C54)
+I (..\Common\common_types.h)(0x69DF3EF2)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
+I (..\Fwlib\CMSIS\core_cm4.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
+I (..\Fwlib\CMSIS\core_cmInstr.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cmFunc.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cm4_simd.h)(0x696056A5)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\system_gd32f3x0.h)(0x696056A5)
+I (..\Driver\gd32f3x0_libopt.h)(0x67BD7BE0)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_adc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_crc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_ctc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dbg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dma.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_exti.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fmc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_gpio.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_syscfg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_i2c.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_pmu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rcu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rtc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_spi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_timer.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_usart.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_wwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_misc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_tsi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cec.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cmp.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dac.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
+F (..\Middleware\dfu_engine.h)(0x69EEFD0E)()
+F (..\Middleware\dfu_engine.c)(0x69F0444C)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\dfu_engine.o --omf_browse .\objects\dfu_engine.crf --depend .\objects\dfu_engine.d)
+I (..\Middleware\dfu_engine.h)(0x69EEFD0E)
+I (..\Common\common_types.h)(0x69DF3EF2)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
+I (..\Fwlib\CMSIS\core_cm4.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
+I (..\Fwlib\CMSIS\core_cmInstr.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cmFunc.h)(0x696056A5)
+I (..\Fwlib\CMSIS\core_cm4_simd.h)(0x696056A5)
+I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\system_gd32f3x0.h)(0x696056A5)
+I (..\Driver\gd32f3x0_libopt.h)(0x67BD7BE0)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_adc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_crc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_ctc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dbg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dma.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_exti.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fmc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_gpio.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_syscfg.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_i2c.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_fwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_pmu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rcu.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_rtc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_spi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_timer.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_usart.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_wwdgt.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_misc.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_tsi.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cec.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cmp.h)(0x696056A5)
+I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dac.h)(0x696056A5)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
+I (..\Middleware\crc_engine.h)(0x69F05AB2)
+I (..\Driver\bsp_fmc.h)(0x69DF3EC0)
+I (..\Driver\bsp_system.h)(0x69DF048D)
 F (..\Common\common_types.h)(0x69DF3EF2)()
 F (..\Fwlib\CMSIS\GD\GD32F3x0\Source\system_gd32f3x0.c)(0x69BBB30A)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\system_gd32f3x0.o --omf_browse .\objects\system_gd32f3x0.crf --depend .\objects\system_gd32f3x0.d)
 I (..\Fwlib\CMSIS\GD\GD32F3x0\Include\gd32f3x0.h)(0x69BBAAEA)
@@ -1145,7 +1414,7 @@ I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_tsi.h)(0x696056A5)
 I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cec.h)(0x696056A5)
 I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_cmp.h)(0x696056A5)
 I (..\Fwlib\GD32F3x0_standard_peripheral\Include\gd32f3x0_dac.h)(0x696056A5)
-F (..\Fwlib\GD32F3x0_usbfs_library\driver\Source\drv_usbd_int.c)(0x69E1ABF4)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\drv_usbd_int.o --omf_browse .\objects\drv_usbd_int.crf --depend .\objects\drv_usbd_int.d)
+F (..\Fwlib\GD32F3x0_usbfs_library\driver\Source\drv_usbd_int.c)(0x69E1D7BC)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Driver -I ..\Utilties -I ..\Common -I ..\Middleware -I ..\Bootloader -I ..\Fwlib\CMSIS\GD\GD32F3x0\Include -I ..\Fwlib\CMSIS -I ..\Fwlib\GD32F3x0_standard_peripheral\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\device\core\Source -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Include -I ..\Fwlib\GD32F3x0_usbfs_library\driver\Source -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\common -I ..\Fwlib\GD32F3x0_usbfs_library\ustd\class\msc -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Include -I ..\Fwlib\GD32F3x0_usbfs_library\host\core\Source --diag_suppress=3108-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\GigaDevice\GD32F3x0_DFP\3.3.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="528" -DGD32F350 -DUSE_STDPERIPH_DRIVER -DGD32F350-o .\objects\drv_usbd_int.o --omf_browse .\objects\drv_usbd_int.crf --depend .\objects\drv_usbd_int.d)
 I (..\Fwlib\GD32F3x0_usbfs_library\driver\Include\drv_usbd_int.h)(0x696056A5)
 I (..\Fwlib\GD32F3x0_usbfs_library\driver\Include\drv_usb_core.h)(0x69E1A6C9)
 I (..\Fwlib\GD32F3x0_usbfs_library\driver\Include\drv_usb_regs.h)(0x696056A5)

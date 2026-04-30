@@ -25,6 +25,10 @@ typedef enum {
 #define DFU_CMD_REBOOT  0x04
 #define DFU_BLOCK_SIZE  128U
 
+/* ---- Callbacks (define BEFORE function declarations) ---- */
+typedef void (*dfu_progress_cb_t)(uint8_t percent);
+typedef void (*dfu_complete_cb_t)(uint8_t success);
+
 typedef struct {
     dfu_state_t state;
     uint32_t    total_size;
@@ -37,7 +41,17 @@ typedef struct {
     uint32_t    flash_addr;
 } dfu_ctx_t;
 
+void    dfu_init(dfu_ctx_t *ctx);
 
+void    dfu_process_sysex(dfu_ctx_t *ctx, const uint8_t *data, uint16_t len);
+
+uint8_t dfu_progress(const dfu_ctx_t *ctx);
+
+typedef void (*dfu_process_cb_t)(uint8_t percent);
+
+typedef void (*dfu_complete_cb_t)(uint8_t success);
+
+void dfu_set_callbacks(dfu_progress_cb_t pcb, dfu_complete_cb_t ccb);
 
 #endif /* DFU_ENGINE_H */
 

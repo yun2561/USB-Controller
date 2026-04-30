@@ -43,7 +43,7 @@ typedef struct {
 
 void router_init(void);
 void router_reg_port(port_id_t id, midi_port_t *port);
-void router_set_rule(port_id_t src, port_id_t dst, route_rule_t *rule);
+void router_set_rule(port_id_t src, port_id_t dst, const route_rule_t *rule);
 void router_process(port_id_t src, const midi_msg_t *msg);
 void router_poll_all(void);
 
