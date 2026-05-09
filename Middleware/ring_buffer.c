@@ -38,7 +38,7 @@ uint16_t rb_push_blk(ring_buf_t *rb, const uint8_t*data, uint16_t len)
     return n;
 }
 
-uint16_t rb_pop_blk(ring_buf_t *rb, uint8_t *data, uint16_t max)
+uint16_t rb_pop_blk(ring_buf_t *rb, uint8_t* data, uint16_t max)
 {
     uint16_t n = 0;
     while ( n < max )

@@ -51,7 +51,7 @@ void midi_send_pc(port_id_t port, uint8_t ch, uint8_t prog)
     send_via_router(&m);
 }
 
-void midi_send_pitchbend(port_id_t port, uint8_t ch, int16_t value)
+void midi_send_pitchbend(port_id_t port, uint8_t ch, uint16_t value)
 {
     (void)port;
     uint16_t raw = (uint16_t)(value + 8192);

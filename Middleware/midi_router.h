@@ -3,6 +3,8 @@
  *
  * Multi-port MIDI router with per-channel/per-message-type filtering.
  * Supports USB, UART, and Internal (virtual) ports.
+ * SysEx is assembled per-port inside router_poll_all() and forwarded
+ * through the same port->send() path as channel messages.
  *****************************************************************************/
 
 #ifndef MIDI_ROUTER_H
@@ -10,6 +12,7 @@
 
 #include "midi_parser.h"
 #include "ring_buffer.h"
+#include "sysex_assembler.h"
 
 typedef enum {
     PORT_USB = 0,
@@ -47,7 +50,17 @@ void router_set_rule(port_id_t src, port_id_t dst, const route_rule_t *rule);
 void router_process(port_id_t src, const midi_msg_t *msg);
 void router_poll_all(void);
 
+/* Channel/RT message callback */
 typedef void (*midi_rx_cb_t)(port_id_t port, const midi_msg_t *msg);
 void router_set_rx_cb(midi_rx_cb_t cb);
+
+/* ---- SysEx ---- */
+ 
+/* SysEx message callback — complete F0..F7 from any port */
+typedef void (*sysex_rx_cb_t)(port_id_t port, const uint8_t *data, uint16_t len);
+void router_set_sysex_cb(sysex_rx_cb_t cb);
+
+
+
 
 #endif /* MIDI_ROUTER_H */

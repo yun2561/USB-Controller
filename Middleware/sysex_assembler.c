@@ -78,4 +78,4 @@ void sx_reset(sysex_ctx_t *ctx)
     ctx->state = SX_IDLE;
     ctx->len   = 0;
 }
- 
+

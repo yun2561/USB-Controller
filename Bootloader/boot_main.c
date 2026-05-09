@@ -11,6 +11,9 @@
  *      → Valid:   set VTOR, jump to App
  *      → Invalid: enter DFU wait
  *****************************************************************************/
+
+//#define BUILD_BOOTLOADER
+
 #ifdef BUILD_BOOTLOADER
 
 #include "gd32f3x0.h"
@@ -22,7 +25,13 @@ static void jump_to_app(void)
     uint32_t app_pc = *(volatile uint32_t *)(APP_ADDR + 4U);
 
     /* SP must point into SRAM (0x20000000 range) */
-    if ((app_sp & 0x2FFE0000U) != 0x20000000U) return;
+    if ((app_sp & 0x2FFE0000U) != 0x20000000U) {
+        // APP 无效，留在 Bootloader / 进入 DFU
+        return;
+    }
+    // 关闭所有中断、外设
+    //__disable_irq();
+    // 可选：DeInit USB、UART、Timer 等
 
     /* Relocate vector table */
     SCB->VTOR = APP_ADDR;
@@ -39,7 +48,7 @@ static uint8_t app_is_valid(void)
 
 static uint8_t dfu_flag_set(void)
 {
-    return (*(volatile uint32_t *)DFU_STAGING_ADDR == DFU_MAGIC_UPGRADE) ? 1U : 0U;
+    return (*(volatile uint32_t*)DFU_STAGING_ADDR == DFU_MAGIC_UPGRADE) ? 1U : 0U;
 }
 
 static void clear_dfu_flag(void)
@@ -54,9 +63,11 @@ static void dfu_wait_loop(void)
     /* Minimal indicator: toggle an LED or just wait.
      * In a real product, could implement USB-DFU Class here.
      * Or simply wait for power cycle after App-mode SysEx DFU. */
-    while (1) {
+    while (1)
+    {
         __NOP();
     }
+    
 }
 
 int main(void)
@@ -75,7 +86,11 @@ int main(void)
     /* No valid app — enter DFU wait */
     dfu_wait_loop();
 
-    return 0;   /* Never reached */
+    return 0; /* Never reached */
+
 }
 
+
+
 #endif /* BUILD_BOOTLOADER */
+

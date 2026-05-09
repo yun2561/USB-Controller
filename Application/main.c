@@ -36,6 +36,7 @@ ring_buf_t g_usb_rx;
 static dfu_ctx_t s_dfu;
 
 /* ---- SysEx manufacturer ID (customize per product) ---- */
+//#define SYSEX_MFR_ID    0x002032U       /* Non-commercial / development */
 #define SYSEX_MFR_ID    0x7DU       /* Non-commercial / development */
 #define SYSEX_DEV_ID    0x01U
 #define SYSEX_MODEL_ID  0x01U
@@ -151,5 +152,6 @@ int main(void)
         uart_bridge_drain_tx();         /* TX: UART DMA out           */
     }
 
-    return 0;
+//    return 0;
 }
+

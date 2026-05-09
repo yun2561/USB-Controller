@@ -26,9 +26,10 @@ fmc_st_t bsp_fmc_prog(uint32_t a, const uint32_t *d, uint32_t w)
             fmc_lock();
             return FMC_ERR_PG;
         }
-        fmc_lock();
+        
         
     }
+    fmc_lock();
     return FMC_OK;
 }
 

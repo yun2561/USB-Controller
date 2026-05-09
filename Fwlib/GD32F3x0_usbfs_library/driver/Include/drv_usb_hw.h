@@ -44,6 +44,8 @@ void usb_rcu_config(void);
 void usb_intr_config(void);
 /* initializes delay unit using Timer2 */
 void usb_timer_init(void);
+
+void usb_timer_irq(void);
 /* delay in micro seconds */
 void usb_udelay(const uint32_t usec);
 /* delay in milliseconds */

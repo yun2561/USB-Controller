@@ -33,13 +33,9 @@ OF SUCH DAMAGE.
 */
 
 #include "gd32f3x0_it.h"
+#include "drv_usb_hw.h"
 
-
-
-
-
-
-
+#include "bsp_system.h"
 
 /*!
     \brief      this function handles NMI exception
@@ -154,7 +150,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
     /* ---- SysTick (1ms) ---- */
-    
+    bsp_systick_increment();        /* FIX: was empty */
     
 }
 
@@ -172,5 +168,5 @@ void SysTick_Handler(void)
 void TIMER2_IRQHandler(void)
 {
     
-    
+    usb_timer_irq();                /* FIX: was empty */
 }

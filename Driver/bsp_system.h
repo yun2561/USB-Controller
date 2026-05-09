@@ -14,7 +14,7 @@ void bsp_boot_check(void);
 void bsp_system_reset(void);
 uint32_t bsp_get_tick(void);
 void bsp_delay_ms(uint32_t ms);   
-
+void bsp_systick_increment(void);
 
 
 #endif /* BSP_SYSTEM_H */
